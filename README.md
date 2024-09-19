@@ -17,7 +17,7 @@ Recipe Shop is an online platform built for anyone who loves to cook or needs a 
 Recipe Shop is a mobile and web based application that allows users to find recipes based on their specialized needs. The application relieves the user from the pain of having to google for recipes before each meal; and frustration when they find a recipe but did not have enough ingredients at home. With “Recipe Shop” they can simply enter the ingredients they have and have a list of recipes matching the ingredients. The main goal of Recipe Shop is to make the process of preparing meals and grocery shopping easier, and also provides a platform for recipe sharing and collecting.
 
 ### Project Proposal Powerpoint
-[link for slides](https://docs.google.com/presentation/d/1PnpB_A33euk-62a8-xNr9aGnYFOGQPwSr7CioqUJycA/edit#slide=id.g3003bf0c524_0_5)
+[link for slides](https://docs.google.com/presentation/d/1ZIRzEjUDUouv7DUa-ByEjAxJUdLvU-xD/edit#slide=id.p2)
 
 
 ### Key features
