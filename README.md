@@ -85,3 +85,13 @@ We believe this architecture will work because it is the minimum viable solution
 
 
 ### Work Division
+Mei: front end, API, flexible to do things in any layer.
+
+Troy: back end server, or front end.
+
+Densson: Database, API.
+
+Ifeanyi: Back end, Database. 
+
+For our work division, we decided that each group member will be flexible to work in each layer but each has to focus on a specific area they decided. We will assign user stories to each group member based on the part they are working on and have meetings every 2 days as scrums on discord or microsoft teaming to report the progress and share the code with everyone so no one be missing any information neccessary. When the group members have to collaborate on the same feature, we will also arrange meetings to make sure each developer is aware of what the other team member is doing and reduce the possibility that work is done repeatedly.
+
