@@ -1,11 +1,12 @@
 import logo from "../images/logo-transparent-png.png";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
     return (
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
     <div className="container-fluid">
       <a className="navbar-brand" href="#">
-        <img src={logo} alt="Logo" width="56" height="50" class="d-inline-block align-text-top"></img>
+        <img src={logo} alt="Logo" width="56" height="50" className="d-inline-block align-text-top"></img>
         Recipe Shop
         </a>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,10 +15,10 @@ export default function Navbar() {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           <li className="nav-item">
-            <a className="nav-link active" aria-current="page" href="#">Home</a>
+            <Link to="/"><button type="button" class="btn btn-light">Home</button></Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">Sign in</a>
+            <Link to="/login"><button type="button" class="btn btn-light">Sign In</button></Link>
           </li>
           <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -27,17 +28,15 @@ export default function Navbar() {
               <li><a className="dropdown-item" href="#">About us</a></li>
               <li><a className="dropdown-item" href="#">Our API</a></li>
               <li><hr className="dropdown-divider"/></li>
-              <li><a className="dropdown-item" href="#">Something else here</a></li>
+              <li><a className="dropdown-item" href="https://github.com/njzfjiang/Recipe-Shop/tree/UI-for-main-page-and-login">GitHub Repo</a></li>
             </ul>
           </li>
           <li className="nav-item">
             <a className="nav-link disabled" aria-disabled="true">Mobile version</a>
           </li>
+         
         </ul>
-        <form className="d-flex" role="search">
-          <input className="form-control me-2" type="search" placeholder="Search for Recipes" aria-label="Search"/>
-          <button className="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        
       </div>
     </div>
   </nav>

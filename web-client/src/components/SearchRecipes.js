@@ -7,7 +7,7 @@ function SearchRecipes() {
             <div className="card-body">
             <h5 className="card-title">Search for Recipes</h5>
             <p className="card-text">Find the recipes you need based on Keywords.</p>
-            <a href="#" className="btn btn-primary">Search now</a>
+            <a href="#" className="btn btn-outline-success">Search now</a>
             </div>
         </div>
     )
