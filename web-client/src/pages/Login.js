@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
+import { Link } from "react-router-dom";
 
 function Login() {
     return(
@@ -21,7 +22,7 @@ function Login() {
                         <input type="text" className="form-control" id="password-input" placeholder="password"/>
                         <label for="password-input">Password</label>
                     </div>
-                    <p>Not a member? <a href="#!">Register</a></p>
+                    <p>Not a member? <Link to="/register">Register</Link></p>
                     <button  type="button" className="btn btn-outline-success btn-block mb-4">Sign in</button>
                     
                     </form>
