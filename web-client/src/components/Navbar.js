@@ -26,7 +26,7 @@ export default function Navbar() {
             </a>
             <ul className="dropdown-menu">
               <li><a className="dropdown-item" href="#">About us</a></li>
-              <li><a className="dropdown-item" href="#">Our API</a></li>
+              <li><a className="dropdown-item" href="https://developer.edamam.com/edamam-docs-recipe-api">Edamam API</a></li>
               <li><hr className="dropdown-divider"/></li>
               <li><a className="dropdown-item" href="https://github.com/njzfjiang/Recipe-Shop">GitHub Repo</a></li>
             </ul>
