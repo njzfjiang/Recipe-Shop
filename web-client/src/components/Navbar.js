@@ -28,7 +28,7 @@ export default function Navbar() {
               <li><a className="dropdown-item" href="#">About us</a></li>
               <li><a className="dropdown-item" href="#">Our API</a></li>
               <li><hr className="dropdown-divider"/></li>
-              <li><a className="dropdown-item" href="https://github.com/njzfjiang/Recipe-Shop/tree/UI-for-main-page-and-login">GitHub Repo</a></li>
+              <li><a className="dropdown-item" href="https://github.com/njzfjiang/Recipe-Shop">GitHub Repo</a></li>
             </ul>
           </li>
           <li className="nav-item">
