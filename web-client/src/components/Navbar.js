@@ -15,13 +15,13 @@ export default function Navbar() {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           <li className="nav-item">
-            <Link to="/"><button type="button" class="btn btn-light">Home</button></Link>
+            <Link to="/"><button type="button" className="btn btn-light">Home</button></Link>
           </li>
           <li className="nav-item">
-            <Link to="/login"><button type="button" class="btn btn-light">Sign In</button></Link>
+            <Link to="/login"><button type="button" className="btn btn-light">Sign In</button></Link>
           </li>
           <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               About
             </a>
             <ul className="dropdown-menu">
