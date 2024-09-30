@@ -8,7 +8,7 @@ app.use("/api", apiRouter);
 
 app.get("/", (req, res) => {
     console.log("Get /");
-    fs.readFile("./web-client/public/index.html", "utf-8", (err, data) => {
+    fs.readFile("../web-client/public/index.html", "utf-8", (err, data) => {
         if(err){
             console.log(err);
             res.status(500).send("App.js not found");
