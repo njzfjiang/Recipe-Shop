@@ -11,7 +11,7 @@ app.get("/", (req, res) => {
     fs.readFile("../web-client/public/index.html", "utf-8", (err, data) => {
         if(err){
             console.log(err);
-            res.status(500).send("App.js not found");
+            res.status(500).send("index not found");
         }
         else{
             console.log(data);
