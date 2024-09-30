@@ -1,8 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
 function Login() {
+    const [login, setLogin] = useState ({
+        username:'',
+        password:'',
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (login.username !== "" && login.password !== "") {
+            
+        }
+        }
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setLogin(prev => ({
+          ...prev,
+          [name]: value,
+        }));
+    };
+
     return(
         <>
         <Navbar />
@@ -12,14 +32,16 @@ function Login() {
                 </div>
                 <div className="col">
                     <h5 className="p-3">Please Log into your Account</h5>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                     <div className="form-floating mb-3">
-                        <input type="text" className="form-control" id="username-input" placeholder="username"/>
+                        <input type="text" className="form-control" id="username-input" placeholder="username" 
+                        name = "username" onChange={handleChange}/>
                         <label for="username-input">Username</label>
                     </div>
 
                     <div className="form-floating">
-                        <input type="text" className="form-control" id="password-input" placeholder="password"/>
+                        <input type="password" className="form-control" id="password-input" placeholder="password"
+                         name = "password" onChange={handleChange}/>
                         <label for="password-input">Password</label>
                     </div>
                     <p>Not a member? <Link to="/register">Register</Link></p>
