@@ -5,7 +5,7 @@ export default function Navbar() {
     return (
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
     <div className="container-fluid">
-      <a className="navbar-brand" href="#">
+      <a className="navbar-brand">
         <img src={logo} alt="Logo" width="56" height="50" className="d-inline-block align-text-top"></img>
         Recipe Shop
         </a>
@@ -15,20 +15,20 @@ export default function Navbar() {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           <li className="nav-item">
-            <Link to="/"><button type="button" class="btn btn-light">Home</button></Link>
+            <Link to="/"><button type="button" className="btn btn-light">Home</button></Link>
           </li>
           <li className="nav-item">
-            <Link to="/login"><button type="button" class="btn btn-light">Sign In</button></Link>
+            <Link to="/login"><button type="button" className="btn btn-light">Sign In</button></Link>
           </li>
           <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               About
             </a>
             <ul className="dropdown-menu">
-              <li><a className="dropdown-item" href="#">About us</a></li>
-              <li><a className="dropdown-item" href="#">Our API</a></li>
+              <li><Link to="/about-us"><a className="dropdown-item">About Us</a></Link></li>
+              <li><a className="dropdown-item" href="https://developer.edamam.com/edamam-docs-recipe-api">Edamam API</a></li>
               <li><hr className="dropdown-divider"/></li>
-              <li><a className="dropdown-item" href="https://github.com/njzfjiang/Recipe-Shop/tree/UI-for-main-page-and-login">GitHub Repo</a></li>
+              <li><a className="dropdown-item" href="https://github.com/njzfjiang/Recipe-Shop">GitHub Repo</a></li>
             </ul>
           </li>
           <li className="nav-item">
