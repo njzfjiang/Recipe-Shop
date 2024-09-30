@@ -1,8 +1,9 @@
-import React from "react";
+import React,{ useState } from "react";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
 function Register() {
+
     return(
         <>
         <Navbar />
@@ -19,17 +20,17 @@ function Register() {
                     </div>
 
                     <div className="form-floating mb-3">
-                        <input type="text" className="form-control" id="new-password-input" placeholder="password"/>
+                        <input type="password" className="form-control" id="new-password-input" placeholder="password"/>
                         <label for="new-password-input">Password</label>
                     </div>
 
                     <div className="form-floating">
-                        <input type="text" className="form-control" id="repeat-password-input" placeholder="password"/>
+                        <input type="password" className="form-control" id="repeat-password-input" placeholder="password"/>
                         <label for="repeat-password-input">Repeat Password</label>
                     </div>
 
                     <p>Already a member? <Link to="/login">Sign in</Link></p>
-                    <button  type="button" className="btn btn-outline-success btn-block mb-4">Register</button> 
+                    <button  type="Submit" className="btn btn-outline-success btn-block mb-4">Register</button> 
                     </form>
                 </div>
                 <div className="col">
