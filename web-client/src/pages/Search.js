@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
-
+import axios from "axios";
 
 
 function Search() {
     const [searchData, setSearchData] = useState({
-        mealType:'',
+        mealType:null,
         mintime:0,
         maxtime:0,
         keyword:'',
-        time:'',
+        time:null,
     });
 
     const handleChange = (e) => {
@@ -18,15 +18,34 @@ function Search() {
           ...prevState,
           [name]: value,
         }));
-        if(searchData.maxtime >= searchData.mintime){
-            searchData.time = searchData.mintime +'-'+ searchData.maxtime
-        }
     };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        //validate input:
+        if(searchData.maxtime !== 0 && 
+            (searchData.maxtime > searchData.mintime)){
+            searchData.time = searchData.mintime +'-'+ searchData.maxtime;
+        }
+        if(searchData.mealType == '--mealType--'){
+            searchData.mealType = null;
+        }
+        const params = {
+            keyword: searchData.keyword,
+            mealType: searchData.mealType,
+            time: searchData.time,
+        }
+        
         if(searchData.keyword !== '') {
-            
+            axios
+                .get("http://localhost/api/recipe/search", {params})
+                .then((res) => {
+                    console.log(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         } 
     }
 
