@@ -7,7 +7,7 @@ function FavoriteRecipes() {
             <div className="card-body">
             <h5 className="card-title">Favourite recipes</h5>
             <p className="card-text">Manage and view your favourite recipes.</p>
-            <a href="#" className="btn btn-outline-primary">Manage</a>
+            <button className="btn btn-outline-primary">Manage</button>
             </div>
         </div>
     )

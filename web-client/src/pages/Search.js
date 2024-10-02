@@ -1,31 +1,119 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-
+import axios from "axios";
+import RecipeCard from "../components/RecipeCard";
 
 
 function Search() {
+    let content = null;
+
     const [searchData, setSearchData] = useState({
-        mealType:'',
+        mealType:null,
         mintime:0,
         maxtime:0,
         keyword:'',
-        time:'',
+        time:null,
     });
 
+    const [recipeData, setRecipeData] = useState({
+        loading:false,
+        data:null,
+        error:false,
+    });
+
+    useEffect (() => {
+        setRecipeData({
+            loading: true,
+            data: null,
+            error: false,
+        })
+    },[])
+
+    //update form data with user input
     const handleChange = (e) => {
         const { name, value } = e.target;
         setSearchData(prevState => ({
           ...prevState,
           [name]: value,
         }));
-        if(searchData.maxtime >= searchData.mintime){
-            searchData.time = searchData.mintime +'-'+ searchData.maxtime
-        }
     };
 
+    //search for recipes when user submit the form
     const handleSubmit = (e) => {
         e.preventDefault();
+        //validate user input:
+        if(searchData.maxtime !== 0 && 
+            (searchData.maxtime > searchData.mintime)){
+            searchData.time = searchData.mintime +'-'+ searchData.maxtime;
+        }
+        if(searchData.mealType === '--mealType--'){
+            searchData.mealType = null;
+        }
+        const params = {
+            keyword: searchData.keyword,
+            mealType: searchData.mealType,
+            time: searchData.time,
+        }
+        
+        //if the search keyword is not empty, fetch data from the API.
         if(searchData.keyword !== '') {
+            axios
+                .get("http://localhost/api/recipe/search", {params})
+                .then((res) => {
+                    setRecipeData({
+                        loading: false,
+                        data: res.data,
+                        error: false,});
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setRecipeData({
+                        loading:false,
+                        data: null,
+                        error:true,})
+                })
+        }
+        else {
+            alert("Please add a keyword to search.");
+        } 
+    }
+
+
+    //split array into chunks
+    const arrayChunk = (arr, n) => {
+        const array = arr.slice();
+        const chunks = [];
+        while (array.length) chunks.push(array.splice(0, n));
+        return chunks;
+      };
+    
+    
+    //load dynamic data based on recipes searched
+    if(recipeData.error){
+        content = <p className="p-3">An error occured, pleast try again later.</p>
+    }
+
+    if(recipeData.loading){
+        content = <p className="p-3">Fetching Recipes...</p>
+    }
+
+    //render content if there is data.
+    if(recipeData.data){
+        //const recipe_list = JSON.parse(recipeData.data);
+        if(recipeData.data.to === 0){
+            content = <p className="p-3">No matching recipes found.</p>
+        } else {
+            content = 
+            <div>
+                 {arrayChunk(recipeData.data.hits, 4).map((row, i) => (
+                    <div key={i} className="row mx-auto p-3">
+                        {row.map((col, i) => (
+                                <RecipeCard recipe={col}/>
+                            ))}
+                    </div>
+                 ))}
+            </div>
+           
             
         } 
     }
@@ -60,6 +148,10 @@ function Search() {
             </div>
         </form>
 
+        <div className="p-3">
+            {content}
+        </div>
+        
         </>
     )
 
