@@ -20,7 +20,7 @@ function Register() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (register.username !== "" && register.password !== "" 
-            && register.password == register.confirmPassword) 
+            && register.password === register.confirmPassword) 
         {
             
         }
