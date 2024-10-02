@@ -1,3 +1,4 @@
+import React from 'react';
 import Navbar from '../components/Navbar';
 import MainBanner from '../components/MainBanner';
 import SearchRecipes from '../components/SearchRecipes';
