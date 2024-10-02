@@ -68,7 +68,7 @@ _AC: Given I am a user, I can select or unselect a favorite option on recipes to
 
 
 ### Initial Architecture
-![Architecture Diagram](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/Architecture-modified.jpg)
+![Architecture Diagram](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/Architecture-modified.jpg)
 
 ### Technology
 **Front End**: React, Android Studio 
