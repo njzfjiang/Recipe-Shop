@@ -7,7 +7,7 @@ function GenerateGroceryList() {
             <div className="card-body">
             <h5 className="card-title">Generate Grocery list</h5>
             <p className="card-text">Generate a grocery list based on selected recipes.</p>
-            <a href="#" className="btn btn-outline-secondary disabled" aria-disabled="true">Select Recipes</a>
+            <button className="btn btn-outline-secondary disabled" aria-disabled="true">Select Recipes</button>
             </div>
         </div>
     )
