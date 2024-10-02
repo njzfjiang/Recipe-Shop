@@ -53,7 +53,6 @@ function Recipe () {
             <div className="mb-3">{ingredient}</div>
         );
 
-        console.log(recipeData.data.recipe.ingredientLines);
         content =
             <div className="container text-center p-3">
                 <div className="row">

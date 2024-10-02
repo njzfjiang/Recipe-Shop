@@ -103,7 +103,6 @@ function Search() {
         if(recipeData.data.to === 0){
             content = <p className="p-3">No matching recipes found.</p>
         } else {
-            console.log(recipeData.data.hits);
             content = 
             <div>
                  {arrayChunk(recipeData.data.hits, 4).map((row, i) => (
