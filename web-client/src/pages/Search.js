@@ -79,6 +79,15 @@ function Search() {
     }
 
 
+    //split array into chunks
+    const arrayChunk = (arr, n) => {
+        const array = arr.slice();
+        const chunks = [];
+        while (array.length) chunks.push(array.splice(0, n));
+        return chunks;
+      };
+    
+    
     //load dynamic data based on recipes searched
     if(recipeData.error){
         content = <p className="p-3">An error occured, pleast try again later.</p>
@@ -95,11 +104,18 @@ function Search() {
             content = <p className="p-3">No matching recipes found.</p>
         } else {
             console.log(recipeData.data.hits);
-            content = recipeData.data.hits.map((recipe, key) =>
-                <div className="p-3">
-                    <RecipeCard recipe={recipe}/>
-                </div>
-            )
+            content = 
+            <div>
+                 {arrayChunk(recipeData.data.hits, 4).map((row, i) => (
+                    <div key={i} className="row mx-auto p-3">
+                        {row.map((col, i) => (
+                                <RecipeCard recipe={col}/>
+                            ))}
+                    </div>
+                 ))}
+            </div>
+           
+            
         } 
     }
 
@@ -132,7 +148,11 @@ function Search() {
             <button className="btn btn-outline-success" type="submit" id="recipe-keyword">Search</button>
             </div>
         </form>
-        {content}
+
+        <div className="p-3">
+            {content}
+        </div>
+        
         </>
     )
 
