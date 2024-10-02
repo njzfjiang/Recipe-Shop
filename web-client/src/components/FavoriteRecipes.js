@@ -1,3 +1,4 @@
+import React from "react";
 import recipes from '../images/Recipes.jpg';
 
 function FavoriteRecipes() {
