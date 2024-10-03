@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import RecipeCard from "../components/RecipeCard";
+import { arrayChunk } from "../utils/arrayChunk";
 
 
 function Search() {
     let content = null;
 
     const [searchData, setSearchData] = useState({
-        mealType:null,
+        mealType:'--mealType--',
         mintime:0,
         maxtime:0,
         keyword:'',
@@ -76,17 +77,7 @@ function Search() {
         else {
             alert("Please add a keyword to search.");
         } 
-    }
-
-
-    //split array into chunks
-    const arrayChunk = (arr, n) => {
-        const array = arr.slice();
-        const chunks = [];
-        while (array.length) chunks.push(array.splice(0, n));
-        return chunks;
-      };
-    
+    } 
     
     //load dynamic data based on recipes searched
     if(recipeData.error){
