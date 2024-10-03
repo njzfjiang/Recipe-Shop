@@ -23,19 +23,21 @@ function Recipe () {
 
         axios.get(url)
             .then(response => {
+                if(response !== null){
                 setRecipeData({
                     loading:false,
                     data: response.data,
-                    error:false,
-                })
-            .catch((error) => {
-                console.log(error);
-                setRecipeData({
-                    loading:false,
-                    data: null,
-                    error:true,})
+                    error:false,})
+                }
             })
-        })
+            .catch((error) => {
+            console.log(error);
+            setRecipeData({
+                loading:false,
+                data: null,
+                error:true,})
+            })
+            
     },[url])
 
     if(recipeData.error){
