@@ -36,7 +36,7 @@ router.get("/recipe/search", (request, response) => {
             }
         })
         .catch((error) => {
-            response.status(500).send("Internal Server Error.");
+            response.status(error.response.status).send(error)
             console.log(error);
         })
 });
@@ -61,7 +61,7 @@ router.get("/recipe/:recipeID", (request, response) => {
             }
         })
         .catch((error) => {
-            response.status(500).send("Internal Server Error.");
+            response.status(error.response.status).send(error)
             console.log(error);
         })
 });

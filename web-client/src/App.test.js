@@ -1,6 +1,5 @@
 import App from './App';
 import React from 'react';
-import { createRoot } from "react-dom/client";
 import { render, screen, cleanup } from "@testing-library/react"
 import { fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom'
