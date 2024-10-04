@@ -2,7 +2,6 @@ import Recipe from './Recipe';
 import React from 'react';
 import {Routes, Route, MemoryRouter } from 'react-router-dom';
 import { render, screen, cleanup, waitFor } from "@testing-library/react"
-import { fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom'
 
 import axios from 'axios';
