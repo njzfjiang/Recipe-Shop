@@ -77,7 +77,7 @@ _AC: Given I am a user, I can select or unselect a favorite option on recipes to
 
 **Database**: MongoDB
 
-**Server**: Python
+**Server**: Python, Node.js
 
 **Code Management**: Github
 
