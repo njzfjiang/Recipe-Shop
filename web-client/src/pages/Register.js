@@ -37,19 +37,19 @@ function Register() {
                     <h5 className="p-3">Please fill in the information to Register</h5>
                     <form onSubmit={handleSubmit}>
                     <div className="form-floating mb-3">
-                        <input type="text" className="form-control" id="new-username-input" placeholder="username"
+                        <input data-testid="r_username" type="text" className="form-control" id="new-username-input" placeholder="username"
                         name="username" onChange={handleChange}/>
                         <label htmlFor="new-username-input">Username</label>
                     </div>
 
                     <div className="form-floating mb-3">
-                        <input type="password" className="form-control" id="new-password-input" placeholder="password"
+                        <input data-testid="r_password"type="password" className="form-control" id="new-password-input" placeholder="password"
                         name="password" onChange={handleChange}/>
                         <label htmlFor="new-password-input">Password</label>
                     </div>
 
                     <div className="form-floating">
-                        <input type="password" className="form-control" id="repeat-password-input" placeholder="password"
+                        <input data-testid="repeat_password" type="password" className="form-control" id="repeat-password-input" placeholder="password"
                         name="confirmPassword" onChange={handleChange}/>
                         <label htmlFor="repeat-password-input">Confirm Password</label>
                     </div>
