@@ -16,6 +16,13 @@ Recipe Shop is an online platform built for anyone who loves to cook or needs a 
 ### Vision Statement
 Recipe Shop is a mobile and web based application that allows users to find recipes based on their specialized needs. The application relieves the user from the pain of having to google for recipes before each meal; and frustration when they find a recipe but did not have enough ingredients at home. With “Recipe Shop” they can simply enter the ingredients they have and have a list of recipes matching the ingredients. The main goal of Recipe Shop is to make the process of preparing meals and grocery shopping easier, and also provides a platform for recipe sharing and collecting.
 
+### Getting Started with the project
+1. Clone the Repository on your local machine
+2. Add the .env file in the ```/server``` folder
+3. Run ```npm install``` in the ```/web-client``` and ```/server``` folder to install dependencies.
+4. Run ```npm build``` in the ```/web-client``` folder
+5. Navigate to the ```/server``` folder and run ```npm start``` to start the project, it should be running on localhost:80
+
 ### Project Proposal Powerpoint
 [link for slides](https://docs.google.com/presentation/d/1ZIRzEjUDUouv7DUa-ByEjAxJUdLvU-xD/edit#slide=id.p2)
 
