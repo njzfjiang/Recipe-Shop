@@ -12,6 +12,7 @@ import MockAdapter from "axios-mock-adapter";
 window.alert = jest.fn();
 afterEach(() => {
     jest.resetAllMocks();
+    cleanup
 });
 afterAll(() => {
     jest.clearAllMocks();

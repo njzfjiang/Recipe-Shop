@@ -72,7 +72,7 @@ function Search() {
                         error: false,});
                 })
                 .catch((error) => {
-                    console.log(error);
+                    //console.log(error);
                     setRecipeData({
                         loading:false,
                         data: null,
