@@ -1,3 +1,4 @@
+import React from "react";
 import bannerImg from '../images/bannerImg.jpg';
 import { Link } from 'react-router-dom';
 
