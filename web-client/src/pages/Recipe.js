@@ -22,20 +22,21 @@ function Recipe () {
         })
 
         axios.get(url)
-            .then(response => {
+            .then( response =>  {
                 setRecipeData({
                     loading:false,
                     data: response.data,
-                    error:false,
-                })
-            .catch((error) => {
-                console.log(error);
-                setRecipeData({
-                    loading:false,
-                    data: null,
-                    error:true,})
+                    error:false,})
+                
             })
-        })
+            .catch((error) => {
+            console.log(error);
+            setRecipeData({
+                loading:false,
+                data: null,
+                error:true,})
+            })
+            
     },[url])
 
     if(recipeData.error){
@@ -49,7 +50,7 @@ function Recipe () {
     //render content if there is data.
     if(recipeData.data){
         let ingredientList = 
-        recipeData.data.recipe.ingredientLines.map((ingredient, key) =>
+        recipeData.data.recipe.ingredientLines.map((ingredient) =>
             <div className="mb-3">{ingredient}</div>
         );
 
@@ -58,7 +59,7 @@ function Recipe () {
                 <div className="row">
                     <div className="col">
                         <h2>{recipeData.data.recipe.label}</h2>
-                        <p>Recipe from {recipeData.data.recipe.source}</p>
+                        <p data-testid="source">Recipe from {recipeData.data.recipe.source}</p>
                         <img src={recipeData.data.recipe.image} alt="recipe"/>
                         
                     </div>

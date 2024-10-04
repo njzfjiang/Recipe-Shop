@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import Search from "./pages/Search";
 import AboutUs from "./pages/AboutUs";
 import Recipe from "./pages/Recipe";
+import React from "react";
 
 
 function App() {

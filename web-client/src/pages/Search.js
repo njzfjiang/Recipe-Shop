@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import RecipeCard from "../components/RecipeCard";
+import { arrayChunk } from "../utils/arrayChunk";
 
 
 function Search() {
     let content = null;
 
     const [searchData, setSearchData] = useState({
-        mealType:null,
+        mealType:'',
         mintime:0,
         maxtime:0,
         keyword:'',
@@ -38,23 +39,28 @@ function Search() {
         }));
     };
 
+
+
     //search for recipes when user submit the form
     const handleSubmit = (e) => {
         e.preventDefault();
-        //validate user input:
-        if(searchData.maxtime !== 0 && 
+         //validate user input:
+         if(searchData.maxtime !== 0 && 
             (searchData.maxtime > searchData.mintime)){
             searchData.time = searchData.mintime +'-'+ searchData.maxtime;
         }
-        if(searchData.mealType === '--mealType--'){
-            searchData.mealType = null;
+        let inputMealType = "";
+        if(searchData.mealType === ''){
+            inputMealType = null;
+        } else {
+            inputMealType = searchData.mealType;
         }
         const params = {
             keyword: searchData.keyword,
-            mealType: searchData.mealType,
+            mealType: inputMealType,
             time: searchData.time,
         }
-        
+
         //if the search keyword is not empty, fetch data from the API.
         if(searchData.keyword !== '') {
             axios
@@ -76,17 +82,7 @@ function Search() {
         else {
             alert("Please add a keyword to search.");
         } 
-    }
-
-
-    //split array into chunks
-    const arrayChunk = (arr, n) => {
-        const array = arr.slice();
-        const chunks = [];
-        while (array.length) chunks.push(array.splice(0, n));
-        return chunks;
-      };
-    
+    } 
     
     //load dynamic data based on recipes searched
     if(recipeData.error){
@@ -136,9 +132,9 @@ function Search() {
 
             <div className="input-group px-3">
                 <span className="input-group-text">Cooking Time</span>
-                <input type="number" min="0" className="form-control w-25" name="mintime" value={searchData.mintime} onChange={handleChange} placeholder="0"/>
+                <input data-testid="min_time" type="number" min="0" className="form-control w-25" name="mintime" value={searchData.mintime} onChange={handleChange} placeholder="0"/>
                 <span className ="input-group-text">-</span>
-                <input type="number" min="0" className="form-control w-25" name="maxtime" value={searchData.maxtime} onChange={handleChange}placeholder="0"/>
+                <input data-testid="max_time" type="number" min="0" className="form-control w-25" name="maxtime" value={searchData.maxtime} onChange={handleChange}placeholder="0"/>
             </div>
 
             <div className="input-group p-3 mb-3">

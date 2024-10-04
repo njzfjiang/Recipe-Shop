@@ -1,3 +1,4 @@
+import React from "react";
 import Grocery from '../images/Grocery.jpg';
 
 function GenerateGroceryList() {
