@@ -69,7 +69,7 @@ router.get("/recipe/:recipeID", (request, response) => {
 
 //e.g. POST message to 'localhost/api/register'
 router.post("/register", (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     //if register successful
     res.status(200).send("registered");
     //else
