@@ -30,6 +30,13 @@ describe("API route tests", () =>{
         expect(res.statusCode).toBe(200);
     });
 
+    test("Error when searching for non-existent recipe", async () =>{
+        const recipeID = "122333";
+        const res = await request(app).get("/api/recipe/" + recipeID);
+        expect(res.statusCode).toBe(404);
+    });
+
+
 
     test("Register API path: localhost/api/register", async () =>{
         const res = await request(app).post("/api/register");
