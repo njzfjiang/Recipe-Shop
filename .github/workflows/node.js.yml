@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build_and_Test:
 
     runs-on: ubuntu-latest
 
@@ -27,6 +27,9 @@ jobs:
         run: |
           cd web-client
           npm install
+          cd ..
+          cd server
+          npm instll
 
       - name: Build Project
         run: |
@@ -36,6 +39,9 @@ jobs:
       - name: Test Project
         run: |
           cd web-client
+          npm test
+          cd ..
+          cd server
           npm test
    
    
