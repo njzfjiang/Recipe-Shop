@@ -24,14 +24,14 @@ describe("API route tests", () =>{
     });
 
 
-    test("localhost/api/recipe/:recipeID", async () =>{
+    test("Recipe Info: localhost/api/recipe/:recipeID", async () =>{
         const recipeID = "7a844b79a5df3f11e822cc229bfb3981";
         const res = await request(app).get("/api/recipe/" + recipeID);
         expect(res.statusCode).toBe(200);
     });
 
 
-    test("localhost/api/register", async () =>{
+    test("Register API path: localhost/api/register", async () =>{
         const res = await request(app).post("/api/register");
         expect(res.statusCode).toBe(200);
         expect(res.text).toEqual("registered");
