@@ -53,7 +53,7 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.post('/user-exist', async(req,res)=> {
+app.get('/user-exist', async(req,res)=> {
     try {
         const { username } = req.body;
         const user = await userModel.findOne({ username });

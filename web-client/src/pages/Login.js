@@ -24,7 +24,7 @@ function Login() {
         const { username, password } = login; 
       
         try {
-          const response = await axios.post('http://localhost:3000/login', { username, password });
+          const response = await axios.post('http://localhost/login', { username, password });
 
           if (response.data.message === 'Login successful!') {
             setCanLogIn("Login Successful")

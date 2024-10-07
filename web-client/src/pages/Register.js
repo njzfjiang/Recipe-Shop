@@ -51,7 +51,7 @@ function Register() {
                     return; 
                 }
 
-                axios.post('http://localhost:3000/register', {username, password, confirmPassword})
+                axios.post('http://localhost/register', {username, password, confirmPassword})
                 .then(result => {console.log(result)
                     setMessage('Registration successful!');
                     setIsSuccess(true);
@@ -88,7 +88,7 @@ function Register() {
 const checkUsernameAvailability = async (username) => {
     if (username != null) { 
         try {
-            const response = await axios.post('http://localhost:3000/user-exist', { username });
+            const response = await axios.get('http://localhost/user-exist', { username });
             if (response.data.exists) {
                 setIsUsernameTaken(true); 
                 setUsernameError("Username is already taken");
