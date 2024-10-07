@@ -5,8 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
-              [ "update-CI-pipeline-1"]
+    branches: [ "main","update-CI-pipeline-1" ]
   pull_request:
     branches: [ "main" ]
 
