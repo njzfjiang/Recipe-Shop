@@ -48,6 +48,7 @@ jobs:
           
       - name: Test Project
         run: |
-          npm run test_all
+          cd web-client
+          npm test
    
    
