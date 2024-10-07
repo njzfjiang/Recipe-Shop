@@ -16,10 +16,9 @@ jobs:
 
     steps:
     - name: Echo secrets
-      working-directory: ./server
       run: |
-          echo $TEST_ENV_FILE >> .env
-          cat .env
+          echo $TEST_ENV_FILE >> server/.env
+          cat server/.env
       shell: bash
       env:
           # Feel free to rename this variable, but make sure to update it everywhere. You should paste your entire file in your secrets
