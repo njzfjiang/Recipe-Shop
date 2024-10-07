@@ -14,7 +14,6 @@ env:
   app_key: ${{ secrets.APP_KEY }}
 
 jobs:
-
   build_and_test:
 
     runs-on: ubuntu-latest
@@ -42,7 +41,7 @@ jobs:
         run: |
           npm run test_client
           REACT_APP_app_id=${{ secrets.APP_ID }} REACT_APP_app_key=${{ secrets.APP_KEY }} npm run test_server
-   
+
   
 
 
