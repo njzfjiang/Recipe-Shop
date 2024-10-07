@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main","update-CI-pipeline-1" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -17,7 +17,7 @@ jobs:
     steps:
     - name: Echo secrets
       run: |
-          echo $TEST_ENV_FILE >> server/.env
+          echo $TEST_ENV_FILE > server/.env
           cat server/.env
       shell: bash
       env:
