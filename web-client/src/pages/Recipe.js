@@ -30,7 +30,7 @@ function Recipe () {
                 
             })
             .catch((error) => {
-            console.log(error);
+            //console.log(error);
             setRecipeData({
                 loading:false,
                 data: null,
@@ -50,8 +50,8 @@ function Recipe () {
     //render content if there is data.
     if(recipeData.data){
         let ingredientList = 
-        recipeData.data.recipe.ingredientLines.map((ingredient) =>
-            <div className="mb-3">{ingredient}</div>
+        recipeData.data.recipe.ingredientLines.map((ingredient,i) =>
+            <div key={i} className="mb-3">{ingredient}</div>
         );
 
         content =
