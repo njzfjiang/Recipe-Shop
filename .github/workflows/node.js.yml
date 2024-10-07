@@ -43,7 +43,8 @@ jobs:
           echo app_id=${{ secrets.APP_ID }} >> .env
           echo app_key=${{ secrets.APP_KEY }} >> .env
           cat .env
-          
+          ls
+
       - name: Test Project
         run: |
           npm run test_all
