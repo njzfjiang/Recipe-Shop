@@ -34,8 +34,10 @@ jobs:
           npm run build
           
       - name: Test Project
+        env:
+          app_id: ${{ secrets.APP_ID }}
+          app_key: ${{ secrets.APP_KEY }}
         run: |
-          cd web-client
-          npm test
+          npm run test_all
    
    
