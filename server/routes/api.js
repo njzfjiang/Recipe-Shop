@@ -6,6 +6,7 @@ const axios = require("axios");
 require('dotenv').config();
 const App_id = process.env.REACT_APP_app_id;
 const App_key = process.env.REACT_APP_app_key;
+
 const edamam_URL = 'https://api.edamam.com/api/recipes/v2';
 
 //e.g. GET message to 'localhost/api
