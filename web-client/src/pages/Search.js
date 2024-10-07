@@ -64,7 +64,7 @@ function Search() {
         //if the search keyword is not empty, fetch data from the API.
         if(searchData.keyword !== '') {
             axios
-                .get("http://localhost/api/recipe/search", {params})
+                .get("http://" + window.location.host + "/api/recipe/search", {params})
                 .then((res) => {
                     setRecipeData({
                         loading: false,

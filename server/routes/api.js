@@ -30,7 +30,7 @@ router.get("/recipe/search", (request, response) => {
         .get(edamam_URL, { params })
         .then((res) => {
             edamam_response = res.data;
-            console.log(edamam_response);
+            //console.log(edamam_response);
             if(edamam_response !== null){
                 response.status(200).send(edamam_response);
             }

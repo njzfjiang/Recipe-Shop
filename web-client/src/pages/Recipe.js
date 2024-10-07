@@ -6,7 +6,7 @@ import { Link, useParams } from "react-router-dom";
 function Recipe () {
     let content = null;
     const { id } = useParams();
-    const url = `http://localhost/api/recipe/${id}`;
+    const url = "http://" + window.location.host + "/api/recipe/${id}";
     const [recipeData, setRecipeData] = useState({
         loading:false,
         data:null,
