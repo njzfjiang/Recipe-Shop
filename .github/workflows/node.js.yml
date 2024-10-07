@@ -14,17 +14,6 @@ env:
   app_key: ${{ secrets.APP_KEY }}
 
 jobs:
-  create-envfile:
- 
-    runs-on: ubuntu-latest
- 
-    steps:
-    - name: Make envfile
-      run: |
-          touch .env
-          echo app_id=${{ secrets.APP_ID }} >> .env
-          echo app_key=${{ secrets.APP_KEY }} >> .env
-          cat .env
 
   build_and_test:
 
@@ -47,6 +36,13 @@ jobs:
         run: |
           cd web-client
           npm run build
+
+      - name: Make envfile
+        run: |
+          touch .env
+          echo app_id=${{ secrets.APP_ID }} >> .env
+          echo app_key=${{ secrets.APP_KEY }} >> .env
+          cat .env
           
       - name: Test Project
         run: |
