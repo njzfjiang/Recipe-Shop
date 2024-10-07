@@ -16,16 +16,17 @@ jobs:
 
     steps:
     - name: Echo secrets
-      working-directory: ./Recipe-Shop
+      working-directory: /server
       run: |
-          echo $TEST_ENV_FILE >> server/.env
-          cat server/.env
+          echo $TEST_ENV_FILE >> .env
+          cat .env
       shell: bash
       env:
           # Feel free to rename this variable, but make sure to update it everywhere. You should paste your entire file in your secrets
           TEST_ENV_FILE : ${{secrets.KEY}}
       
     - name: Upload a Build Artifact
+      working-directory: /server
       uses: actions/upload-artifact@v4
       with:
         name: DEV_ENV_FILE
