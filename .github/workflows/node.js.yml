@@ -25,7 +25,7 @@ jobs:
           TEST_ENV_FILE : ${{secrets.KEY}}
       
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: DEV_ENV_FILE
         path: server/.env
