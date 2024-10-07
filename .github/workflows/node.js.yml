@@ -37,16 +37,9 @@ jobs:
           cd web-client
           npm run build
 
-      - name: Make envfile
-        run: |
-          touch .env
-          echo app_id=${{ secrets.APP_ID }} >> .env
-          echo app_key=${{ secrets.APP_KEY }} >> .env
-          cat .env
-          ls
-
       - name: Test Project
         run: |
-          npm run test_all
+          npm run test_client
+          REACT_APP_app_id=${{ secrets.APP_ID }} REACT_APP_app_key=${{ secrets.APP_KEY }} npm run test_server
    
    
