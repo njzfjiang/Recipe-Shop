@@ -39,9 +39,13 @@ jobs:
           npm run build
 
       - name: Test Project
+        env:
+          app_id: ${{ secrets.APP_ID }}
+          app_key: ${{ secrets.APP_KEY }}
         run: |
           npm run test_client
           REACT_APP_app_id=${{ secrets.APP_ID }} REACT_APP_app_key=${{ secrets.APP_KEY }} npm run test_server
 
   
+
 
