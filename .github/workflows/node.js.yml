@@ -15,22 +15,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Echo secrets
-      run: |
-          mkdir server
-          touch server/.env
-          echo $TEST_ENV_FILE > server/.env
-          cat server/.env
-      shell: bash
-      env:
-          # Feel free to rename this variable, but make sure to update it everywhere. You should paste your entire file in your secrets
-          TEST_ENV_FILE : ${{secrets.KEY}}
-      
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: DEV_ENV_FILE
-        path: server/.env
+         - name: Make envfile
+    uses: SpicyPizza/create-envfile@v2.0
+    with:
+        envkey_app_id: ${{ secrests.APP_ID }}
+        envkey_app_key: ${{ secrets.APP_KEY }}
+        directory: server
+        file_name: .env
+        fail_on_empty: false
+        sort_keys: false
 
   build_and_test:
 
