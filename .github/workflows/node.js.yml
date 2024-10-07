@@ -6,10 +6,31 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
+              [ "update-CI-pipeline-1"]
   pull_request:
     branches: [ "main" ]
 
 jobs:
+  upload_secrets:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Echo secrets
+      run: |
+          echo $TEST_ENV_FILE >> server/.env
+          cat server/.env
+      shell: bash
+      env:
+          # Feel free to rename this variable, but make sure to update it everywhere. You should paste your entire file in your secrets
+          TEST_ENV_FILE : ${{secrets.KEY}}
+      
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+      name: DEV_ENV_FILE
+      path: server/.env
+
   build_and_test:
 
     runs-on: ubuntu-latest
