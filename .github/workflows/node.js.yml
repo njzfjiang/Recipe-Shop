@@ -10,7 +10,21 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  upload_secrets:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v2.0
+      with:
+          envkey_app_id: ${{ secrets.APP_ID }}
+          envkey_app_key: ${{ secrets.APP_KEY }}
+          file_name: .env
+          fail_on_empty: false
+          sort_keys: false
+
+  build_and_test:
 
     runs-on: ubuntu-latest
 
@@ -25,8 +39,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          cd web-client
-          npm install
+          npm run install_all
 
       - name: Build Project
         run: |
@@ -35,7 +48,6 @@ jobs:
           
       - name: Test Project
         run: |
-          cd web-client
-          npm test
+          npm run test_all
    
    
