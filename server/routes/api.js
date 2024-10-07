@@ -4,8 +4,8 @@ const axios = require("axios");
 
 //get API key from .env file.
 require('dotenv').config();
-const App_id = process.env.app_id;
-const App_key = process.env.app_key;
+const App_id = process.env.REACT_APP_app_id;
+const App_key = process.env.REACT_APP_app_key;
 const edamam_URL = 'https://api.edamam.com/api/recipes/v2';
 
 //e.g. GET message to 'localhost/api
@@ -30,7 +30,7 @@ router.get("/recipe/search", (request, response) => {
         .get(edamam_URL, { params })
         .then((res) => {
             edamam_response = res.data;
-            //console.log(edamam_response);
+            console.log(edamam_response);
             if(edamam_response !== null){
                 response.status(200).send(edamam_response);
             }
