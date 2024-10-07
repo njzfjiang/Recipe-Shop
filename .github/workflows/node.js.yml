@@ -34,7 +34,11 @@ jobs:
           npm run build
           
       - name: Test Project
-        run:
+
+        env:
+          app_id: ${{ secrets.APP_ID }}
+          app_key: ${{ secrets.APP_KEY }}
+        run: |
           npm run test_all
-
-
+   
+  
