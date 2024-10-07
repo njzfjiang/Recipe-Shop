@@ -3,7 +3,7 @@ const router = express.Router();
 const axios = require("axios");
 
 //get API key from .env file.
-require('dotenv').config();
+require('dotenv').config({path : '../.env'});
 const App_id = process.env.app_id;
 const App_key = process.env.app_key;
 const edamam_URL = 'https://api.edamam.com/api/recipes/v2';
