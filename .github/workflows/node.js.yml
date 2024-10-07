@@ -17,10 +17,10 @@ jobs:
     steps:
     - name: Echo secrets
       run: |
-          ls
-          touch /server/.env
-          echo $TEST_ENV_FILE > /server/.env
-          cat /server/.env
+          mkdir server
+          touch server/.env
+          echo $TEST_ENV_FILE > server/.env
+          cat server/.env
       shell: bash
       env:
           # Feel free to rename this variable, but make sure to update it everywhere. You should paste your entire file in your secrets
@@ -30,7 +30,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: DEV_ENV_FILE
-        path: /server/.env
+        path: server/.env
 
   build_and_test:
 
