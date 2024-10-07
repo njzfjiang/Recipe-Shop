@@ -30,7 +30,7 @@ function Recipe () {
                 
             })
             .catch((error) => {
-            console.log(error);
+            //console.log(error);
             setRecipeData({
                 loading:false,
                 data: null,
