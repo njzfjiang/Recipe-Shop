@@ -1,6 +1,7 @@
 {
     "scripts": {
         "install_all": "(cd web-client && npm install) && (cd server && npm install)",
-        "test_all":"(cd web-client && npm test) && (cd server && npm test)"
+        "test_client":"(cd web-client && npm test)",
+        "test_server":"(cd server && npm test)"
       }
 }
