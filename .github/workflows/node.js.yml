@@ -20,7 +20,6 @@ jobs:
       with:
           envkey_app_id: ${{ secrets.APP_ID }}
           envkey_app_key: ${{ secrets.APP_KEY }}
-          directory: server
           file_name: .env
           fail_on_empty: false
           sort_keys: false
