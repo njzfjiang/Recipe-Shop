@@ -3,7 +3,6 @@ import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-import { useForm } from 'react-hook-form';
 
 
 function Register() {
