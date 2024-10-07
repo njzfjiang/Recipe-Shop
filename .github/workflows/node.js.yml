@@ -16,6 +16,7 @@ jobs:
 
     steps:
     - name: Echo secrets
+      working-directory: ./Recipe-Shop
       run: |
           echo $TEST_ENV_FILE >> server/.env
           cat server/.env
