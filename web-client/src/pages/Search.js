@@ -104,7 +104,7 @@ function Search() {
                  {arrayChunk(recipeData.data.hits, 4).map((row, i) => (
                     <div key={i} className="row mx-auto p-3">
                         {row.map((col, i) => (
-                                <RecipeCard recipe={col}/>
+                                <RecipeCard key={i} recipe={col}/>
                             ))}
                     </div>
                  ))}

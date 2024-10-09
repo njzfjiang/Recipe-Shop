@@ -24,7 +24,7 @@ app.post('/register',  async (req, res) => {
     const { username, password, confirmPassword } = req.body;
     const currUser = await userModel.findOne({username})
     if(currUser){
-        return res.status(404).json({ error: 'Username already taken' });
+        return res.status(409).json({ error: 'Username already taken' });
     }
     const newUser = await userModel.create({ username, password, confirmPassword } )
     return res.status(201).json({ message: 'User registered successfully!', user: newUser });
