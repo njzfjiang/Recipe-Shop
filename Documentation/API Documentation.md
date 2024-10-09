@@ -4,6 +4,82 @@
 
 Recipe Shop API is an API which allows users to retrieve recipes from online (connected to [Edamam API](https://developer.edamam.com/edamam-docs-recipe-api)). Recipes can be retrieved based on recipe ID, keyword, cooking time and meal type.
 
+The API also allows the application to retrieve user data and information from MongoDB database. User objects can be created and retrieved based on username and password.
+
+## Get username availability
+Check if an username exists in the database. The result is true if the username exists in the database and false if it does not exist. 
+
+**End point** 
+
+`GET /user-exist`
+
+**Parameters**
+* `username` : The username to check
+	* required
+  * Example value: "Admin"
+
+
+**Response Example**
+```json
+{
+	"exists": true
+}
+```
+
+## Create new user object
+Create new user object. The result is a successful message and the user object if the user is successfully created in the database and an error message if the username is not unique.
+
+**End point** 
+
+`POST /register`
+
+**Parameters**
+* `username` : The username of the user (unique)
+	* required
+  * Example value: "Admin"
+* `password`: The password of the user
+	* required
+* `confirmPassword`: The password of the user, has to be the same as `password`
+	* required
+
+
+**Response Example**
+```JSON
+{
+	"message":  "User registered successfully!", 
+	"user":  "userObj"
+}
+```
+
+## Get a user
+Get a user based on username and password. The result is a successful message and the user object if the username and password matches and exists in the database; and an error message if the user does not exist.
+
+**End point** 
+
+`POST /login`
+
+**Parameters**
+* `username` : The username of the user (unique)
+	* required
+  * Example value: "Admin"
+* `password`: The password of the user
+	* required
+
+
+
+**Response Example**
+```json
+{
+	"message":  "Login successful!"
+}
+```
+**Error Example**
+```json
+{ 
+	"error":  "User not found."
+}
+```
+
 ## Get a specific recipe
 
 Retrieve a specific recipe and relevant nutritional facts based on its recipe ID assigned by Edamam API. The result is represented in JSON. 
