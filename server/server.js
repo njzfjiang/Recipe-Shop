@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const PORT = 80;
-const MONGO_URI = "mongodb+srv://francisochiagha21:painting@users.lxsiy.mongodb.net/"
+require('dotenv').config();
+const MONGO_URI = process.env.REACT_APP_MONGO_URI;
 const apiRouter = require("./routes/api")
 const path = require("path");
 const mongoose = require('mongoose');
