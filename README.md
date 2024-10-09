@@ -19,7 +19,7 @@ Recipe Shop is a mobile and web based application that allows users to find reci
 ### Getting Started with the project
 0.1. Make sure you have [node js](https://nodejs.org/en) and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed on your computer.
 1. Clone the Repository on your local machine, 
-2. Download and add the [.env](https://umanitoba-my.sharepoint.com/:u:/g/personal/chenm7_myumanitoba_ca/EazugoNavq5Eod2j-lNDNeYBTtr70KawhSwf4JJm95d2IA?e=fl0Y6H) file in the ```/server``` folder, instructions on how to get the .env file can be found [here](https://github.com/njzfjiang/Recipe-Shop/blob/dev/Documentation/Instructions%20for%20.env%20file.md)
+2. Download and add the [.env](https://umanitoba-my.sharepoint.com/:u:/g/personal/chenm7_myumanitoba_ca/EazugoNavq5Eod2j-lNDNeYBTtr70KawhSwf4JJm95d2IA?e=fl0Y6H) file in the ```/server``` folder, instructions on how to get the .env file can be found [here](https://github.com/njzfjiang/Recipe-Shop/blob/dev/Documentation/Instructions%20for%20.env%20file.md)\
     2.1 You may need to rename the .env file from "env" to ".env", the program will not work if named 'env'
 3. Run ```npm install``` in the ```/web-client``` and ```/server``` folder to install dependencies.
 4. Run ```npm run build``` in the ```/web-client``` folder
