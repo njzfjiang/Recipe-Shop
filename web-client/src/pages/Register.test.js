@@ -4,12 +4,17 @@ import { render, screen, cleanup, waitFor, fireEvent } from "@testing-library/re
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom';
 
+import axios from 'axios';
+
+jest.mock('axios');
+
 afterEach(() => {
     jest.resetAllMocks();
     cleanup
 });
 afterAll(() => {
     jest.clearAllMocks();
+    cleanup
 });
 
 const setup = () => {
@@ -70,10 +75,114 @@ describe("Register page UI functionality", () => {
      })
 
      test("Register can be clicked", async() => {
+        axios.post.mockImplementation((url) => {
+            if (url === "http://" + window.location.host + "/register") {
+                return Promise.resolve({ status: 201, data: { message: 'User registered successfully!' } });
+            } 
+        })
         const {username_input, password_input, repeat_password_input} = setup();
         fireEvent.input(username_input, {target: {value:'Hello123'}});
         fireEvent.input(password_input, {target: {value:'Hello123'}});
         fireEvent.input(repeat_password_input, {target: {value:'Hello123'}});
         fireEvent.click(screen.getByText("Register"));
+
+        await waitFor(() => {
+            expect(screen.getByText("Registration successful!")).toBeInTheDocument();
+        })
      })
+
+     test("Repeated username cannot be registered", async() => {
+        axios.get.mockImplementation((url) => {
+            if(url === "http://" + window.location.host + "/user-exist"){
+                return Promise.resolve({ status: 200, data: { exists:true } });
+            }
+        })
+
+        axios.post.mockImplementation((url) => {
+            if (url === "http://" + window.location.host + "/register") {
+                return Promise.reject({ status: 409, data: { error: 'Username already taken' } });
+            } 
+        })
+        const {username_input, password_input, repeat_password_input} = setup();
+        fireEvent.input(username_input, {target: {value:'Hello123'}});
+        fireEvent.input(password_input, {target: {value:'Hello123'}});
+        fireEvent.input(repeat_password_input, {target: {value:'Hello123'}});
+        fireEvent.click(screen.getByText("Register"));
+        await waitFor(() => {
+            expect(screen.getByText("Username is already taken")).toBeInTheDocument();
+        })
+
+        fireEvent.click(screen.getByText("Register"));
+        await waitFor(() => {
+            expect(screen.getByText("This username is already taken. Please choose another one.")).toBeInTheDocument();
+        })
+
+     })
+
+     test("Empty fields cannot be submitted", async() => {
+        const {username_input, password_input, repeat_password_input} = setup();
+        fireEvent.click(screen.getByText("Register"));
+        await waitFor(() => {
+            expect(screen.getByText("Please fill in all fields.")).toBeInTheDocument();
+        })
+     })
+
+
+     test("Non matching passwords cannot be submitted", async() => {
+        const {username_input, password_input, repeat_password_input} = setup();
+        fireEvent.input(username_input, {target: {value:'Hello123'}});
+        fireEvent.input(password_input, {target: {value:'Hello456'}});
+        fireEvent.input(repeat_password_input, {target: {value:'Hello123'}});
+        fireEvent.click(screen.getByText("Register"));
+        await waitFor(() => {
+            expect(screen.getByText("Passwords do not match!")).toBeInTheDocument();
+        })
+     })
+
+     test("Shows error if registration failed", async() => {
+        axios.post.mockImplementation((url) => {
+            if (url === "http://" + window.location.host + "/register") {
+                return Promise.reject({ status: 500, data: { error: 'User Registration failed' } });
+            } 
+        })
+        
+        axios.get.mockImplementation((url) => {
+            if(url === "http://" + window.location.host + "/user-exist"){
+                return Promise.resolve({ status: 200, data: { exists:false } });
+            }
+        })
+        const {username_input, password_input, repeat_password_input} = setup();
+        fireEvent.input(username_input, {target: {value:'new_username'}});
+        fireEvent.input(password_input, {target: {value:'Hello123'}});
+        fireEvent.input(repeat_password_input, {target: {value:'Hello123'}});
+        fireEvent.click(screen.getByText("Register"));
+        await waitFor(() => {
+            expect(screen.getByText("Registration failed. Please try again.")).toBeInTheDocument();
+        })
+     })
+
+     test("User can register with unique username", async() => {
+        axios.post.mockImplementation((url) => {
+            if (url === "http://" + window.location.host + "/register") {
+                return Promise.resolve({ status: 201, data: { message: 'User registered successfully!' } });
+            } 
+        })
+        axios.get.mockImplementation((url) => {
+            if(url === "http://" + window.location.host + "/user-exist"){
+                return Promise.resolve({ status: 200, data: { exists:false } });
+            }
+        })
+       
+        const {username_input, password_input, repeat_password_input} = setup();
+        fireEvent.input(username_input, {target: {value:'Hello123'}});
+        fireEvent.input(password_input, {target: {value:'Hello123'}});
+        fireEvent.input(repeat_password_input, {target: {value:'Hello123'}});
+        fireEvent.click(screen.getByText("Register"));
+
+        await waitFor(() => {
+            expect(screen.getByText("Registration successful!")).toBeInTheDocument();
+        })
+     })
+
+
 })

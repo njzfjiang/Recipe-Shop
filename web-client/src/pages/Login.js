@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios'
+
 
 function Login() {
     const [login, setLogin] = useState ({
@@ -8,13 +11,41 @@ function Login() {
         password:'',
     });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (login.username !== "" && login.password !== "") {
-            
-        } 
-        }
 
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [canLogin, setCanLogIn] = useState('');
+
+    const navigate = useNavigate()
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        const { username, password } = login; 
+        
+        if( username !== '' && password !== ''){
+            try {
+                const response = await axios.post("http://" + window.location.host + "/login", { username, password });
+      
+                if (response.data.message === 'Login successful!') {
+                  setCanLogIn("Login Successful")
+                  setIsSuccess(true)
+                  setTimeout(() => {
+                    navigate('/');
+                    }, 2000); 
+                }
+              } catch (err) {
+                  console.error('Error during login:', err.response ? err.response.data : err.message);
+                  setCanLogIn("Username or password do not match")
+                  setIsSuccess(false)
+              }
+        } else {
+            setCanLogIn("Please enter username and password.")
+            setIsSuccess(false)
+        }
+        
+      };
+      
     const handleChange = (e) => {
         const { name, value } = e.target;
         setLogin(prev => ({
@@ -46,8 +77,20 @@ function Login() {
                     </div>
                     <p>Not a member? <Link to="/register">Register</Link></p>
                     <button  type="Submit" className="btn btn-outline-success btn-block mb-4">Sign in</button>
-                    
+              
                     </form>
+
+                    {canLogin && (
+                        <div style={{
+                        marginTop: '20px',
+                        padding: '10px',
+                        backgroundColor: isSuccess ? 'green' : 'red',
+                        color: 'white',
+                    }}>
+                      {canLogin}
+                 </div>
+                    )}
+                    
                 </div>
                 <div className="col">
                 
