@@ -22,22 +22,28 @@ function Login() {
         e.preventDefault();
         
         const { username, password } = login; 
+        
+        if( username !== '' && password !== ''){
+            try {
+                const response = await axios.post("http://" + window.location.host + "/login", { username, password });
       
-        try {
-          const response = await axios.post("http://" + window.location.host + "/login", { username, password });
-
-          if (response.data.message === 'Login successful!') {
-            setCanLogIn("Login Successful")
-            setIsSuccess(true)
-            setTimeout(() => {
-              navigate('/');
-              }, 2000); 
-          }
-        } catch (err) {
-            console.error('Error during login:', err.response ? err.response.data : err.message);
-            setCanLogIn("Username or password do not match")
-            setIsSuccess(true)
+                if (response.data.message === 'Login successful!') {
+                  setCanLogIn("Login Successful")
+                  setIsSuccess(true)
+                  setTimeout(() => {
+                    navigate('/');
+                    }, 2000); 
+                }
+              } catch (err) {
+                  console.error('Error during login:', err.response ? err.response.data : err.message);
+                  setCanLogIn("Username or password do not match")
+                  setIsSuccess(false)
+              }
+        } else {
+            setCanLogIn("Please enter username and password.")
+            setIsSuccess(false)
         }
+        
       };
       
     const handleChange = (e) => {

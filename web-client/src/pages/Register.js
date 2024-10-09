@@ -98,10 +98,7 @@ const checkUsernameAvailability = async (username) => {
         } catch (error) {
             console.error("Error checking username availability", error);
         }
-    } else {
-        setIsUsernameTaken(false);
-        setUsernameError("");
-    }
+    } 
 };
     
     return(

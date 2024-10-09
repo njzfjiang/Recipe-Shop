@@ -100,7 +100,7 @@ describe("Register page UI functionality", () => {
 
         axios.post.mockImplementation((url) => {
             if (url === "http://" + window.location.host + "/register") {
-                return Promise.resolve({ status: 409, data: { error: 'Username already taken' } });
+                return Promise.reject({ status: 409, data: { error: 'Username already taken' } });
             } 
         })
         const {username_input, password_input, repeat_password_input} = setup();
@@ -111,6 +111,12 @@ describe("Register page UI functionality", () => {
         await waitFor(() => {
             expect(screen.getByText("Username is already taken")).toBeInTheDocument();
         })
+
+        fireEvent.click(screen.getByText("Register"));
+        await waitFor(() => {
+            expect(screen.getByText("This username is already taken. Please choose another one.")).toBeInTheDocument();
+        })
+
      })
 
      test("Empty fields cannot be submitted", async() => {

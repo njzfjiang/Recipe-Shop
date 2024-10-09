@@ -3,13 +3,16 @@ import React from 'react';
 import { render, screen, cleanup, waitFor, fireEvent } from "@testing-library/react"
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom';
+import axios from 'axios';
 
+jest.mock('axios');
 afterEach(() => {
     jest.resetAllMocks();
     cleanup
 });
 afterAll(() => {
     jest.clearAllMocks();
+    cleanup
 });
 
 const setup = () => {
@@ -65,9 +68,47 @@ describe("Login page UI functionality", () => {
             <Login />
             </BrowserRouter>
         )
-
-
         fireEvent.click(screen.getByText("Register"));
      })
 
+     test("User can login with correct username & password.", async() => {
+        axios.post.mockImplementation((url) => {
+            if (url === "http://" + window.location.host + "/login") {
+                return Promise.resolve({ status: 201, data: { message: 'Login successful!' } });
+            } 
+        })
+        const {password_input, username_input} = setup();
+        fireEvent.input(username_input, {target: {value:'Hello123'}});
+        fireEvent.input(password_input, {target: {value:'Hello123'}});
+        fireEvent.click(screen.getByText("Sign in"));
+
+        await waitFor(() => {
+            expect(screen.getByText("Login Successful")).toBeInTheDocument();
+        })
+     })
+
+     test("User cannot login with incorrect username & password.", async() => {
+        axios.post.mockImplementation((url) => {
+            if (url === "http://" + window.location.host + "/login") {
+                return Promise.reject({ status: 401, data: { message: 'Incorrect password.' } });
+            } 
+        })
+        const {password_input, username_input} = setup();
+        fireEvent.input(username_input, {target: {value:'Hello123'}});
+        fireEvent.input(password_input, {target: {value:'dksjNDLJsl'}});
+        fireEvent.click(screen.getByText("Sign in"));
+
+        await waitFor(() => {
+            expect(screen.getByText("Username or password do not match")).toBeInTheDocument();
+        })
+     })
+
+     test("User cannot login with empty username & password.", async() => {
+        const {password_input, username_input} = setup();
+        fireEvent.click(screen.getByText("Sign in"));
+
+        await waitFor(() => {
+            expect(screen.getByText("Please enter username and password.")).toBeInTheDocument();
+        })
+     })
 })
