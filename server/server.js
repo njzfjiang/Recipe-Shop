@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const PORT = 80;
+const PORT = 80
 require('dotenv').config();
 const MONGO_URI = process.env.REACT_APP_MONGO_URI;
 const apiRouter = require("./routes/api")
@@ -49,7 +49,7 @@ app.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Incorrect password.' });
         }
     } catch (error) {
-        return res.status(500).json("failed "+ error);
+        return res.status(500).json({ error: 'failed ' + error.message });
     }
 });
 
@@ -70,15 +70,25 @@ app.get('/user-exist', async(req,res)=> {
 })
 
 
-
 mongoose.connect(MONGO_URI)
     .then(() => {
-        console.log("connection was established");
-        app.listen(PORT, () => {
-            console.log("Server listening on port: ", PORT);
-        });
+        console.log("MongoDB connection established.");
     })
     .catch((error) => {
-        console.log(error);
-    })
+        console.error("MongoDB connection error:", error);
+    });
+
+    if (require.main === module) {
+       
+        const server = app.listen(PORT, () => {
+            console.log(`Server running on http://localhost:${PORT}`);
+        });
     
+      
+        module.exports = { app, server };
+    } else {
+       
+        console.log('The server is being imported into another module.');
+        module.exports = { app };
+    }
+          
