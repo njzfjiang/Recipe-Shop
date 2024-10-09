@@ -41,4 +41,4 @@ jobs:
       - name: Test Project
         run: |
           npm run test_client
-          REACT_APP_app_id=${{ secrets.APP_ID }} REACT_APP_app_key=${{ secrets.APP_KEY }} npm run test_server
+          REACT_APP_MONGO_URI=${{ secrets.MONGO_URI }} REACT_APP_app_id=${{ secrets.APP_ID }} REACT_APP_app_key=${{ secrets.APP_KEY }} npm run test_server
