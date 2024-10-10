@@ -41,19 +41,19 @@ Since we have a bit of logic in the front end components, we wrote unit tests to
   
   0.2.  Open the Recipe Shop Home page.
 
-  0.3.  Click on the ��Search now�� button.
+  0.3.  Click on the "Search now" button.
   
-  0.4.  Select ��Breakfast�� for the meal type.
+  0.4.  Select "Breakfast" for the meal type.
 
   0.5.  Enter 0 in the left input field for cooking time.
 
   0.6.  Enter 10 in the right input field for cooking time.
 
-  0.7.  Enter ��Eggs�� for the keyword textbox.
+  0.7.  Enter "Eggs" for the keyword textbox.
 
-  0.8.  Click ��Search��
+  0.8.  Click "Search".
 
-  0.9.  A list of recipes related to ��Eggs�� with their respective images show up on the screen, indicating a successful search.
+  0.9.  A list of recipes related to "Eggs" with their respective images show up on the screen, indicating a successful search.
 
 
 
@@ -95,3 +95,5 @@ Since we have a bit of logic in the front end components, we wrote unit tests to
     0.6.  The application redirects the user to the home page, signifying a successful register.
 
 ### Reproducible environments
+The documentation made no reference to other softwares that need to be installed (Docker). The command had “path/to/docker-compose.yml” instead of something like, “ 
+[path/to]/docker-compose.yml” to show that the file structure had to be filled in. The web-app was able to be run. It took around 30 minutes, and it was not too difficult since most errors were easily solved by looking online. Errors include npm run not working (package-lock.json) needed to be deleted and ‘npm run install’ had to be reran. 
