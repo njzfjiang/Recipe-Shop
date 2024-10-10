@@ -1,7 +1,7 @@
 # Sprint 1 Worksheet
 COMP 4350 Group 9
 ### Test Plan
-[link to test plan]([https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/Recipe%20Shop%20Test%20Plan.pdf](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/Recipe%20Shop%20Test%20Plan.pdf))
+[link to test plan](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/Recipe%20Shop%20Test%20Plan.pdf)
 ### Test Coverage Reports
 
 Since we have a bit of logic in the front end components, we wrote unit tests to cover all components in UI and created manual acceptance tests for the 3 features. Since the jest framework cannot test navigation very well we decided to test the navigation(navigate to a different page) after sign in or registeration manually.
@@ -41,19 +41,19 @@ Since we have a bit of logic in the front end components, we wrote unit tests to
   
   0.2.  Open the Recipe Shop Home page.
 
-  0.3.  Click on the ¡°Search now¡± button.
+  0.3.  Click on the ï¿½ï¿½Search nowï¿½ï¿½ button.
   
-  0.4.  Select ¡°Breakfast¡± for the meal type.
+  0.4.  Select ï¿½ï¿½Breakfastï¿½ï¿½ for the meal type.
 
   0.5.  Enter 0 in the left input field for cooking time.
 
   0.6.  Enter 10 in the right input field for cooking time.
 
-  0.7.  Enter ¡°Eggs¡± for the keyword textbox.
+  0.7.  Enter ï¿½ï¿½Eggsï¿½ï¿½ for the keyword textbox.
 
-  0.8.  Click ¡°Search¡±
+  0.8.  Click ï¿½ï¿½Searchï¿½ï¿½
 
-  0.9.  A list of recipes related to ¡°Eggs¡± with their respective images show up on the screen, indicating a successful search.
+  0.9.  A list of recipes related to ï¿½ï¿½Eggsï¿½ï¿½ with their respective images show up on the screen, indicating a successful search.
 
 
 
