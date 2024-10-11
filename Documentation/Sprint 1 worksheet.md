@@ -92,7 +92,7 @@ Since we have a bit of logic in the front end components, we wrote unit tests to
   
     0.5.  Click the Sign in button under the textboxes.
   
-    0.6.  The application redirects the user to the home page, signifying a successful register.
+    0.6.  The application redirects the user to the home page, signifying a successful login.
 
 ### Reproducible environments
 The documentation made no reference to other softwares that need to be installed (Docker). The command had “path/to/docker-compose.yml” instead of something like, “ 
