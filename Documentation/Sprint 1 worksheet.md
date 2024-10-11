@@ -95,11 +95,16 @@ Since we have a bit of logic in the front end components, we wrote unit tests to
     0.6.  The application redirects the user to the home page, signifying a successful login.
 
 ### Reproducible environments
-The documentation made no reference to other softwares that need to be installed (Docker). The command had “path/to/docker-compose.yml” instead of something like, “ 
-[path/to]/docker-compose.yml” to show that the file structure had to be filled in. The web-app was able to be run. It took around 30 minutes, and it was not too difficult since most errors were easily solved by looking online. Errors include npm run not working (package-lock.json) needed to be deleted and ‘npm run install’ had to be reran. \
-The instructions to get the development environment were a bit difficult to find. The unit tests were able to be run. The first time it was ran there were no errors.
-![image](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/Group10-Test1.JPG)
-The second time it was ran, there were errors with the database.
-![image](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/Group10-Test2.JPG)
+The documentation was not very clear, it made no reference to other softwares that need to be installed (like Docker). Some of the commands given would work, others would not (the commands with the planpals-express.tar and planpals-express.tar.zst didn’t work). It also wasn’t clear what code we were supposed to be using. One part said to clone the repo, which gave us one branch of code, but the source code included in their sprint 1 release was different, so we tried to run both. One command had “path/to/docker-compose.yml” instead of something like, “[path/to]/docker-compose.yml” to show that the file structure had to be filled in. The web-app was able to be run. It took around 30 minutes, and it was not too difficult since most errors were easily solved by looking online. Errors include npm run not working (package-lock.json) needed to be deleted and ‘npm run install’ had to be reran.
 
-Running the front-end-web and front-end-android and worked fine, there were no other issues.
+
+The instructions to get the development environment were a bit difficult to find. The unit tests were able to be run. Sometimes it would give no errors when we ran the tests.
+![image](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/Group10-Test1.JPG)
+Other times, there were errors with the database.
+![image](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/Group10-Test2.JPG)
+There were no tests for either front end that we could get running.
+
+
+The planner-service would run, but we couldn’t do anything with it. The documentation just told us to go to localhost:8080 which would just give us a “Cannot GET /” message, we didn’t see any other documentation given in sprint 1 explaining how to interact with it.\ 
+The front-end-web would run, but it would just take us to a login page, and we could not login to it. We couldn’t find how to register, or what username we could use, in the documentation provided.\ 
+There were no issues running the front-end-android.
