@@ -96,4 +96,9 @@ Since we have a bit of logic in the front end components, we wrote unit tests to
 
 ### Reproducible environments
 The documentation made no reference to other softwares that need to be installed (Docker). The command had “path/to/docker-compose.yml” instead of something like, “ 
-[path/to]/docker-compose.yml” to show that the file structure had to be filled in. The web-app was able to be run. It took around 30 minutes, and it was not too difficult since most errors were easily solved by looking online. Errors include npm run not working (package-lock.json) needed to be deleted and ‘npm run install’ had to be reran. 
+[path/to]/docker-compose.yml” to show that the file structure had to be filled in. The web-app was able to be run. It took around 30 minutes, and it was not too difficult since most errors were easily solved by looking online. Errors include npm run not working (package-lock.json) needed to be deleted and ‘npm run install’ had to be reran. \
+There were no instructions for how to run the tests, so it was assumed that running 'npm run test' in the planner-service folder was the intended way. When running the test, all failed tests were caused by 'ERR_SERVER_NOT_RUNNING', even with 'planner-service-mongo-1' and 'planner-service-planner-1' on Docker running.\
+Code ran was 'npm run test' in the 'planner-service' folder.\
+![image](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/Group10-Test.jpg)
+
+Running the front-end-web and front-end-android and worked fine, there were no other issues.
