@@ -1,5 +1,6 @@
 # Recipe-Shop
 COMP 4350-A01 Group 9
+This is the repo for the web version, for the app version, the link can be found [here](https://github.com/njzfjiang/Recipe-Shop-App-Version)
 ### Team Members
 
 | Name | Username in Github  |   email |
