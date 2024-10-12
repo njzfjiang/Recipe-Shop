@@ -107,4 +107,6 @@ There were no tests for either front end that we could get running.
 
 The planner-service would run, but we couldn’t do anything with it. The documentation just told us to go to localhost:8080 which would just give us a “Cannot GET /” message, we didn’t see any other documentation given in sprint 1 explaining how to interact with it.\ 
 The front-end-web would run, but it would just take us to a login page, and we could not login to it. We couldn’t find how to register, or what username we could use, in the documentation provided.\ 
-There were no issues running the front-end-android.
+There were no issues running the front-end-android. 
+
+
