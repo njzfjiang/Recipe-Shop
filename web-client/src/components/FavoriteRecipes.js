@@ -1,5 +1,6 @@
 import React from "react";
 import recipes from '../images/Recipes.jpg';
+import { Link } from "react-router-dom";
 
 function FavoriteRecipes() {
     return (
@@ -8,7 +9,7 @@ function FavoriteRecipes() {
             <div className="card-body">
             <h5 className="card-title">Favourite recipes</h5>
             <p className="card-text">Manage and view your favourite recipes.</p>
-            <button className="btn btn-outline-primary">Manage</button>
+            <Link to="/favorites"><button className="btn btn-outline-primary">Manage</button></Link>
             </div>
         </div>
     )
