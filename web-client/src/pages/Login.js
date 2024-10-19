@@ -28,6 +28,9 @@ function Login() {
                 const response = await axios.post("http://" + window.location.host + "/login", { username, password });
       
                 if (response.data.message === 'Login successful!') {
+                    //add user to local storage
+                    localStorage.setItem("user", login.username)
+                    console.log(localStorage.getItem('user'))
                   setCanLogIn("Login Successful")
                   setIsSuccess(true)
                   setTimeout(() => {

@@ -1,8 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../images/logo-transparent-png.png";
 import { Link } from "react-router-dom";
 
-export default function Navbar() {
+function Navbar() {
+    const currUser = localStorage.getItem("user")
+    const [loggedIn, setLoggedIn] = useState(false)
+    let LoginButton = null;
+    let userMessage = null;
+
+    const handleLogout = (e) =>{
+      e.preventDefault();
+      localStorage.clear();
+      setLoggedIn(false);
+      alert("Logout successful.")
+    }
+
+    useEffect( () => {
+      if(!currUser){
+        setLoggedIn(false);
+      } else if (currUser !== null){
+        setLoggedIn(true);
+      }
+    }, [currUser])
+    
+    if(loggedIn === true)
+    {
+      LoginButton =
+      <button type="button" className="btn btn-light" onClick={handleLogout}>Log out</button>
+
+      userMessage = "Hello, " + currUser;
+    }
+
+
+    if(loggedIn === false)
+    {
+      LoginButton = 
+        <Link to="/login"><button type="button" className="btn btn-light">Sign In</button></Link>
+      
+      userMessage = "Hello, guest";
+    }
+
     return (
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
     <div className="container-fluid">
@@ -19,7 +56,7 @@ export default function Navbar() {
             <Link to="/"><button type="button" className="btn btn-light">Home</button></Link>
           </li>
           <li className="nav-item">
-            <Link to="/login"><button type="button" className="btn btn-light">Sign In</button></Link>
+            {LoginButton}
           </li>
           <li className="nav-item dropdown">
             <button className="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,12 +72,14 @@ export default function Navbar() {
           <li className="nav-item">
             <button className="nav-link disabled" aria-disabled="true">Mobile version</button>
           </li>
-         
         </ul>
-        
+        <span className="navbar-text">
+            {userMessage}
+        </span>
       </div>
     </div>
   </nav>
     )
   }
 
+  export default Navbar;
