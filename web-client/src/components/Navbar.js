@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import logo from "../images/logo-transparent-png.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+    const navigate = useNavigate();
     const currUser = localStorage.getItem("user")
     const [loggedIn, setLoggedIn] = useState(false)
     let LoginButton = null;
@@ -13,6 +15,11 @@ function Navbar() {
       localStorage.clear();
       setLoggedIn(false);
       alert("Logout successful.")
+      setTimeout(() => {
+        //navigate to homepage and refresh
+        navigate('/');
+        navigate(0);
+        }, 2000); 
     }
 
     useEffect( () => {

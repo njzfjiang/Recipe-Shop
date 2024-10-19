@@ -74,6 +74,8 @@ function Recipe () {
                 <div className="row">
                     <div className="col p-3">
                         <Link to="/search"><button className="btn btn-outline-success">Search More recipes</button></Link>
+                        <p></p>
+                        <button className="btn btn-outline-primary">Add to Favorites</button>
                     </div>
                 </div>
             </div> 
