@@ -10,7 +10,7 @@ function FavoriteRecipes() {
     useEffect( () => {
         if(!currUser){
           setLoggedIn(false);
-        } else if (currUser !== null){
+        } else {
           setLoggedIn(true);
         }
       }, [currUser])

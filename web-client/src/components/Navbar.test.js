@@ -4,6 +4,7 @@ import { render, screen, cleanup, fireEvent } from "@testing-library/react"
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom'
 
+window.alert = jest.fn();
 //mock local storage
 const localStorageMock = (function () {
     let store = {};
@@ -35,6 +36,7 @@ const localStorageMock = (function () {
 
 beforeEach(() => {
     window.localStorage.clear();
+    window.alert.mockClear();
 });
 afterEach(cleanup)
 

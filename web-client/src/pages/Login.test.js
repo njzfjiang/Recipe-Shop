@@ -3,6 +3,7 @@ import React from 'react';
 import { render, screen, cleanup, waitFor, fireEvent } from "@testing-library/react"
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom';
+import { act } from '@testing-library/react';
 import axios from 'axios';
 
 jest.mock('axios');
@@ -45,21 +46,28 @@ describe("Login page UI functionality", () => {
 
     test("username input updates properly", async() => {
         const {username_input} = setup();
-        fireEvent.input(username_input, {target: {value:'Hello123'}});
+        act(()=>{
+            fireEvent.input(username_input, {target: {value:'Hello123'}});
+        })
         expect(username_input.value).toBe('Hello123')
     })
 
     test("password input updates properly", async() => {
         const {password_input} = setup();
-        fireEvent.input(password_input, {target: {value:'Hello123'}});
+        act(()=>{
+            fireEvent.input(password_input, {target: {value:'Hello123'}});
+        })
         expect(password_input.value).toBe('Hello123')
     })
 
     test("Sign in can be clicked", async() => {
         const {password_input, username_input} = setup();
-        fireEvent.input(username_input, {target: {value:'Hello123'}});
-        fireEvent.input(password_input, {target: {value:'Hello123'}});
-        fireEvent.click(screen.getByText("Sign in"));
+        act(()=>{
+            fireEvent.input(username_input, {target: {value:'Hello123'}});
+            fireEvent.input(password_input, {target: {value:'Hello123'}});
+            fireEvent.click(screen.getByText("Sign in"));
+        })
+       
      })
 
      test("Register can be clicked", async() => {
@@ -78,10 +86,12 @@ describe("Login page UI functionality", () => {
             } 
         })
         const {password_input, username_input} = setup();
-        fireEvent.input(username_input, {target: {value:'Hello123'}});
-        fireEvent.input(password_input, {target: {value:'Hello123'}});
-        fireEvent.click(screen.getByText("Sign in"));
-
+        act(()=>{
+            fireEvent.input(username_input, {target: {value:'Hello123'}});
+            fireEvent.input(password_input, {target: {value:'Hello123'}});
+            fireEvent.click(screen.getByText("Sign in"));
+        })
+       
         await waitFor(() => {
             expect(screen.getByText("Login Successful")).toBeInTheDocument();
         })
@@ -94,9 +104,13 @@ describe("Login page UI functionality", () => {
             } 
         })
         const {password_input, username_input} = setup();
-        fireEvent.input(username_input, {target: {value:'Hello123'}});
-        fireEvent.input(password_input, {target: {value:'dksjNDLJsl'}});
-        fireEvent.click(screen.getByText("Sign in"));
+       
+        act(()=>{
+            fireEvent.input(username_input, {target: {value:'Hello123'}});
+            fireEvent.input(password_input, {target: {value:'dksjNDLJsl'}});
+            fireEvent.click(screen.getByText("Sign in"));
+        })
+        
 
         await waitFor(() => {
             expect(screen.getByText("Username or password do not match")).toBeInTheDocument();
@@ -105,8 +119,10 @@ describe("Login page UI functionality", () => {
 
      test("User cannot login with empty username & password.", async() => {
         const {password_input, username_input} = setup();
-        fireEvent.click(screen.getByText("Sign in"));
-
+        act(()=>{
+            fireEvent.click(screen.getByText("Sign in"));
+        })
+       
         await waitFor(() => {
             expect(screen.getByText("Please enter username and password.")).toBeInTheDocument();
         })
