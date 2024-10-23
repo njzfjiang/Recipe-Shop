@@ -7,6 +7,22 @@ require('dotenv').config();
 const App_id = process.env.REACT_APP_app_id;
 const App_key = process.env.REACT_APP_app_key;
 const edamam_URL = 'https://api.edamam.com/api/recipes/v2';
+//get mongo URI from .env file
+const MONGO_URI = process.env.REACT_APP_MONGO_URI;
+
+const mongoose = require('mongoose');
+const userModel = require('../models/User')
+
+router.use(express.json())
+
+//connect to mongo db
+mongoose.connect(MONGO_URI)
+    .then(() => {
+        console.log("MongoDB connection established.");
+    })
+    .catch((error) => {
+        console.error("MongoDB connection error:", error);
+    });
 
 //e.g. GET message to 'localhost/api
 router.get("/", (req, res) => {
@@ -66,14 +82,58 @@ router.get("/recipe/:recipeID", (request, response) => {
         })
 });
 
+//get message to /api/login
+router.get('/login', async (req, res) => {
+    try {
+        const input_username = req.query.username;
+        const input_password = req.query.password;
 
-//e.g. POST message to 'localhost/api/register'
-router.post("/register", (req, res) => {
-    //console.log(req.body);
-    //if register successful
-    res.status(200).send("registered");
-    //else
-    res.status(400).send("invalid username/password")
+        const currUser = await userModel.findOne({ username:input_username });
+        if (!currUser) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+        if (currUser.password === input_password) {
+            return res.status(200).json({ message: 'Login successful!' });
+        } else {
+            return res.status(401).json({ error: 'Incorrect password.' });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: 'failed ' + error.message });
+    }
 });
+
+//post message to /api/register
+router.post('/register',  async (req, res) => {
+    try{
+    const { username, password, confirmPassword } = req.body;
+    const currUser = await userModel.findOne({username})
+    if(currUser){
+        return res.status(409).json({ error: 'Username already taken' });
+    }
+    const newUser = await userModel.create({ username, password, confirmPassword } )
+    return res.status(201).json({ message: 'User registered successfully!', user: newUser });
+}
+catch(error){
+    return res.status(500).json({ error: 'User Registration failed', details: error.message });
+    }
+   
+});
+
+//get message to /api/user-exist
+router.get('/user-exist', async(req,res)=> {
+    try {
+        const user = await userModel.findOne({ username : req.query.username });
+    
+        if (user) {
+          res.status(200).json({ exists: true }); 
+        } else {
+          res.status(200).json({ exists: false }); 
+        }
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+})
+
+
 
 module.exports = router;
