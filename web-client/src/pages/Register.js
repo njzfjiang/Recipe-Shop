@@ -29,6 +29,7 @@ function Register() {
     useEffect(()=>{
         if(register.username !== ''){
             checkUsernameAvailability();
+            setMessage('');
         }
     },[register.username])
 
