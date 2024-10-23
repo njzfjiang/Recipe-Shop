@@ -13,7 +13,7 @@ describe('User registration API tests', () => {
 
   afterEach(() => {
     jest.clearAllMocks();  
-    
+    jest.resetAllMocks();
   });
 
   afterAll(async () => {
@@ -29,21 +29,17 @@ describe('User registration API tests', () => {
   console.log("Test suite cleanup complete.");
   });
 
-  test('POST /login - successfully login with valid username and password', async () => {
-    const username = 'existinguser';
-    const password = 'password123';
+  test('GET /api/login - successfully login with valid username and password', async () => {
+    const params = {
+      username: "existinguser",
+      password: "password123",
+    }
   
     User.findOne.mockResolvedValue({
-      username,
-      password,
+      params
     });
   
-    const response = await request(app)
-      .post('/login')
-      .send({
-        username,
-        password,
-      });
+    const response = await request(app).get('/api/login', {params});
   
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe('Login successful!');
@@ -56,7 +52,7 @@ describe('User registration API tests', () => {
     User.findOne.mockResolvedValue(null);
   
     const response = await request(app)
-      .post('/login')
+      .get('/api/login')
       .send({
         username,
         password,
@@ -66,7 +62,7 @@ describe('User registration API tests', () => {
     expect(response.body.error).toBe('User not found.');
   });
   
-  test('POST /login - fail to login due to incorrect password', async () => {
+  test('GET /api/login - fail to login due to incorrect password', async () => {
     const username = 'existinguser';
     const correctPassword = 'password123';
     const wrongPassword = 'wrongpassword';
@@ -77,7 +73,7 @@ describe('User registration API tests', () => {
     });
   
     const response = await request(app)
-      .post('/login')
+      .get('/api/login')
       .send({
         username,
         password: wrongPassword,
@@ -87,14 +83,14 @@ describe('User registration API tests', () => {
     expect(response.body.error).toBe('Incorrect password.');
   });
   
-  test('POST /login - fail to login due to server error', async () => {
+  test('GET /api/login - fail to login due to server error', async () => {
     const username = 'existinguser';
     const password = 'password123';
   
     User.findOne.mockRejectedValue(new Error('Database error'));
   
     const response = await request(app)
-      .post('/login')
+      .get('/api/login')
       .send({
         username,
         password,

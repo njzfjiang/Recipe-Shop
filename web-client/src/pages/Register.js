@@ -1,4 +1,4 @@
-import React,{ useState } from "react";
+import React,{ useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import axios from 'axios'
@@ -11,6 +11,12 @@ function Register() {
         password:'',
         confirmPassword:''
     });
+    const [isUsernameTaken, setIsUsernameTaken] = useState(false);
+    const [usernameError, setUsernameError] = useState("");
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [registrationFlag, setMessage] = useState('');
+    const navigate = useNavigate()
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,88 +24,85 @@ function Register() {
           ...prev,
           [name]: value,
         }));
-
-        if (name === "username") {
-            checkUsernameAvailability(value);
-        }
     };
 
-    const [isUsernameTaken, setIsUsernameTaken] = useState(false);
-    const [usernameError, setUsernameError] = useState("");
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [registrationFlag, setMessage] = useState('');
-
-
-    const navigate = useNavigate()
+    useEffect(()=>{
+        const checkUsernameAvailability = () => {
+            try {
+               axios.get("http://" + window.location.host + "/api/user-exist", 
+                    { params: { username: register.username } })
+                    .then((response)=>{
+                        if (response.data.exists) {
+                            setIsUsernameTaken(true); 
+                            setUsernameError("Username is already taken");
+                        } else {
+                            setIsUsernameTaken(false); 
+                            setUsernameError("");
+                        }})
+                    .catch((error)=> {
+                        console.error("Error in axios request", error);
+                    })
+            } catch (error) {
+                console.error("Error checking username availability", error);
+            }
+        
+        };
+        
+        if(register.username !== ''){
+            checkUsernameAvailability();
+            setMessage('');
+        }
+    },[register.username])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-
+    
         if (register.username && register.password && register.confirmPassword) {
             if (register.password === register.confirmPassword) {
-                const { username, password, confirmPassword } = register;
-
-                console.log("Username:", username);
-                console.log("Password:", password);
-                console.log("Confirm Password:", confirmPassword);
-
+                
                 if (isUsernameTaken) {
+                    //username is taken
                     setMessage('This username is already taken. Please choose another one.');
                     setIsSuccess(false);
                     return; 
-                }
-
-                axios.post("http://" + window.location.host + "/register", {username, password, confirmPassword})
-                .then(result => {console.log(result)
-                    setMessage('Registration successful!');
-                    setIsSuccess(true);
-
-                    setTimeout(() => {
-                    navigate('/login');
-                    }, 2000);
+                } else {
+                    //username is unique, send to server for registeration
+                    const { username, password, confirmPassword } = register;
+                    axios.post("http://" + window.location.host + "/api/register", {username, password, confirmPassword})
+                    .then(result => {console.log(result)
+                        setMessage('Registration successful!');
+                        setIsSuccess(true);
+                        //navigate to homepage
+                        setTimeout(() => {
+                        navigate('/login');
+                        }, 2000);
                     })
-                .catch(err => {console.log(err)
+                    .catch(err => {console.log(err)
                     if (err.response && err.response.data.error === 'Username already taken') {
                         setIsUsernameTaken(true);
                         setUsernameError('This username is already taken.');
+                        //won't happen
                     } else {
                         setMessage('Registration failed. Please try again.');
                         setIsSuccess(false);
-                    }
-            })
-            }    
+                    }})
+                }
 
-            else {
-            
+                
+            } else {
+                //password not matching!!
                 setMessage('Passwords do not match!');
                 setIsSuccess(false);
             }
         
-        }
-        else{
+        } else {
+            //Not all fields filled in.
             setMessage('Please fill in all fields.');
             setIsSuccess(false);;
-            
         }
 }
 
-const checkUsernameAvailability = async (username) => {
-    if (username != null) { 
-        try {
-            const response = await axios.get("http://" + window.location.host + "/user-exist", { username });
-            if (response.data.exists) {
-                setIsUsernameTaken(true); 
-                setUsernameError("Username is already taken");
-            } else {
-                setIsUsernameTaken(false); 
-                setUsernameError("");
-            }
-        } catch (error) {
-            console.error("Error checking username availability", error);
-        }
-    } 
-};
+
     
     return(
         <>

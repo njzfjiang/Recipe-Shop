@@ -38,14 +38,5 @@ describe("API route tests", () =>{
         expect(res.statusCode).toBe(404);
     });
 
-
-
-    test("Register API path: localhost/api/register", async () =>{
-        const res = await request(app).post("/api/register");
-        expect(res.statusCode).toBe(200);
-        expect(res.text).toEqual("registered");
-    });
-
-
 });
 

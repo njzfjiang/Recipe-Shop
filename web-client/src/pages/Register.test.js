@@ -76,7 +76,7 @@ describe("Register page UI functionality", () => {
 
      test("Register can be clicked", async() => {
         axios.post.mockImplementation((url) => {
-            if (url === "http://" + window.location.host + "/register") {
+            if (url === "http://" + window.location.host + "/api/register") {
                 return Promise.resolve({ status: 201, data: { message: 'User registered successfully!' } });
             } 
         })
@@ -92,16 +92,16 @@ describe("Register page UI functionality", () => {
      })
 
      test("Repeated username cannot be registered", async() => {
-        axios.get.mockImplementation((url) => {
-            if(url === "http://" + window.location.host + "/user-exist"){
-                return Promise.resolve({ status: 200, data: { exists:true } });
-            }
-        })
-
         axios.post.mockImplementation((url) => {
-            if (url === "http://" + window.location.host + "/register") {
+            if (url === "http://" + window.location.host + "/api/register") {
                 return Promise.reject({ status: 409, data: { error: 'Username already taken' } });
             } 
+        })
+
+        axios.get.mockImplementation((url) => {
+            if(url === "http://" + window.location.host + "/api/user-exist"){
+                return Promise.resolve({ status: 200, data: { exists:true } });
+            }
         })
         const {username_input, password_input, repeat_password_input} = setup();
         fireEvent.input(username_input, {target: {value:'Hello123'}});
@@ -141,13 +141,13 @@ describe("Register page UI functionality", () => {
 
      test("Shows error if registration failed", async() => {
         axios.post.mockImplementation((url) => {
-            if (url === "http://" + window.location.host + "/register") {
+            if (url === "http://" + window.location.host + "/api/register") {
                 return Promise.reject({ status: 500, data: { error: 'User Registration failed' } });
             } 
         })
         
         axios.get.mockImplementation((url) => {
-            if(url === "http://" + window.location.host + "/user-exist"){
+            if(url === "http://" + window.location.host + "/api/user-exist"){
                 return Promise.resolve({ status: 200, data: { exists:false } });
             }
         })
@@ -163,12 +163,12 @@ describe("Register page UI functionality", () => {
 
      test("User can register with unique username", async() => {
         axios.post.mockImplementation((url) => {
-            if (url === "http://" + window.location.host + "/register") {
+            if (url === "http://" + window.location.host + "/api/register") {
                 return Promise.resolve({ status: 201, data: { message: 'User registered successfully!' } });
             } 
         })
         axios.get.mockImplementation((url) => {
-            if(url === "http://" + window.location.host + "/user-exist"){
+            if(url === "http://" + window.location.host + "/api/user-exist"){
                 return Promise.resolve({ status: 200, data: { exists:false } });
             }
         })

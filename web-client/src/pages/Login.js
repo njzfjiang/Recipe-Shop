@@ -21,16 +21,18 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        const { username, password } = login; 
+        const params = {
+            username:login.username,
+            password:login.password,
+        }
         
-        if( username !== '' && password !== ''){
+        if( login.username !== '' && login.password !== ''){
             try {
-                const response = await axios.post("http://" + window.location.host + "/login", { username, password });
+                const response = await axios.get("http://" + window.location.host + "/api/login", { params });
       
                 if (response.data.message === 'Login successful!') {
                     //add user to local storage
                     localStorage.setItem("user", login.username)
-                    console.log(localStorage.getItem('user'))
                   setCanLogIn("Login Successful")
                   setIsSuccess(true)
                   setTimeout(() => {

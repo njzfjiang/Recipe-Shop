@@ -80,8 +80,8 @@ describe("Login page UI functionality", () => {
      })
 
      test("User can login with correct username & password.", async() => {
-        axios.post.mockImplementation((url) => {
-            if (url === "http://" + window.location.host + "/login") {
+        axios.get.mockImplementation((url) => {
+            if (url === "http://" + window.location.host + "/api/login") {
                 return Promise.resolve({ status: 201, data: { message: 'Login successful!' } });
             } 
         })
@@ -99,7 +99,7 @@ describe("Login page UI functionality", () => {
 
      test("User cannot login with incorrect username & password.", async() => {
         axios.post.mockImplementation((url) => {
-            if (url === "http://" + window.location.host + "/login") {
+            if (url === "http://" + window.location.host + "/api/login") {
                 return Promise.reject({ status: 401, data: { message: 'Incorrect password.' } });
             } 
         })

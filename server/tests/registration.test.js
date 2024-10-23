@@ -14,11 +14,9 @@ describe('User registration API tests', () => {
 
   afterEach(() => {
     jest.clearAllMocks();  
-    
   });
 
   afterAll(async () => {
-    
   if (server) {
     await new Promise((resolve) => {
       server.close(resolve); 
@@ -42,7 +40,7 @@ describe('User registration API tests', () => {
     });  
 
     const response = await request(app)
-      .post('/register')
+      .post('/api/register')
       .send({
         username,
         password,
@@ -57,7 +55,7 @@ describe('User registration API tests', () => {
   });
 
 
-  test('POST /register - fail to register a new user because the username is already taken', async () => {
+  test('POST /api/register - fail to register a new user because the username is already taken', async () => {
     const username = 'existinguser';
     const password = 'password123';
 
@@ -67,7 +65,7 @@ describe('User registration API tests', () => {
     });
 
     const response = await request(app)
-      .post('/register')
+      .post('/api/register')
       .send({
         username,
         password,
@@ -79,14 +77,14 @@ describe('User registration API tests', () => {
   });
 
 
-  test('POST /register - fail to register a new user due to server error', async () => {
+  test('POST /api/register - fail to register a new user due to server error', async () => {
     const username = 'newuser';
     const password = 'password123';
 
     User.findOne.mockRejectedValue(new Error('Database error'));
 
     const response = await request(app)
-      .post('/register')
+      .post('/api/register')
       .send({
         username,
         password,

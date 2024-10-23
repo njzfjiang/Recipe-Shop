@@ -11,7 +11,7 @@ Check if an username exists in the database. The result is true if the username 
 
 **End point** 
 
-`GET /user-exist`
+`GET /api/user-exist`
 
 **Parameters**
 * `username` : The username to check
@@ -31,7 +31,7 @@ Create new user object. The result is a successful message and the user object i
 
 **End point** 
 
-`POST /register`
+`POST /api/register`
 
 **Parameters**
 * `username` : The username of the user (unique)
@@ -56,7 +56,7 @@ Get a user based on username and password. The result is a successful message an
 
 **End point** 
 
-`POST /login`
+`GET /api/login`
 
 **Parameters**
 * `username` : The username of the user (unique)
