@@ -4,6 +4,12 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
 function Recipe () {
+    //check if user is logged in...
+    let button = null;
+    const currUser = localStorage.getItem("user");
+    const [loggedIn, setLoggedIn] = useState(false);
+    
+    //variables for rendering dynamic contents
     let content = null;
     const { id } = useParams();
     const url = "http://" + window.location.host + "/api/recipe/"+ id;
@@ -12,7 +18,45 @@ function Recipe () {
         data:null,
         error:false,
     });
+    
+    //for favorites button
+    const [isFavorite, setIsFavorite] = useState(false);
+    const favorite_url = "http://" + window.location.host + "/api/favorites/"+ id;
+    const isFavorite_url = "http://" + window.location.host + "/api/is-favorite/"+ id;
 
+    const handleAdd =(e)=>{
+        e.preventDefault();
+        axios.post(favorite_url, {username: currUser})
+            .then( res => {
+                if(res.status === 201){
+                    alert("Recipe Successfully added.");
+                }
+            })
+            .catch((error)=>{
+                alert("Recipe already saved.")
+                console.error("Error while adding to favorites", error)
+            })
+    }
+
+    useEffect( () => {
+        if(!currUser){
+          setLoggedIn(false);
+        } else {
+          setLoggedIn(true);
+          axios.get()
+        }
+      }, [currUser])
+    
+    //show the add to favorites button if logged in
+    if(loggedIn){
+        button = <button className="btn btn-outline-primary" onClick={handleAdd}>Add to Favorites</button>
+    }
+    //don't show it if not logged in
+    if(!loggedIn){
+        button = null;
+    }
+
+    
     
     useEffect (() => {
         setRecipeData({
@@ -75,7 +119,7 @@ function Recipe () {
                     <div className="col p-3">
                         <Link to="/search"><button className="btn btn-outline-success">Search More recipes</button></Link>
                         <p></p>
-                        <button className="btn btn-outline-primary">Add to Favorites</button>
+                        {button}
                     </div>
                 </div>
             </div> 

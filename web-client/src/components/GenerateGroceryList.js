@@ -16,7 +16,8 @@ function GenerateGroceryList() {
       }, [currUser])
     
     if(loggedIn){
-        button = <Link to="/favorites"><button className="btn btn-outline-primary">Select Recipes from favorites</button></Link>
+        let link = "/favorites/"+ currUser;
+        button = <Link to={link}><button className="btn btn-outline-primary">Select Recipes from favorites</button></Link>
     }
     
     if(!loggedIn){

@@ -12,6 +12,7 @@ const MONGO_URI = process.env.REACT_APP_MONGO_URI;
 
 const mongoose = require('mongoose');
 const userModel = require('../models/User')
+const recipeModel = require('../models/FavoriteRecipe')
 
 router.use(express.json())
 
@@ -134,6 +135,53 @@ router.get('/user-exist', async(req,res)=> {
       }
 })
 
+//POST request to /api/favorites/:recipeID
+router.post('/favorites/:recipeID', async(req, res)=>{
+    let current_recipeID = req.params.recipeID;
+    let current_username = req.body.username;
+
+    try {
+        const find_recipe = await recipeModel.findOne({ username: current_username, recipeID: current_recipeID });
+        if(find_recipe){
+            return res.status(409).json({ error: "Recipe already saved." });
+        } else {
+            const new_recipe = await recipeModel.create({ username: current_username, recipeID: current_recipeID });
+            return res.status(201).json({ message: 'Recipe stored successfully!', recipe:new_recipe });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+})
+
+router.get('/is-favorite/:recipeID', async(req, res)=>{
+    let current_recipeID = req.params.recipeID;
+    let current_username = req.body.username;
+    try {
+        const find_recipe = await recipeModel.findOne({ username: current_username, recipeID: current_recipeID });
+        if(find_recipe){
+            return res.status(200).json({ saved:true });
+        } else {
+            return res.status(200).json({ saved:false });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+})
+
+router.get('/all-favorites/:username', async(req, res)=>{
+    let current_user = req.params.username;
+
+    try{
+        const findRecipes = await recipeModel.find({ username:current_user });
+        if(findRecipes){
+            return res.status(200).json({recipes: findRecipes});
+        } else {
+            return res.status(404).json({error: "No favorite Recipes found."})
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+})
 
 
 module.exports = router;
