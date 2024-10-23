@@ -27,6 +27,27 @@ function Register() {
     };
 
     useEffect(()=>{
+        const checkUsernameAvailability = () => {
+            try {
+               axios.get("http://" + window.location.host + "/api/user-exist", 
+                    { params: { username: register.username } })
+                    .then((response)=>{
+                        if (response.data.exists) {
+                            setIsUsernameTaken(true); 
+                            setUsernameError("Username is already taken");
+                        } else {
+                            setIsUsernameTaken(false); 
+                            setUsernameError("");
+                        }})
+                    .catch((error)=> {
+                        console.error("Error in axios request", error);
+                    })
+            } catch (error) {
+                console.error("Error checking username availability", error);
+            }
+        
+        };
+        
         if(register.username !== ''){
             checkUsernameAvailability();
             setMessage('');
@@ -39,12 +60,6 @@ function Register() {
         if (register.username && register.password && register.confirmPassword) {
             if (register.password === register.confirmPassword) {
                 
-                //check if username is taken
-                if(register.username !== ''){
-                    checkUsernameAvailability();
-                }
-                
-
                 if (isUsernameTaken) {
                     //username is taken
                     setMessage('This username is already taken. Please choose another one.');
@@ -87,26 +102,7 @@ function Register() {
         }
 }
 
-const checkUsernameAvailability = () => {
-        try {
-           axios.get("http://" + window.location.host + "/api/user-exist", 
-                { params: { username: register.username } })
-                .then((response)=>{
-                    if (response.data.exists) {
-                        setIsUsernameTaken(true); 
-                        setUsernameError("Username is already taken");
-                    } else {
-                        setIsUsernameTaken(false); 
-                        setUsernameError("");
-                    }})
-                .catch((error)=> {
-                    console.error("Error in axios request", error);
-                })
-        } catch (error) {
-            console.error("Error checking username availability", error);
-        }
-    
-};
+
     
     return(
         <>
