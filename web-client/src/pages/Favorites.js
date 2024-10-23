@@ -6,7 +6,7 @@ import axios from "axios";
 function Favorites () {
     //check if user is logged in
     let search_form = null;
-    const { user } = useParams();
+    const { username } = useParams();
     const currUser = localStorage.getItem("user");
     const [loggedIn, setLoggedIn] = useState(false);
     
@@ -38,12 +38,12 @@ function Favorites () {
           setLoggedIn(false);
         } else {
           setLoggedIn(true);
-          axios.get()
+          //axios.get()
         }
       }, [currUser])
     
       //if logged in with CORRECT ACCOUNT, render the search form
-    if(loggedIn && currUser === user ){
+    if(loggedIn && currUser === username ){
         search_form = 
         <form onSubmit={handleSubmit}>
         <div className="input-group mb-3 p-3">
@@ -53,7 +53,7 @@ function Favorites () {
         </div>
         </form>
         content = <></>
-    } else if(loggedIn && currUser !== user){
+    } else if(loggedIn && currUser !== username){
         search_form = null;
         content = <p className="text-center p-3">Please Sign in to view favorites.</p>
     }

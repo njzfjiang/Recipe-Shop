@@ -21,20 +21,46 @@ function Recipe () {
     
     //for favorites button
     const [isFavorite, setIsFavorite] = useState(false);
-    const favorite_url = "http://" + window.location.host + "/api/favorites/"+ id;
-    const isFavorite_url = "http://" + window.location.host + "/api/is-favorite/"+ id;
+    const params = new URLSearchParams({ username: currUser}).toString();
+    const favorite_url = "http://" + window.location.host + "/api/favorites/"+ id +"?"+ params;
+    const isFavorite_url = "http://" + window.location.host + "/api/is-favorite/"+ id +"?"+ params;
+    
+    
+   
 
     const handleAdd =(e)=>{
         e.preventDefault();
-        axios.post(favorite_url, {username: currUser})
+        axios.post(favorite_url)
             .then( res => {
                 if(res.status === 201){
+                    setIsFavorite(true)
                     alert("Recipe Successfully added.");
                 }
             })
             .catch((error)=>{
-                alert("Recipe already saved.")
-                console.error("Error while adding to favorites", error)
+                if(error.status === 409){
+                    setIsFavorite(true)
+                    alert("Recipe already saved.");
+                }
+                else{
+                    alert("An error occured, please try again later.")
+                }
+                console.error("Error while adding to favorites", error); 
+            })
+    }
+
+    const handleDelete =(e)=>{
+        e.preventDefault();
+        axios.delete(favorite_url)
+            .then(res => {
+                if(res.status === 204){
+                    setIsFavorite(false)
+                    alert("Recipe deleted from favorites.")
+                }
+            })
+            .catch((error)=>{
+                alert("An error occured, please try again later.")
+                console.error("Error while deleting from favorites", error)
             })
     }
 
@@ -43,21 +69,35 @@ function Recipe () {
           setLoggedIn(false);
         } else {
           setLoggedIn(true);
-          axios.get()
+          //get if this recipe has been saved in favorites.
+            axios.get(isFavorite_url)
+            .then(res => {
+                if(res.status === 200 || res.status === 304){
+                    console.log(res.data.saved)
+                    setIsFavorite(res.data.saved)
+                }
+            })
+            .catch(error => {
+                console.error("Error when getting favorites", error)
+           })
         }
       }, [currUser])
     
+
     //show the add to favorites button if logged in
     if(loggedIn){
-        button = <button className="btn btn-outline-primary" onClick={handleAdd}>Add to Favorites</button>
+        button = <>
+        {isFavorite ? 
+            <button className="btn btn-outline-danger" onClick={handleDelete}>Remove from Favorites</button>:
+            <button className="btn btn-outline-primary" onClick={handleAdd}>Add to Favorites</button> 
+             }
+        </>
     }
     //don't show it if not logged in
     if(!loggedIn){
         button = null;
     }
 
-    
-    
     useEffect (() => {
         setRecipeData({
             loading: true,
@@ -73,14 +113,13 @@ function Recipe () {
                     error:false,})
                 
             })
-            .catch((error) => {
-            //console.log(error);
+            .catch((e) => {
+            //
             setRecipeData({
                 loading:false,
                 data: null,
                 error:true,})
             })
-            
     },[url])
 
     if(recipeData.error){
@@ -120,7 +159,7 @@ function Recipe () {
                         <Link to="/search"><button className="btn btn-outline-success">Search More recipes</button></Link>
                         <p></p>
                         {button}
-                    </div>
+                        </div>
                 </div>
             </div> 
      }
