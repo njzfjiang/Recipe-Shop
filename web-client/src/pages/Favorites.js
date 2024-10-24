@@ -11,13 +11,11 @@ function Favorites () {
     const { username } = useParams();
     const currUser = localStorage.getItem("user");
     const [loggedIn, setLoggedIn] = useState(false);
-    
+    const [filterRecipes, setFilterRecipes] = useState([]);
     
     //search data
     let content= null;
-    const [searchData, setSearchData] = useState({
-        keyword:''
-    });
+    const [searchData, setSearchData] = useState('');
 
     const [recipeData, setRecipeData] = useState({
         loading:false,
@@ -28,17 +26,21 @@ function Favorites () {
 
     
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setSearchData(prevState => ({
-          ...prevState,
-          [name]: value,
-        }));
+        const searchItem = e.target.value;
+        setSearchData(searchItem);
+
+        //if ther is data, do the filtering.
+        if(recipeData.data !== null){
+            const filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchItem.toLowerCase()));
+            setFilterRecipes(filteredRecipes);
+        }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(searchData.keyword !== ''){
-            
+        if(searchData !== '' && recipeData.data !== null){
+            const filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchData.toLowerCase()));
+            setFilterRecipes(filteredRecipes);
         } else {
             alert("Please add a keyword to search.");
         }
@@ -87,6 +89,7 @@ function Favorites () {
                       error:false,
                       default:false
                   })
+                  setFilterRecipes(res.data.recipes);
                 })
                 .catch((error) => {
                   console.error("Error when getting favorite list.", error);
@@ -119,7 +122,7 @@ function Favorites () {
         <form onSubmit={handleSubmit}>
         <div className="input-group mb-3 p-3">
         <input data-testid="search_bar" type="text" className="form-control" placeholder="Search in my favorites" aria-label="favorites keyword" aria-describedby="button-addon2"
-        name="keyword" value={searchData.keyword} onChange={handleChange} />
+        name="keyword" value={searchData} onChange={handleChange} />
         <button className="btn btn-outline-success" type="submit" id="favorites keyword">Search</button>
         </div>
         </form>
@@ -147,7 +150,7 @@ function Favorites () {
     }
 
     if(recipeData.data){
-        const favoriteList = recipeData.data.recipes.map((item) => 
+        const favoriteList = filterRecipes.map((item) => 
         <div key={item._id}><FavoriteListItem recipeID={item.recipeID} title={item.title}/></div> )
        
         content= <div>
@@ -158,7 +161,9 @@ function Favorites () {
                         <button className="btn btn-outline-success" >Manage</button>
                         </div>
                     </div>
-                    {favoriteList}
+                    {filterRecipes.length === 0 ?
+                    <p className="text-center p-3">No recipes Found!</p>:
+                    favoriteList}
                 
                     <div className="modal fade" id="danger-alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div className="modal-dialog">
