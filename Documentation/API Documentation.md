@@ -6,6 +6,8 @@ Recipe Shop API is an API which allows users to retrieve recipes from online (co
 
 The API also allows the application to retrieve user data and information from MongoDB database. User objects can be created and retrieved based on username and password.
 
+## Section 1: End points for User Account Management
+
 ## Get username availability
 Check if an username exists in the database. The result is true if the username exists in the database and false if it does not exist. 
 
@@ -79,6 +81,142 @@ Get a user based on username and password. The result is a successful message an
 	"error":  "User not found."
 }
 ```
+
+## Section 2: End points for Recipe Management
+## Create new favorite recipe object
+Create a new favorite recipe in the database. First check if an favorite recipe exists in the database for the given user. If it exists, return an error. If it does not exist, create a new favorite recipe in the database. The result is a message and the recipe object if the recipe is stored.
+
+**End point** 
+
+`POST /api/favorites/{recipeID}`
+
+**Parameters**
+* `username` : The username of the user who saved the recipe
+	* required
+  * Example value: "Admin"
+* `recipeID` : specific recipeID assigned by Edamam API
+	* required
+* `title` : label of the recipe
+	* required
+
+
+**Response Example**
+```json
+{
+	"message": "Recipe stored successfully!"
+	"recipe": "recipeObj"
+}
+```
+**Error Example**
+```json
+{
+	"error": "Recipe already saved."
+}
+```
+
+## Delete a favorite recipe object
+Delete a new favorite recipe in the database. First check if an favorite recipe exists in the database for the given user. If it exists, delete the recipe. If it does not exist, return an error. The result is a message or error indicating if the recipe has been deleted or not.
+
+**End point** 
+
+`DELETE /api/favorites/{recipeID}`
+
+**Parameters**
+* `username` : The username of the user who saved the recipe
+	* required
+  * Example value: "Admin"
+* `recipeID` : specific recipeID assigned by Edamam API
+	* required
+
+
+**Response Example**
+```json
+{
+	"message": "Recipe deleted from favorites."
+	"recipeID": "12345678"
+}
+```
+**Error Example**
+```json
+{
+	"error": "No matching recipe found in favorites."
+}
+```
+
+## Check if a favorite recipe exists
+Check if an favorite recipe exists in the database for a given user. Returns true if it exists, returns false if it does not exist.
+
+**End point** 
+
+`GET /api/is-favorite/{recipeID}`
+
+**Parameters**
+* `username` : The username of the user who saved the recipe
+	* required
+  * Example value: "Admin"
+* `recipeID` : specific recipeID assigned by Edamam API
+	* required
+
+
+**Response Example**
+```json
+{
+	"saved": true
+}
+```
+
+## Get all favorite recipes of a given user
+Get all favorite recipes in the database for a given user. The result is a list of favorite recipe objects, each containing an recipeID, username of the user and title of the recipe. 
+
+**End point** 
+
+`GET /api/all-favorites/{username}`
+
+**Parameters**
+* `username` : The username of the user who saved the recipe
+	* required
+  * Example value: "Admin"
+
+
+
+**Response Example**
+```json
+[{
+	"recipeID": "1234567"
+	"username": "john123"
+	"title": "tomato soup"
+},
+{
+	"recipeID": "2398502"
+	"username": "john123"
+	"title": "pink milk tea"
+},
+]
+```
+
+
+## Delete all favorite recipes of a given user
+Find and delete all favorite recipes in the database for a given user, returns error if no favorite recipes are found for this user.
+
+**End point** 
+
+`DELETE /api/all-favorites/{username}`
+
+**Parameters**
+* `username` : The username of the user who saved the recipe
+	* required
+  * Example value: "Admin"
+
+
+
+**Response Example**
+```json
+{
+	"message": "deleted all recipes from favorites"
+}
+```
+
+## Recipe Management End points linked to Edamam API
 
 ## Get a specific recipe
 
