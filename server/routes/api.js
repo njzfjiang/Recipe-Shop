@@ -139,14 +139,15 @@ router.get('/user-exist', async(req,res)=> {
 router.post('/favorites/:recipeID', async(req, res)=>{
     let current_recipeID = req.params.recipeID;
     let current_username = req.query.username;
+    let current_title = req.query.title;
     
     try {
         const find_recipe = await recipeModel.findOne({ username: current_username, recipeID: current_recipeID });
         if(find_recipe){
             return res.status(409).json({ error: "Recipe already saved." });
         } else {
-            const new_recipe = await recipeModel.create({ username: current_username, recipeID: current_recipeID });
-            console.log(new_recipe)
+            const new_recipe = await recipeModel.create({ username: current_username, recipeID: current_recipeID, title:current_title });
+            //console.log(new_recipe)
             return res.status(201).json({ message: 'Recipe stored successfully!', recipe:new_recipe });
         }
     } catch (error) {
@@ -178,7 +179,12 @@ router.get('/all-favorites/:username', async(req, res)=>{
     try{
         const findRecipes = await recipeModel.find({ username:current_user });
         if(findRecipes){
-            return res.status(200).json({recipes: findRecipes});
+            //console.log(findRecipes)
+            if(findRecipes.length){
+                return res.status(200).json({recipes: findRecipes});
+            } else {
+                return res.status(404).json({error: "No favorite Recipes found."})
+            }
         } else {
             return res.status(404).json({error: "No favorite Recipes found."})
         }
@@ -194,11 +200,28 @@ router.delete('/favorites/:recipeID', async(req, res)=>{
     
     try{
         const findRecipes = await recipeModel.findOneAndDelete({ username: current_user, recipeID: current_recipeID });
-        console.log("recipe deleted" + findRecipes);
+        //console.log("recipe deleted" + findRecipes);
         if(findRecipes){
             return res.status(204).json({message: "Recipe deleted from favorites.", recipeID: current_recipeID});
         } else {
             return res.status(404).json({error: "No matching recipe found in favorites."})
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+})
+
+router.delete("/all-favorites/:username", async(req, res)=> {
+    let current_user = req.params.username;
+
+    try{
+        const findRecipes = await recipeModel.deleteMany({ username:current_user });
+        if(findRecipes){
+            //console.log(findRecipes)
+            return res.status(200).json({message: "deleted all recipes from favorites"});
+           
+        } else {
+            return res.status(404).json({error: "No favorite Recipes found."})
         }
     } catch (error) {
         return res.status(500).json({ error: error.message });

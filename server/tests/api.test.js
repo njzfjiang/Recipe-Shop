@@ -97,7 +97,7 @@ describe("API route tests", () =>{
 
     test("GET /api/all-favorites/ - returns 200 when got recipes", async() =>{
         const username = "hehe"
-        mockingoose(favoriteRecipe).toReturn({username:"hehe", recipeID:"12345"}, 'find');
+        mockingoose(favoriteRecipe).toReturn([{username:"hehe", recipeID:"12345"}], 'find');
         const res = await request(app).get("/api/all-favorites/"+username);
         expect(res.statusCode).toBe(200);
     })
@@ -105,6 +105,13 @@ describe("API route tests", () =>{
     test("GET /api/all-favorites/ - returns 404 when did not get the recipe", async() =>{
         const username = "hehe"
         mockingoose(favoriteRecipe).toReturn(null, 'find');
+        const res = await request(app).get("/api/all-favorites/"+username);
+        expect(res.statusCode).toBe(404);
+    })
+
+    test("GET /api/all-favorites/ - returns 404 when did not get the recipe", async() =>{
+        const username = "hehe"
+        mockingoose(favoriteRecipe).toReturn([], 'find');
         const res = await request(app).get("/api/all-favorites/"+username);
         expect(res.statusCode).toBe(404);
     })
@@ -160,6 +167,28 @@ describe("API route tests", () =>{
         const username = "hehe"
         mockingoose(User).toReturn(new Error("my error"), 'findOne');
         const res = await request(app).get("/api/user-exist?username="+username);
+        expect(res.statusCode).toBe(500);
+    })
+
+    test("DELETE /api/all-favorites/ - returns 200 when got recipes", async() =>{
+        const username = "hehe"
+        mockingoose(favoriteRecipe).toReturn([{username:"hehe", recipeID:"12345"}], 'deleteMany');
+        const res = await request(app).delete("/api/all-favorites/"+username);
+        expect(res.statusCode).toBe(200);
+    })
+
+
+    test("DELETE /api/all-favorites/ - returns 404 when no recipes found", async() =>{
+        const username = "hehe"
+        mockingoose(favoriteRecipe).toReturn(null, 'deleteMany');
+        const res = await request(app).delete("/api/all-favorites/"+username);
+        expect(res.statusCode).toBe(404);
+    })
+
+    test("DELETE /api/all-favorites/ - returns 500 when error occured", async() =>{
+        const username = "hehe"
+        mockingoose(favoriteRecipe).toReturn(new Error("my error"), 'deleteMany');
+        const res = await request(app).delete("/api/all-favorites/"+username);
         expect(res.statusCode).toBe(500);
     })
 

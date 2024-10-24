@@ -20,17 +20,18 @@ function Recipe () {
     });
     
     //for favorites button
+    let recipeTitle = "";
     const [isFavorite, setIsFavorite] = useState(false);
-    const params = new URLSearchParams({ username: currUser}).toString();
+    let params = new URLSearchParams({ username: currUser, title: recipeTitle }).toString();
     const favorite_url = "http://" + window.location.host + "/api/favorites/"+ id +"?"+ params;
     const isFavorite_url = "http://" + window.location.host + "/api/is-favorite/"+ id +"?"+ params;
     
-    
-   
-
     const handleAdd =(e)=>{
         e.preventDefault();
-        axios.post(favorite_url)
+        params = new URLSearchParams({ username: currUser, title: recipeTitle }).toString();
+        const url_with_title = "http://" + window.location.host + "/api/favorites/"+ id +"?"+ params;
+
+        axios.post(url_with_title)
             .then( res => {
                 if(res.status === 201){
                     setIsFavorite(true)
@@ -73,7 +74,6 @@ function Recipe () {
             axios.get(isFavorite_url)
             .then(res => {
                 if(res.status === 200 || res.status === 304){
-                    console.log(res.data.saved)
                     setIsFavorite(res.data.saved)
                 }
             })
@@ -88,9 +88,11 @@ function Recipe () {
     if(loggedIn){
         button = <>
         {isFavorite ? 
-            <button className="btn btn-outline-danger" onClick={handleDelete}>Remove from Favorites</button>:
-            <button className="btn btn-outline-primary" onClick={handleAdd}>Add to Favorites</button> 
+            <button data-testid="remove_favorite" className="btn btn-outline-danger" onClick={handleDelete}>Remove from Favorites</button>:
+            <button data-testid="add_favorite" className="btn btn-outline-primary" onClick={handleAdd}>Add to Favorites</button> 
              }
+        <p></p>
+        <Link to={`/favorites/${currUser}`}><button data-testid="search_more" className="btn btn-outline-primary">View Favorites</button></Link>
         </>
     }
     //don't show it if not logged in
@@ -111,9 +113,8 @@ function Recipe () {
                     loading:false,
                     data: response.data,
                     error:false,})
-                
             })
-            .catch((e) => {
+            .catch((error) => {
             //
             setRecipeData({
                 loading:false,
@@ -132,6 +133,9 @@ function Recipe () {
 
     //render content if there is data.
     if(recipeData.data){
+        //get title from data.
+        recipeTitle = recipeData.data.recipe.label;
+
         let ingredientList = 
         recipeData.data.recipe.ingredientLines.map((ingredient,i) =>
             <div key={i} className="mb-3">{ingredient}</div>
