@@ -114,7 +114,7 @@ function Favorites () {
             }
            
           }
-      }, [currUser])
+      }, [currUser, username])
     
       //if logged in with CORRECT ACCOUNT, render the search form
     if(loggedIn && currUser === username ){

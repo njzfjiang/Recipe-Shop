@@ -24,7 +24,7 @@ function Recipe () {
     const [isFavorite, setIsFavorite] = useState(false);
     let params = new URLSearchParams({ username: currUser, title: recipeTitle }).toString();
     const favorite_url = "http://" + window.location.host + "/api/favorites/"+ id +"?"+ params;
-    const isFavorite_url = "http://" + window.location.host + "/api/is-favorite/"+ id +"?"+ params;
+    
     
     const handleAdd =(e)=>{
         e.preventDefault();
@@ -70,6 +70,9 @@ function Recipe () {
           setLoggedIn(false);
         } else {
           setLoggedIn(true);
+        
+          let params = new URLSearchParams({ username: currUser }).toString();
+          const isFavorite_url = `http://${window.location.host}/api/is-favorite/${id}?${params}`;
           //get if this recipe has been saved in favorites.
             axios.get(isFavorite_url)
             .then(res => {
@@ -81,7 +84,7 @@ function Recipe () {
                 console.error("Error when getting favorites", error)
            })
         }
-      }, [currUser])
+      }, [currUser, id])
     
 
     //show the add to favorites button if logged in
