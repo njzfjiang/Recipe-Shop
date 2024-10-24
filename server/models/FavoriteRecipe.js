@@ -11,6 +11,10 @@ const favoriteRecipeSchema = new Schema({
     recipeID: {
         type:String,
         required: true,
+    },
+    title: {
+        type:String,
+        required: true,
     }
 })
 

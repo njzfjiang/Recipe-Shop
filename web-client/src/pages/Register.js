@@ -46,8 +46,8 @@ function Register() {
                 console.error("Error checking username availability", error);
             }
         
-        };
-        
+         };
+         
         if(register.username !== ''){
             checkUsernameAvailability();
             setMessage('');

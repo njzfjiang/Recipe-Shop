@@ -4,6 +4,12 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
 function Recipe () {
+    //check if user is logged in...
+    let button = null;
+    const currUser = localStorage.getItem("user");
+    const [loggedIn, setLoggedIn] = useState(false);
+    
+    //variables for rendering dynamic contents
     let content = null;
     const { id } = useParams();
     const url = "http://" + window.location.host + "/api/recipe/"+ id;
@@ -12,8 +18,91 @@ function Recipe () {
         data:null,
         error:false,
     });
-
     
+    //for favorites button
+    let recipeTitle = "";
+    const [isFavorite, setIsFavorite] = useState(false);
+    let params = new URLSearchParams({ username: currUser, title: recipeTitle }).toString();
+    const favorite_url = "http://" + window.location.host + "/api/favorites/"+ id +"?"+ params;
+    
+    
+    const handleAdd =(e)=>{
+        e.preventDefault();
+        params = new URLSearchParams({ username: currUser, title: recipeTitle }).toString();
+        const url_with_title = "http://" + window.location.host + "/api/favorites/"+ id +"?"+ params;
+
+        axios.post(url_with_title)
+            .then( res => {
+                if(res.status === 201){
+                    setIsFavorite(true)
+                    alert("Recipe Successfully added.");
+                }
+            })
+            .catch((error)=>{
+                if(error.status === 409){
+                    setIsFavorite(true)
+                    alert("Recipe already saved.");
+                }
+                else{
+                    alert("An error occured, please try again later.")
+                }
+                console.error("Error while adding to favorites", error); 
+            })
+    }
+
+    const handleDelete =(e)=>{
+        e.preventDefault();
+        axios.delete(favorite_url)
+            .then(res => {
+                if(res.status === 204){
+                    setIsFavorite(false)
+                    alert("Recipe deleted from favorites.")
+                }
+            })
+            .catch((error)=>{
+                alert("An error occured, please try again later.")
+                console.error("Error while deleting from favorites", error)
+            })
+    }
+
+    useEffect( () => {
+        if(!currUser){
+          setLoggedIn(false);
+        } else {
+          setLoggedIn(true);
+        
+          let params = new URLSearchParams({ username: currUser }).toString();
+          const isFavorite_url = `http://${window.location.host}/api/is-favorite/${id}?${params}`;
+          //get if this recipe has been saved in favorites.
+            axios.get(isFavorite_url)
+            .then(res => {
+                if(res.status === 200 || res.status === 304){
+                    setIsFavorite(res.data.saved)
+                }
+            })
+            .catch(error => {
+                console.error("Error when getting favorites", error)
+           })
+        }
+      }, [currUser, id])
+    
+
+    //show the add to favorites button if logged in
+    if(loggedIn){
+        button = <>
+        {isFavorite ? 
+            <button data-testid="remove_favorite" className="btn btn-outline-danger" onClick={handleDelete}>Remove from Favorites</button>:
+            <button data-testid="add_favorite" className="btn btn-outline-primary" onClick={handleAdd}>Add to Favorites</button> 
+             }
+        <p></p>
+        <Link to={`/favorites/${currUser}`}><button data-testid="search_more" className="btn btn-outline-primary">View Favorites</button></Link>
+        </>
+    }
+    //don't show it if not logged in
+    if(!loggedIn){
+        button = null;
+    }
+
     useEffect (() => {
         setRecipeData({
             loading: true,
@@ -27,16 +116,14 @@ function Recipe () {
                     loading:false,
                     data: response.data,
                     error:false,})
-                
             })
             .catch((error) => {
-            //console.log(error);
+            //
             setRecipeData({
                 loading:false,
                 data: null,
                 error:true,})
             })
-            
     },[url])
 
     if(recipeData.error){
@@ -49,6 +136,9 @@ function Recipe () {
 
     //render content if there is data.
     if(recipeData.data){
+        //get title from data.
+        recipeTitle = recipeData.data.recipe.label;
+
         let ingredientList = 
         recipeData.data.recipe.ingredientLines.map((ingredient,i) =>
             <div key={i} className="mb-3">{ingredient}</div>
@@ -75,8 +165,8 @@ function Recipe () {
                     <div className="col p-3">
                         <Link to="/search"><button className="btn btn-outline-success">Search More recipes</button></Link>
                         <p></p>
-                        <button className="btn btn-outline-primary">Add to Favorites</button>
-                    </div>
+                        {button}
+                        </div>
                 </div>
             </div> 
      }
