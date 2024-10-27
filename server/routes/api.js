@@ -13,6 +13,7 @@ const MONGO_URI = process.env.REACT_APP_MONGO_URI;
 const mongoose = require('mongoose');
 const userModel = require('../models/User')
 const recipeModel = require('../models/FavoriteRecipe')
+const { hashPassword, checkPasswordMatch } = require('../util/encryption.js');
 
 router.use(express.json())
 
@@ -111,7 +112,10 @@ router.post('/register',  async (req, res) => {
     if(currUser){
         return res.status(409).json({ error: 'Username already taken' });
     }
-    const newUser = await userModel.create({ username, password, confirmPassword } )
+    console.log('Password before hashing:', password);
+    const hashedPassword = await hashPassword(password);
+    console.log('Password after hashing:', hashedPassword);
+    const newUser = await userModel.create({ username, hashedPassword, confirmPassword  } )
     return res.status(201).json({ message: 'User registered successfully!', user: newUser });
 }
 catch(error){
