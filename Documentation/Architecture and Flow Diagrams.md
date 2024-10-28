@@ -20,11 +20,11 @@ _AC: Given I am a registered user, when I am on the sign in page and I entered t
 8. **As a registered user, be able to add & delete recipes to my favorites**
 _AC: Given I am a user, I can select or unselect a favorite option on recipes to add or remove them from a list of my favorites that I can view._
 #### Add to Favorites
-![image]()
+![image](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/AddtoFavorites.jpg)
 #### Delete from Favorites
-![image]()
+![image](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/DeleteFromFavorites.jpg)
 #### Get a list of Favorite recipes
-![image]()
+![image](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/GetFavoriteRecipeList.jpg)
 
 
 
