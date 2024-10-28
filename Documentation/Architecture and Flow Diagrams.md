@@ -16,3 +16,15 @@ _AC: Given I am a new user to the application, when I am on the sign in page and
 _AC: Given I am a registered user, when I am on the sign in page and I entered the correct username and password and clicked sign in, I will be signed in to the application._
 ![image](https://github.com/njzfjiang/Recipe-Shop/blob/e9e2e69f86d6d1a048a4939172bd0bbaadad2382/Documentation/images/Login.jpg)
 
+### Core Feature: Recipe Management
+8. **As a registered user, be able to add & delete recipes to my favorites**
+_AC: Given I am a user, I can select or unselect a favorite option on recipes to add or remove them from a list of my favorites that I can view._
+#### Add to Favorites
+![image]()
+#### Delete from Favorites
+![image]()
+#### Get a list of Favorite recipes
+![image]()
+
+
+
