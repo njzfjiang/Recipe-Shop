@@ -38,8 +38,8 @@ jobs:
           # Build both images
           docker-compose -f docker-compose.yml build
        
-          docker tag recipe-shop_web-client:latest recipe-shop/recipe-shop-web-client:latest
-          docker push recipe-shop/recipe-shop-web-client:latest
+          docker tag recipe-shop_web-client:latest franco32/recipe-shop-web-client:latest
+          docker push franco32/recipe-shop-web-client:latest
 
-          docker tag recipe-shop_server:latest recipe-shop/recipe-shop-server:latest
-          docker push recipe-shop/recipe-shop-server:latest
+          docker tag recipe-shop_server:latest franco32/recipe-shop-server:latest
+          docker push franco32/recipe-shop-server:latest
