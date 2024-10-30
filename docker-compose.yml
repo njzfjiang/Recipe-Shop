@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  web-client:
+    build:
+      context: ./web-client
+      dockerfile: Dockerfile # Make sure your Dockerfile is named correctly
+    ports:
+      - "3000:3000" # Adjust the ports as needed
+
+  server:
+    build:
+      context: ./server # Update this path as necessary
+      dockerfile: Dockerfile
+    ports:
+      - "80:80" # Adjust the ports as needed
+    env_file:
+      - ./server/.env

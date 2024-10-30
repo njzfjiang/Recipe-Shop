@@ -14,7 +14,7 @@ app.use("/api", apiRouter);
 app.use(express.json());  
 
 app.get("*", (req, res) => {
-    // eslint-disable-next-line no-undef
+    
     res.sendFile(path.resolve(__dirname, "../web-client/build", "index.html"));
 });
 

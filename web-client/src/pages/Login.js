@@ -33,9 +33,9 @@ function Login() {
                 if (response.data.message === 'Login successful!') {
                     //add user to local storage
                     localStorage.setItem("user", login.username)
-                  setCanLogIn("Login Successful")
-                  setIsSuccess(true)
-                  setTimeout(() => {
+                    setCanLogIn("Login Successful")
+                    setIsSuccess(true)
+                    setTimeout(() => {
                     navigate('/');
                     }, 2000); 
                 }
