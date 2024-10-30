@@ -16,10 +16,9 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "REACT_APP_app_id=${{ secrets.REACT_APP_APP_ID }}" >> server/.env
-          echo "REACT_APP_app_key=${{ secrets.REACT_APP_APP_KEY }}" >> server/.env
-          echo "REACT_APP_MONGO_URI=${{ secrets.REACT_APP_MONGO_URI }}" >> server/.env
-
+          echo "REACT_APP_app_id=${{ secrets.APP_ID }}" >> server/.env
+          echo "REACT_APP_app_key=${{ secrets.APP_KEY }}" >> server/.env
+          echo "REACT_APP_MONGO_URI=${{ secrets.MONGO_URI }}" >> server/.env
 
 
       - name: Verify .env file
