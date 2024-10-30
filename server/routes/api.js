@@ -197,6 +197,7 @@ router.get('/all-favorites/:username', async(req, res)=>{
     }
 })
 
+
 //delete a specific recipe from favorites
 router.delete('/favorites/:recipeID', async(req, res)=>{
     let current_recipeID = req.params.recipeID;
@@ -231,5 +232,29 @@ router.delete("/all-favorites/:username", async(req, res)=> {
         return res.status(500).json({ error: error.message });
     }
 })
+
+//GET the ingredients of favorited recipes
+router.get("/generate-list/:username", async(req, res)=> {
+    let current_user = req.params.username;
+
+    try{
+        const findRecipes = await recipeModel.find({ "username":current_user }, 'recipeID');
+        if(findRecipes) {
+            if(findRecipes.length){
+                const recipeID = findRecipes.map(findRecipes => findRecipes.recipeID)
+                //TODO Query edamam by id and parse ingredients
+                //Add ingredients with the same name
+                return res.status(200).json({recipes: findRecipes});
+            } else {
+                return res.status(404).json({error: "No favorite Recipes found."})
+            }
+        } else {
+            return res.status(404).json({error: "No favorite Recipes found."})
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+})
+
 
 module.exports = router;

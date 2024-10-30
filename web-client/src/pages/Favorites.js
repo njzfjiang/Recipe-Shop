@@ -71,6 +71,23 @@ function Favorites () {
         })
     }
 
+    const handleGenerateList = (e) => {
+        e.preventDefault();
+        const url = "http://" + window.location.host + "/api/generate-list/" + localStorage.getItem("user");
+        if(currUser === username) {
+            axios.get(url).then((res) => {
+                if(res.status === 200) {
+                    var windowList = window.open();
+                    windowList.document.write(res.data);
+                }
+            })
+            .catch((error) => {
+            
+            })           
+        }
+
+    }
+
     useEffect( () => {
         if(!currUser){
             setLoggedIn(false);
@@ -159,6 +176,7 @@ function Favorites () {
                         <button className="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-alert">Remove All Favorites</button>
                         <Link to="/search"><button className="btn btn-outline-primary" >Search more recipes </button></Link>
                         <button className="btn btn-outline-success" >Manage</button>
+                        <button className="btn btn-outline-info" onClick={handleGenerateList}>Generate List</button>
                         </div>
                     </div>
                     {filterRecipes.length === 0 ?
