@@ -242,9 +242,7 @@ router.get("/generate-list/:username", async(req, res)=> {
         if(findRecipes) {
             if(findRecipes.length){
                 const recipeID = findRecipes.map(findRecipes => findRecipes.recipeID)
-                //TODO Query edamam by id and parse ingredients
-                //Add ingredients with the same name
-                return res.status(200).json({recipes: findRecipes});
+                return res.status(200).json({recipes: recipeID});
             } else {
                 return res.status(404).json({error: "No favorite Recipes found."})
             }
