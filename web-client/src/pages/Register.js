@@ -29,7 +29,7 @@ function Register() {
     useEffect(()=>{
         const checkUsernameAvailability = () => {
             try {
-               axios.get("http://" + url+ "/api/user-exist", 
+               axios.get("http://" + window.location.host + "/api/user-exist", 
                     { params: { username: register.username } })
                     .then((response)=>{
                         if (response.data.exists) {
