@@ -3,7 +3,6 @@ import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-const url = "server:80";
 
 function Register() {
     const [register, setRegister] = useState ({
