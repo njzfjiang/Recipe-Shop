@@ -3,10 +3,11 @@ import React from 'react';
 import {Routes, Route, MemoryRouter, useParams } from 'react-router-dom';
 import { render, screen, cleanup, waitFor, fireEvent } from "@testing-library/react"
 import '@testing-library/jest-dom'
-
 import axios from 'axios';
+
 jest.mock('axios');
 window.alert = jest.fn();
+window.open = jest.fn();
 //mock local storage
 const fakeLocalStorage = (function () {
     let store = {user:"john111"};
@@ -102,6 +103,7 @@ describe('Favorites page functionality', () => {
             expect(screen.getByText("Manage")).toBeInTheDocument();
             expect(screen.getByText("Remove All Favorites")).toBeInTheDocument();
             expect(screen.getByText("Search more recipes")).toBeInTheDocument();
+            expect(screen.getByText("Generate List")).toBeInTheDocument();
         })
     })
 
@@ -209,5 +211,99 @@ describe('Favorites page functionality', () => {
        
     })
     
+    // Run the test for const handleGenerateList
+    test('Generate List functions normally', async() => {
+        let {input} = setup();
 
+        let data = {"recipes":[{"recipeID":"2ec02b9340ad6effa50d40fc393f4edc"}]}
+        axios.get.mockResolvedValueOnce({data, status:200})
+
+        data = {"recipe":{"ingredients":[{"food":"testFood", "text":"testText"},{"food":"testFood", "text":"testText2"}]}}
+        axios.get.mockResolvedValueOnce({data, status:200})
+
+        await waitFor(()=> {
+            expect(screen.getByText("Generate List")).toBeInTheDocument();
+            window.open = jest.fn(() => ({
+                document: {
+                  title: "",
+                  write: jest.fn()
+                }
+              }));
+            fireEvent.click(screen.getByText("Generate List"));
+        })
+        await waitFor(() => {
+            expect(window.open).toHaveBeenCalledTimes(1)
+        })
+    })
+    
+    // Run the test for const handleGenerateList, user blocks popup
+    test('Generate List functions when new tab opening is blocked', async() => {
+        let {input} = setup();
+
+        let data = {"recipes":[{"recipeID":"2ec02b9340ad6effa50d40fc393f4edc"}]}
+        axios.get.mockResolvedValueOnce({data, status:200})
+
+        data = {"recipe":{"ingredients":[{"food":"testFood", "text":"testText"},{"food":"testFood", "text":"testText2"}]}}
+        axios.get.mockResolvedValueOnce({data, status:200})
+
+        await waitFor(()=> {
+            expect(screen.getByText("Generate List")).toBeInTheDocument();
+            fireEvent.click(screen.getByText("Generate List"));
+        })
+        await waitFor(() => {
+            expect(window.open).toHaveBeenCalledTimes(1)
+            expect(window.alert).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    // Run the test for const handleGenerateList, error getting favorites
+    test('Generate List functions when there is an error getting favorites from database', async() => {
+        let {input} = setup();
+
+        let data = {status:404, error:"Failure"}
+        axios.get.mockRejectedValueOnce(data)
+
+        data = {"recipe":{"ingredients":[{"food":"testFood", "text":"testText"},{"food":"testFood", "text":"testText2"}]}}
+        axios.get.mockResolvedValueOnce({data, status:200})
+
+        await waitFor(()=> {
+            expect(screen.getByText("Generate List")).toBeInTheDocument();
+            window.open = jest.fn(() => ({
+                document: {
+                  title: "",
+                  write: jest.fn()
+                }
+              }));
+            fireEvent.click(screen.getByText("Generate List"));
+        })
+        await waitFor(() => {
+            expect(window.alert).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    
+    // Run the test for const handleGenerateList, error getting from edamam
+    test('Generate List functions when there is an error from Edamam', async() => {
+        let {input} = setup();
+
+        let data = {"recipes":[{"recipeID":"2ec02b9340ad6effa50d40fc393f4edc"}]}
+        axios.get.mockResolvedValueOnce({data, status:200})
+
+        data = {status:404, error:"Failure"}
+        axios.get.mockRejectedValueOnce(data)
+
+        await waitFor(()=> {
+            expect(screen.getByText("Generate List")).toBeInTheDocument();
+            window.open = jest.fn(() => ({
+                document: {
+                  title: "",
+                  write: jest.fn()
+                }
+              }));
+            fireEvent.click(screen.getByText("Generate List"));
+        })
+        await waitFor(() => {
+            expect(window.alert).toHaveBeenCalledTimes(1)
+        })
+    })
 })

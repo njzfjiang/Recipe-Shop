@@ -80,8 +80,6 @@ function Favorites () {
                 if(res.status === 200) {
                     //Query edamam for each of them
                     let ingredients = await getEdamamFromList(res.data.recipes)
-                    
-                    console.log(Object.entries(ingredients))
                     let ingredientsStr = ""
                     for(let i in ingredients) {
                         ingredientsStr += i + "<br>"
@@ -89,11 +87,19 @@ function Favorites () {
                             ingredientsStr += "&nbsp;&nbsp;&nbsp;&nbsp;" + ingredients[i][j] + "<br>"
                         }
                     }
-                    var windowList = window.open();
-                    windowList.document.write(ingredientsStr)
+                    const windowList = window.open();
+                    if (windowList){
+                        windowList.document.title = "Grocery List";
+                        windowList.document.write(ingredientsStr)
+                    }
+                    else {
+                        alert("Your brower has blocked the popup from opening.")
+                    }
+                    
                 }
             })
             .catch((error) => {
+                console.error("Error generating ingredient list.", error);
                 alert("An error occured, please try again later.")
             })           
         }
@@ -107,7 +113,6 @@ function Favorites () {
         for(let i = 0; i < res.length; i++) {
             await axios.get(urlEdamam + res[i]).then((response) => {
                 if(response.status === 200) {
-                    console.log("full", response.data.recipe.ingredients)
                     returnIngredients.push(response.data.recipe.ingredients)
                 }
                 
@@ -261,4 +266,4 @@ function Favorites () {
     )
 }
 
-export default Favorites;
+export default Favorites
