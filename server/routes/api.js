@@ -94,7 +94,7 @@ router.get('/login', async (req, res) => {
         if (!currUser) {
             return res.status(404).json({ error: 'User not found.' });
         }
-        if (currUser.confirmPassword === input_password) {
+        if (currUser.password === input_password) {
             return res.status(200).json({ message: 'Login successful!' });
         } else {
             return res.status(401).json({ error: 'Incorrect password.' });
