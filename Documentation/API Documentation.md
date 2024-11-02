@@ -242,13 +242,11 @@ Get specific information of each recipe in a user's favorite recipes list. First
 
 ```json
 {
- "recipes":[
- {"label": "tomato soup"
-
-  "ingredients":  "1 small tomato, 2 cup of water"}
-]
+ "recipes": [
+  "3f40351ef85b4323b4c9bf654355cafe",
+  "5b7d909dc82c048b361bc2909d31d577"
+ ]
 }
-
 ```
 
 **Error Example**

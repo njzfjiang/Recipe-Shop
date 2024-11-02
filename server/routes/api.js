@@ -115,10 +115,11 @@ router.post('/register',  async (req, res) => {
     console.log('Password before hashing:', password);
     const hashedPassword = await hashPassword(password);
     console.log('Password after hashing:', hashedPassword);
-    const newUser = await userModel.create({ username, hashedPassword, confirmPassword  } )
+    const newUser = await userModel.create({ username:username, password:hashedPassword, confirmPassword:confirmPassword  } )
     return res.status(201).json({ message: 'User registered successfully!', user: newUser });
 }
 catch(error){
+    console.log(error);
     return res.status(500).json({ error: 'User Registration failed', details: error.message });
     }
    
