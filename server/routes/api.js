@@ -94,7 +94,7 @@ router.get('/login', async (req, res) => {
         if (!currUser) {
             return res.status(404).json({ error: 'User not found.' });
         }
-        if (currUser.password === input_password) {
+        if (currUser.confirmPassword === input_password) {
             return res.status(200).json({ message: 'Login successful!' });
         } else {
             return res.status(401).json({ error: 'Incorrect password.' });
@@ -115,10 +115,11 @@ router.post('/register',  async (req, res) => {
     console.log('Password before hashing:', password);
     const hashedPassword = await hashPassword(password);
     console.log('Password after hashing:', hashedPassword);
-    const newUser = await userModel.create({ username, hashedPassword, confirmPassword  } )
+    const newUser = await userModel.create({ username:username, password:hashedPassword, confirmPassword:confirmPassword  } )
     return res.status(201).json({ message: 'User registered successfully!', user: newUser });
 }
 catch(error){
+    console.log(error);
     return res.status(500).json({ error: 'User Registration failed', details: error.message });
     }
    
