@@ -13,6 +13,7 @@ services:
     build:
       context: ./server # Update this path as necessary
       dockerfile: Dockerfile
+      container_name: localhost
     ports:
       - "80:80" # Adjust the ports as needed
     image: franco32/recipe-shop-server:latest

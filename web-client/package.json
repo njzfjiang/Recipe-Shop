@@ -2,7 +2,7 @@
   "name": "recipe-shop",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://server:80",
+  "proxy": "http://localhost:80",
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "7.21.11",
     "@babel/preset-env": "^7.25.7",
