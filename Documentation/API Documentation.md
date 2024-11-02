@@ -216,6 +216,53 @@ Find and delete all favorite recipes in the database for a given user, returns e
 }
 ```
 
+## Get specific information from user's favorite recipes
+
+Get specific information of each recipe in a user's favorite recipes list. First check if any favorite recipes exists in the database for the given user. If no favorite recipes are found, return an error. The returned result is an array of recipes with their detailed information.
+
+  
+
+**End point**
+`GET /api/generate-list/{username}`
+
+  
+
+**Parameters**
+
+*  `username` : The username of the user who saved the recipe
+
+* required
+
+* Example value: "Admin"
+
+
+  
+
+**Response Example**
+
+```json
+{
+ "recipes":[
+ {"label": "tomato soup"
+
+  "ingredients":  "1 small tomato, 2 cup of water"}
+]
+}
+
+```
+
+**Error Example**
+
+```json
+
+{
+
+"error": "No favorite Recipes found."
+
+}
+
+```
+
 ## Recipe Management End points linked to Edamam API
 
 ## Get a specific recipe
