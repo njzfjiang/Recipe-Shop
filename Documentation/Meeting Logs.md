@@ -47,3 +47,42 @@ Update on work progress - code review sign-in, register feature; merged code for
 - Created additional documentation for Meeting logs.
 - Tested the application when having the server and the client running on different machines.
 - We discussed about closing complete user stories and dev tasks and any wrap up for sprint 1.
+
+## Oct.18, 2024 Meeting 10 mins
+* **Attendees**: All members
+* **Notes**: 
+Update on work progress - divide work for sprint 2
+- Mei: work on add to favorites feature
+- Densson: work on generate grocery list feature
+- Francis: work on DB integrations for new features
+- Troy: work on APP front end
+
+## Oct.23, 2024 Meeting 15 mins
+* **Attendees**: Mei, Densson, Francis
+* **Notes**: 
+Update on work progress:
+- logout feature(as an refinement for user feature in Sprint 1) and add to favorites feature is finished, including the database updates to store the favorite recipes.
+- Densson and Francis continue working on CD pipeline and generating grocery list
+- We decide to create tests for any newly added features and update the documentation as we develop.
+
+
+## Oct.28, 2024 Meeting 20 mins
+* **Attendees**: All members
+* **Notes**: 
+Update on work progress:
+- We discussed what needs to be finished for sprint 2 and checked on everyone's work progress.
+- Generate grocery list feature was finished and we plan to added tests and documentation for the feature.
+- We continue to work on the CD pipeline and testing our application running in Docker Hub.
+
+
+## Nov.2, 2024 Meeting 10 mins
+* **Attendees**: All members
+* **Notes**: 
+Update on work progress:
+- CD pipeline is ready, we tested the application in docker hub.
+- Generate grocery list feature was finished and we added tests and documentation for the feature.
+- We decided to finish the worksheet and finalize all documentations.
+
+
+
+
