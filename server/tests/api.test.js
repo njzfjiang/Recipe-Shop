@@ -192,5 +192,32 @@ describe("API route tests", () =>{
         expect(res.statusCode).toBe(500);
     })
 
+    test("GET api/generate-list/ - returns 200 when list generated", async() => {
+        const username = "hehe"
+        mockingoose(favoriteRecipe).toReturn([{recipeID:"7a844b79a5df3f11e822cc229bfb3981"},{recipeID:"4b0b3b47bac3466eafe3f360729b69d3"}], 'find');
+        const res = await request(app).get("/api/generate-list/" + username);
+        expect(res.statusCode).toBe(200);
+    })
+
+    test("GET api/generate-list/ - returns 404 when no user is specified", async() => {
+        const username = "hehe"
+        mockingoose(favoriteRecipe).toReturn(null, 'find');
+        const res = await request(app).get("/api/generate-list/" + username);
+        expect(res.statusCode).toBe(404);
+    })
+
+    test("GET api/generate-list/ - returns 404 when no user is found, but has no favorited recipes", async() => {
+        const username = "hehe"
+        mockingoose(favoriteRecipe).toReturn([], 'find');
+        const res = await request(app).get("/api/generate-list/" + username);
+        expect(res.statusCode).toBe(404);
+    })
+
+    test("GET api/generate-list/ - returns 500 when error occured", async() => {
+        const username = "NO_USER"
+        mockingoose(favoriteRecipe).toReturn(new Error("my error"), "find");
+        const res = await request(app).get("/api/generate-list/" + username);
+        expect(res.statusCode).toBe(500);
+    })
 });
 

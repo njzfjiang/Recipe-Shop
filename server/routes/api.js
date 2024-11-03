@@ -118,6 +118,7 @@ router.post('/register',  async (req, res) => {
     return res.status(201).json({ message: 'User registered successfully!', user: newUser });
 }
 catch(error){
+    console.log(error);
     return res.status(500).json({ error: 'User Registration failed', details: error.message });
     }
    
@@ -196,6 +197,7 @@ router.get('/all-favorites/:username', async(req, res)=>{
     }
 })
 
+
 //delete a specific recipe from favorites
 router.delete('/favorites/:recipeID', async(req, res)=>{
     let current_recipeID = req.params.recipeID;
@@ -230,5 +232,27 @@ router.delete("/all-favorites/:username", async(req, res)=> {
         return res.status(500).json({ error: error.message });
     }
 })
+
+//GET the ingredients of favorited recipes
+router.get("/generate-list/:username", async(req, res)=> {
+    let current_user = req.params.username;
+
+    try{
+        const findRecipes = await recipeModel.find({ "username":current_user }, 'recipeID');
+        if(findRecipes) {
+            if(findRecipes.length){
+                const recipeID = findRecipes.map(findRecipes => findRecipes.recipeID)
+                return res.status(200).json({recipes: recipeID});
+            } else {
+                return res.status(404).json({error: "No favorite Recipes found."})
+            }
+        } else {
+            return res.status(404).json({error: "No favorite Recipes exist."})
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+})
+
 
 module.exports = router;

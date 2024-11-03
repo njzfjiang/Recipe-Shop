@@ -71,6 +71,76 @@ function Favorites () {
         })
     }
 
+    const handleGenerateList = (e) => {
+        e.preventDefault();
+        const urlGenList = "http://" + window.location.host + "/api/generate-list/" + localStorage.getItem("user");
+        if(currUser === username) {
+            axios.get(urlGenList).then(async (res) => {
+                //If favorties are found
+                if(res.status === 200) {
+                    //Query edamam for each of them
+                    let ingredients = await getEdamamFromList(res.data.recipes)
+                    let ingredientsStr = ""
+                    for(let i in ingredients) {
+                        ingredientsStr += i + "<br>"
+                        for(let j in ingredients[i]) {
+                            ingredientsStr += "&nbsp;&nbsp;&nbsp;&nbsp;" + ingredients[i][j] + "<br>"
+                        }
+                    }
+                    const windowList = window.open();
+                    if (windowList){
+                        windowList.document.title = "Grocery List";
+                        windowList.document.write(ingredientsStr)
+                    }
+                    else {
+                        alert("Your brower has blocked the popup from opening.")
+                    }
+                    
+                }
+            })
+            .catch((error) => {
+                console.error("Error generating ingredient list.", error);
+                alert("An error occured, please try again later.")
+            })           
+        }
+
+    }
+
+    //Takes in edamam recipe ids and returns the edamam recipe information
+    async function getEdamamFromList(res) {
+        let urlEdamam = "http://" + window.location.host + "/api/recipe/";
+        let returnIngredients = [];
+        for(let i = 0; i < res.length; i++) {
+            await axios.get(urlEdamam + res[i]).then((response) => {
+                if(response.status === 200) {
+                    returnIngredients.push(response.data.recipe.ingredients)
+                }
+                
+            })
+            .catch((error) => {
+                alert.apply("An error occurred when fetching ingredients, please try again later.")
+            }) 
+        }
+        return parseEdamam(returnIngredients)
+    }
+
+    //Takes in an edamam recipe ingredients output, and formats it
+    function parseEdamam(ingredients) {
+        let ingredientDict = {}
+        for(let i = 0; i < ingredients.length; i++) {
+            for(let j = 0; j < ingredients[i].length; j++) {
+                if(!(ingredients[i][j].food in ingredientDict)) {
+                    ingredientDict[ingredients[i][j].food] = [ingredients[i][j].text]
+                }
+                else {
+                    ingredientDict[ingredients[i][j].food].push(ingredients[i][j].text)
+                }
+            }
+
+        }
+        return ingredientDict
+    }
+
     useEffect( () => {
         if(!currUser){
             setLoggedIn(false);
@@ -159,6 +229,7 @@ function Favorites () {
                         <button className="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-alert">Remove All Favorites</button>
                         <Link to="/search"><button className="btn btn-outline-primary" >Search more recipes </button></Link>
                         <button className="btn btn-outline-success" >Manage</button>
+                        <button className="btn btn-outline-info" onClick={handleGenerateList}>Generate List</button>
                         </div>
                     </div>
                     {filterRecipes.length === 0 ?
@@ -195,4 +266,4 @@ function Favorites () {
     )
 }
 
-export default Favorites;
+export default Favorites
