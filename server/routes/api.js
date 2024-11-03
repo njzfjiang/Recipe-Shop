@@ -8,7 +8,7 @@ const App_id = process.env.REACT_APP_app_id;
 const App_key = process.env.REACT_APP_app_key;
 const edamam_URL = 'https://api.edamam.com/api/recipes/v2';
 //get mongo URI from .env file
-const MONGO_URI = "mongodb+srv://francisochiagha21:painting@users.lxsiy.mongodb.net/";
+const MONGO_URI = process.env.REACT_APP_MONGO_URI;
 
 const mongoose = require('mongoose');
 const userModel = require('../models/User')
