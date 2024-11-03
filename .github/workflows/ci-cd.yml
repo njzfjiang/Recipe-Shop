@@ -1,0 +1,44 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to main branch
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create .env file
+        run: |
+          echo "REACT_APP_app_id=${{ secrets.APP_ID }}" >> server/.env
+          echo "REACT_APP_app_key=${{ secrets.APP_KEY }}" >> server/.env
+          echo "REACT_APP_MONGO_URI=${{ secrets.MONGO_URI }}" >> server/.env
+
+      - name: Verify .env file
+        run: cat server/.env 
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Build and push Docker images
+        run: |
+          # Build images using docker-compose
+          docker-compose -f docker-compose.yml build
+          
+          # Push the images to Docker Hub
+          docker-compose -f docker-compose.yml push

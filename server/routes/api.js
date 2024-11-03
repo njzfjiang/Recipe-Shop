@@ -8,7 +8,7 @@ const App_id = process.env.REACT_APP_app_id;
 const App_key = process.env.REACT_APP_app_key;
 const edamam_URL = 'https://api.edamam.com/api/recipes/v2';
 //get mongo URI from .env file
-const MONGO_URI = process.env.REACT_APP_MONGO_URI;
+const MONGO_URI = "mongodb+srv://francisochiagha21:painting@users.lxsiy.mongodb.net/";
 
 const mongoose = require('mongoose');
 const userModel = require('../models/User')
@@ -94,10 +94,11 @@ router.get('/login', async (req, res) => {
         if (!currUser) {
             return res.status(404).json({ error: 'User not found.' });
         }
-        if (currUser.password === input_password) {
+        const isPasswordValid = await checkPasswordMatch(input_password,currUser.password)
+        if (isPasswordValid) {
             return res.status(200).json({ message: 'Login successful!' });
         } else {
-            return res.status(401).json({ error: 'Incorrect password.' });
+            return res.status(401).json({ error: 'Incorrect username or password' });
         }
     } catch (error) {
         return res.status(500).json({ error: 'failed ' + error.message });
@@ -112,10 +113,8 @@ router.post('/register',  async (req, res) => {
     if(currUser){
         return res.status(409).json({ error: 'Username already taken' });
     }
-    console.log('Password before hashing:', password);
     const hashedPassword = await hashPassword(password);
-    console.log('Password after hashing:', hashedPassword);
-    const newUser = await userModel.create({ username:username, password:hashedPassword, confirmPassword:confirmPassword  } )
+    const newUser = await userModel.create({ username, password: hashedPassword, confirmPassword: hashedPassword  } )
     return res.status(201).json({ message: 'User registered successfully!', user: newUser });
 }
 catch(error){

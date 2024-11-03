@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web-client:
+    build:
+      context: ./web-client
+      dockerfile: Dockerfile # Make sure your Dockerfile is named correctly
+    image: franco32/recipe-shop-web-client:latest
+    ports:
+      - "3000:3000" # Adjust the ports as needed
+    environment:
+      - SERVER_URL=http://server:80 
+
+  server:
+    build:
+      context: ./server # Update this path as necessary
+      dockerfile: Dockerfile
+    ports:
+      - "80:80" # Adjust the ports as needed
+    image: franco32/recipe-shop-server:latest
+
+    env_file:
+      - ./server/.env

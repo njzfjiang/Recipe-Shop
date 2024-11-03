@@ -2,11 +2,16 @@ const request = require("supertest");
 const User = require('../models/User');     
 const mongoose = require('mongoose');
 const { app, server } = require('../server'); 
-
+const { hashPassword, checkPasswordMatch } = require('../util/encryption.js');
 
 jest.mock('../models/User', () => ({
   findOne: jest.fn(), 
   create: jest.fn(),   
+}));
+
+jest.mock('../util/encryption.js', () => ({
+  hashPassword: jest.fn(),
+  checkPasswordMatch: jest.fn(),
 }));
 
 describe('User registration API tests', () => {
@@ -29,23 +34,28 @@ describe('User registration API tests', () => {
   console.log("Test suite cleanup complete.");
   });
 
-  test('GET /api/login - successfully login with valid username and password', async () => {
-    const params = {
-      username: "existinguser",
-      password: "password123",
-    }
+  test('Get /api/login - successfully login with valid username and password', async () => {
+    const username = "existinguser";
+    const password = "password123";
+    const hashedPassword = await hashPassword(password); // Simulate hashing
   
     User.findOne.mockResolvedValue({
-      params
+      username,
+      password: hashedPassword,
     });
   
-    const response = await request(app).get('/api/login', {params});
+    checkPasswordMatch.mockResolvedValue(true); // Simulate successful password match
+  
+    const response = await request(app)
+      .get('/api/login') 
+      .send({ username, password }); 
   
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe('Login successful!');
   });
   
-  test('POST /login - fail to login because user does not exist', async () => {
+  
+  test('Get /login - fail to login because user does not exist', async () => {
     const username = 'nonexistentuser';
     const password = 'password123';
   
@@ -62,43 +72,41 @@ describe('User registration API tests', () => {
     expect(response.body.error).toBe('User not found.');
   });
   
-  test('GET /api/login - fail to login due to incorrect password', async () => {
+  test('Get /api/login - fail to login due to incorrect password', async () => {
     const username = 'existinguser';
     const correctPassword = 'password123';
     const wrongPassword = 'wrongpassword';
-  
+    const hashedPassword = await hashPassword(correctPassword);
+
     User.findOne.mockResolvedValue({
       username,
-      password: correctPassword,
+      password: hashedPassword,
     });
-  
+
+    checkPasswordMatch.mockResolvedValue(false); // Simulate password comparison failure
+
     const response = await request(app)
       .get('/api/login')
-      .send({
-        username,
-        password: wrongPassword,
-      });
-  
+      .send({ username, password: wrongPassword });
+
     expect(response.statusCode).toBe(401);
-    expect(response.body.error).toBe('Incorrect password.');
+    expect(response.body.error).toBe('Incorrect username or password');
   });
-  
-  test('GET /api/login - fail to login due to server error', async () => {
+
+
+  test('POST /api/login - fail to login due to server error', async () => {
     const username = 'existinguser';
     const password = 'password123';
-  
+
     User.findOne.mockRejectedValue(new Error('Database error'));
-  
+
     const response = await request(app)
       .get('/api/login')
-      .send({
-        username,
-        password,
-      });
-  
+      .send({ username, password });
+
     expect(response.statusCode).toBe(500);
     expect(response.body.error).toBe('failed Database error');
   });
-  
-  
 });
+  
+  
