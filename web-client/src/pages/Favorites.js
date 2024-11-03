@@ -228,7 +228,6 @@ function Favorites () {
                         <div className="col">
                         <button className="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-alert">Remove All Favorites</button>
                         <Link to="/search"><button className="btn btn-outline-primary" >Search more recipes </button></Link>
-                        <button className="btn btn-outline-success" >Manage</button>
                         <button className="btn btn-outline-info" onClick={handleGenerateList}>Generate List</button>
                         </div>
                     </div>

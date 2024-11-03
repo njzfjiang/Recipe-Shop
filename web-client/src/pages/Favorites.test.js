@@ -100,7 +100,6 @@ describe('Favorites page functionality', () => {
         await waitFor(()=> {
             expect(localStorage.getItem("user")).toEqual("john111")
             expect(screen.getByText("tomato soup")).toBeInTheDocument();
-            expect(screen.getByText("Manage")).toBeInTheDocument();
             expect(screen.getByText("Remove All Favorites")).toBeInTheDocument();
             expect(screen.getByText("Search more recipes")).toBeInTheDocument();
             expect(screen.getByText("Generate List")).toBeInTheDocument();
