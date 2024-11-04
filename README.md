@@ -50,7 +50,7 @@ Recipe Shop is a mobile and web based application that allows users to find reci
 
 
 ### Initial Architecture
-![Architecture Diagram](https://github.com/njzfjiang/Recipe-Shop/blob/dev/Documentation/images/RenewedArchitecture.JPG)
+![Architecture Diagram](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/Sprint%202%20Architecture.jpg)
 
 ### Technology
 **Front End**: React, Android Studio 
