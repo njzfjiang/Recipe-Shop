@@ -48,7 +48,6 @@ Recipe Shop is a mobile and web based application that allows users to find reci
 
 **Non Functional**: The application can handle 20 Users sending 100 requests per minute.
 
-
 ### Initial Architecture
 ![Architecture Diagram](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/Sprint%202%20Architecture.jpg)
 
