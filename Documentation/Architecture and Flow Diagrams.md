@@ -1,6 +1,6 @@
 ## Architecture
 Architecture diagram of Application
-![image](https://github.com/njzfjiang/Recipe-Shop/blob/dev/Documentation/images/RenewedArchitecture.JPG)
+![image](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/images/Sprint%202%20Architecture.jpg)
 
 ### Core Feature: Search for Recipe
 3. **As a user, be able to search for recipes based on my preference**
