@@ -109,13 +109,18 @@ router.get('/login', async (req, res) => {
 router.post('/register',  async (req, res) => {
     try{
     const { username, password, confirmPassword } = req.body;
-    const currUser = await userModel.findOne({username})
-    if(currUser){
-        return res.status(409).json({ error: 'Username already taken' });
+    if(password == confirmPassword && password.length > 0){
+        const currUser = await userModel.findOne({username})
+        if(currUser){
+            return res.status(409).json({ error: 'Username already taken' });
+        }
+        const hashedPassword = await hashPassword(password);
+        const newUser = await userModel.create({ username, password: hashedPassword, confirmPassword: hashedPassword  } )
+        return res.status(201).json({ message: 'User registered successfully!', user: newUser });
     }
-    const hashedPassword = await hashPassword(password);
-    const newUser = await userModel.create({ username, password: hashedPassword, confirmPassword: hashedPassword  } )
-    return res.status(201).json({ message: 'User registered successfully!', user: newUser });
+    else{
+        return res.status(409).json({ error: "Invalid password. Empty or doesn't match confirm password" });
+    }
 }
 catch(error){
     console.log(error);
