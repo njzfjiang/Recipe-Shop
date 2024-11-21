@@ -1,4 +1,5 @@
 const express = require("express");
+const ratelimit = require("express-rate-limit");
 const app = express();
 const PORT = 80
 
@@ -10,8 +11,14 @@ const path = require("path");
 // eslint-disable-next-line no-undef
 app.use(express.static(path.resolve(__dirname, "../web-client/build")));
 
+const limiter = ratelimit({
+    windowMs:15*60*1000,
+    max: 100,
+})
+
 app.use("/api", apiRouter);
 app.use(express.json());  
+app.use(limiter);
 
 app.get("*", (req, res) => {
     
