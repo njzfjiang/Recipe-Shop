@@ -58,7 +58,7 @@ Get a user based on username and password. The result is a successful message an
 
 **End point** 
 
-`GET /api/login`
+`POST /api/login`
 
 **Parameters**
 * `username` : The username of the user (unique)

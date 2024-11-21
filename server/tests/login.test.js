@@ -34,7 +34,7 @@ describe('User registration API tests', () => {
   console.log("Test suite cleanup complete.");
   });
 
-  test('Get /api/login - successfully login with valid username and password', async () => {
+  test('POST /api/login - successfully login with valid username and password', async () => {
     const username = "existinguser";
     const password = "password123";
     const hashedPassword = await hashPassword(password); // Simulate hashing
@@ -47,7 +47,7 @@ describe('User registration API tests', () => {
     checkPasswordMatch.mockResolvedValue(true); // Simulate successful password match
   
     const response = await request(app)
-      .get('/api/login') 
+      .post('/api/login') 
       .send({ username, password }); 
   
     expect(response.statusCode).toBe(200);
@@ -55,14 +55,14 @@ describe('User registration API tests', () => {
   });
   
   
-  test('Get /login - fail to login because user does not exist', async () => {
+  test('POST /login - fail to login because user does not exist', async () => {
     const username = 'nonexistentuser';
     const password = 'password123';
   
     User.findOne.mockResolvedValue(null);
   
     const response = await request(app)
-      .get('/api/login')
+      .post('/api/login')
       .send({
         username,
         password,
@@ -72,7 +72,7 @@ describe('User registration API tests', () => {
     expect(response.body.error).toBe('User not found.');
   });
   
-  test('Get /api/login - fail to login due to incorrect password', async () => {
+  test('POST /api/login - fail to login due to incorrect password', async () => {
     const username = 'existinguser';
     const correctPassword = 'password123';
     const wrongPassword = 'wrongpassword';
@@ -86,7 +86,7 @@ describe('User registration API tests', () => {
     checkPasswordMatch.mockResolvedValue(false); // Simulate password comparison failure
 
     const response = await request(app)
-      .get('/api/login')
+      .post('/api/login')
       .send({ username, password: wrongPassword });
 
     expect(response.statusCode).toBe(401);
@@ -101,7 +101,7 @@ describe('User registration API tests', () => {
     User.findOne.mockRejectedValue(new Error('Database error'));
 
     const response = await request(app)
-      .get('/api/login')
+      .post('/api/login')
       .send({ username, password });
 
     expect(response.statusCode).toBe(500);

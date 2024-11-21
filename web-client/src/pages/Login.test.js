@@ -80,7 +80,7 @@ describe("Login page UI functionality", () => {
      })
 
      test("User can login with correct username & password.", async() => {
-        axios.get.mockImplementation((url) => {
+        axios.post.mockImplementation((url) => {
             if (url === "http://" + window.location.host + "/api/login") {
                 return Promise.resolve({ status: 201, data: { message: 'Login successful!' } });
             } 

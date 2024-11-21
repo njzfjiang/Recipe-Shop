@@ -100,10 +100,10 @@ router.get("/recipe/:recipeID", (request, response) => {
 });
 
 //get message to /api/login
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
-        const input_username = req.query.username;
-        const input_password = req.query.password;
+        const input_username = req.body.username;
+        const input_password = req.body.password;
 
         const currUser = await userModel.findOne({ username: {$eq: input_username} });
         if (!currUser) {
