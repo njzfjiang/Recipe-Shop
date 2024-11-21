@@ -20,15 +20,14 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        const params = {
-            username:login.username,
-            password:login.password,
+
+        const headers = {
+            'Content-type':'application/json'
         }
         
         if( login.username !== '' && login.password !== ''){
             try {
-                const response = await axios.get("http://" + window.location.host + "/api/login", { params });
+                const response = await axios.post("http://" + window.location.host + "/api/login", { username:login.username, password:login.password }, { headers });
       
                 if (response.data.message === 'Login successful!') {
                     //add user to local storage

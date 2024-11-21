@@ -76,7 +76,13 @@ router.get("/recipe/:recipeID", (request, response) => {
         app_key: App_key,
     }
 
+    //test if recipeID is alphanumeric
     let recipeID = request.params.recipeID;
+    const recipeIDPattern = /^[a-zA-Z0-9]+$/;
+    if (!recipeIDPattern.test(recipeID)) {
+        return response.status(400).send({ error: "Invalid recipeID format" });
+    }
+
     let edamam_response = null;
     axios
         .get(`https://api.edamam.com/api/recipes/v2/${recipeID}`, { params })
@@ -94,10 +100,10 @@ router.get("/recipe/:recipeID", (request, response) => {
 });
 
 //get message to /api/login
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
-        const input_username = req.query.username;
-        const input_password = req.query.password;
+        const input_username = req.body.username;
+        const input_password = req.body.password;
 
         const currUser = await userModel.findOne({ username: {$eq: input_username} });
         if (!currUser) {
