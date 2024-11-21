@@ -76,7 +76,13 @@ router.get("/recipe/:recipeID", (request, response) => {
         app_key: App_key,
     }
 
+    //test if recipeID is alphanumeric
     let recipeID = request.params.recipeID;
+    const recipeIDPattern = /^[a-zA-Z0-9]+$/;
+    if (!recipeIDPattern.test(recipeID)) {
+        return response.status(400).send({ error: "Invalid recipeID format" });
+    }
+
     let edamam_response = null;
     axios
         .get(`https://api.edamam.com/api/recipes/v2/${recipeID}`, { params })
