@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const rateLimit = require("express-rate-limit");
 
 //get API key from .env file.
 require('dotenv').config();
@@ -15,7 +16,15 @@ const userModel = require('../models/User')
 const recipeModel = require('../models/FavoriteRecipe')
 const { hashPassword, checkPasswordMatch } = require('../util/encryption.js');
 
+const limiter = rateLimit({
+    windowMs:15*60*1000,
+    max: 100,
+})
+
+router.use(limiter);
 router.use(express.json())
+
+
 
 //connect to mongo db
 mongoose.connect(MONGO_URI)
