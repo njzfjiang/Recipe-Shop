@@ -11,7 +11,7 @@ const path = require("path");
 // eslint-disable-next-line no-undef
 app.use(express.static(path.resolve(__dirname, "../web-client/build")));
 
-const limiter = rateLimit({
+const limiter = ratelimit({
     windowMs:15*60*1000,
     max: 100,
 })

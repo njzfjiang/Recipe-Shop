@@ -99,7 +99,7 @@ router.get('/login', async (req, res) => {
         const input_username = req.query.username;
         const input_password = req.query.password;
 
-        const currUser = await userModel.findOne({ username:input_username });
+        const currUser = await userModel.findOne({ username: {$eq: input_username} });
         if (!currUser) {
             return res.status(404).json({ error: 'User not found.' });
         }
@@ -118,6 +118,10 @@ router.get('/login', async (req, res) => {
 router.post('/register',  async (req, res) => {
     try{
     const { username, password, confirmPassword } = req.body;
+    if(typeof username !== "string"){
+        return res.status(400).json({ error:'Bad Request'})  
+    }
+
     const currUser = await userModel.findOne({username})
     if(currUser){
         return res.status(409).json({ error: 'Username already taken' });
@@ -136,7 +140,7 @@ catch(error){
 //get message to /api/user-exist
 router.get('/user-exist', async(req,res)=> {
     try {
-        const user = await userModel.findOne({ username : req.query.username });
+        const user = await userModel.findOne({ username : {$eq: req.query.username} });
     
         if (user) {
           res.status(200).json({ exists: true }); 
@@ -155,7 +159,7 @@ router.post('/favorites/:recipeID', async(req, res)=>{
     let current_title = req.query.title;
     
     try {
-        const find_recipe = await recipeModel.findOne({ username: current_username, recipeID: current_recipeID });
+        const find_recipe = await recipeModel.findOne({ username: {$eq: current_username}, recipeID: {$eq: current_recipeID} });
         if(find_recipe){
             return res.status(409).json({ error: "Recipe already saved." });
         } else {
@@ -174,7 +178,7 @@ router.get('/is-favorite/:recipeID', async(req, res)=>{
     let current_username = req.query.username;
 
     try {
-        const find_recipe = await recipeModel.findOne({ username: current_username, recipeID: current_recipeID });
+        const find_recipe = await recipeModel.findOne({ username: {$eq: current_username}, recipeID: {$eq:current_recipeID} });
         if(find_recipe){
             return res.status(200).json({ saved: true });
         } else {
@@ -190,7 +194,7 @@ router.get('/all-favorites/:username', async(req, res)=>{
     let current_user = req.params.username;
 
     try{
-        const findRecipes = await recipeModel.find({ username:current_user });
+        const findRecipes = await recipeModel.find({ username:{$eq: current_user} });
         if(findRecipes){
             //console.log(findRecipes)
             if(findRecipes.length){
@@ -213,7 +217,7 @@ router.delete('/favorites/:recipeID', async(req, res)=>{
     let current_user = req.query.username;
     
     try{
-        const findRecipes = await recipeModel.findOneAndDelete({ username: current_user, recipeID: current_recipeID });
+        const findRecipes = await recipeModel.findOneAndDelete({ username: {$eq:current_user}, recipeID: {$eq:current_recipeID} });
         //console.log("recipe deleted" + findRecipes);
         if(findRecipes){
             return res.status(204).json({message: "Recipe deleted from favorites.", recipeID: current_recipeID});
