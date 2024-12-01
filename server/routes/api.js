@@ -13,6 +13,7 @@ const MONGO_URI = process.env.REACT_APP_MONGO_URI;
 const mongoose = require('mongoose');
 const userModel = require('../models/User')
 const recipeModel = require('../models/FavoriteRecipe')
+const userRecipeModel = require('../models/UserRecipe.js')
 const { hashPassword, checkPasswordMatch } = require('../util/encryption.js');
 
 router.use(express.json())
@@ -258,6 +259,111 @@ router.get("/generate-list/:username", async(req, res)=> {
         return res.status(500).json({ error: error.message });
     }
 })
+
+//post message to /api/recipe/upload
+router.post('/recipe/upload',  async (req, res) => {
+    try{
+    const { title, source, username, ingredients, instructions, image } = req.body;
+    if(title.length > 0 && ingredients.length > 0, instructions.length > 0){
+        const currUser = await userModel.findOne({username});
+        if(currUser){
+            //user exists
+            const newRecipe = await userRecipeModel.create({title, source, username, ingredients, instructions, image});
+            return res.status(201).json({message: "Recipe uploaded successfully!", recipe: newRecipe})
+        }
+        else{
+            //user does not exist
+            return res.status(404).json({ error: "Uploader username does not exist."});
+        }
+    }
+    else{
+        return res.status(409).json({ error: "One or more required parameter is empty: Title, Ingredients, or Instructions." });
+    }
+}
+catch(error){
+    console.log(error);
+    return res.status(500).json({ error: 'Recipe upload failed', details: error.message });
+    }
+   
+});
+
+
+//GET all uploaded recipes from this user
+router.get('/all-uploads/:username', async(req, res)=>{
+    let current_user = req.params.username;
+
+    try{
+        const findRecipes = await userRecipeModel.find({ username:current_user });
+        if(findRecipes){
+            //console.log(findRecipes)
+            if(findRecipes.length){
+                return res.status(200).json({recipes: findRecipes});
+            } else {
+                return res.status(404).json({error: "No uploaded Recipes found."})
+            }
+        } else {
+            return res.status(404).json({error: "No uploaded Recipes found."})
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+
+
+//delete a specific recipe from user uploads
+router.delete('/uploads/:recipeID', async(req, res)=>{
+    let current_recipeID = req.params.recipeID;
+    let current_user = req.query.username;
+    
+    try{
+        const findRecipes = await userRecipeModel.findOneAndDelete({ username: current_user, recipeID: current_recipeID });
+        //console.log("recipe deleted" + findRecipes);
+        if(findRecipes){
+            return res.status(204).json({message: "Recipe deleted from uploads.", recipeID: current_recipeID});
+        } else {
+            return res.status(404).json({error: "No matching recipe found in uploads."})
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+
+
+//GET if this recipe is uploaded by user.
+router.get('/is-upload/:recipeID', async(req, res)=>{
+    let current_recipeID = req.params.recipeID;
+    let current_username = req.query.username;
+
+    try {
+        const find_recipe = await userRecipeModel.findOne({ username: current_username, recipeID: current_recipeID });
+        if(find_recipe){
+            return res.status(200).json({ uploaded: true });
+        } else {
+            return res.status(200).json({ uploaded: false });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+
+
+//GET message to 'localhost/api/recipe/upload/:recipeID
+router.get("/recipe/upload/:recipeID", async(req, res) => {
+    let current_recipeID = req.params.recipeID;
+    let current_username = req.query.username;
+
+    try {
+        const find_recipe = await userRecipeModel.findOne({ username: current_username, recipeID: current_recipeID });
+        if(find_recipe){
+            console.log(find_recipe);
+            return res.status(200).json({ find_recipe });
+        } else {
+            return res.status(404).json({ error: "Recipe not found!" });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
 
 
 module.exports = router;
