@@ -31,12 +31,21 @@ const userRecipeSchema = new Schema({
         required: true,
         auto: true
     },
-    public:{
-        type:Boolean,
+    privacy:{
+        type:String,
         required: true
     },
-    recipeShop: true
-    
+    comments:[{
+        commenter: { //username of commenter
+            type:String,
+            required: true,
+        },
+        comment: {
+            type:String,
+            required: true,
+        }
+    }],
+    recipeShop: true //is recipe uploaded to recipeshop or from edamame
 })
 
 userRecipeSchema.index({ username: 1, recipeID: 1 }, { unique:true });

@@ -262,13 +262,15 @@ router.get("/generate-list/:username", async(req, res)=> {
 
 //post message to /api/recipe/upload
 router.post('/recipe/upload',  async (req, res) => {
+    console.log("POST upload recipe");
+    console.log(req);
     try{
-    const { title, source, username, ingredients, instructions, image } = req.body;
-    if(title.length > 0 && ingredients.length > 0, instructions.length > 0){
+    const { title, source, username, ingredients, instructions, image, privacy } = req.body;
+    if(title.length > 0 && ingredients.length > 0, instructions.length > 0 && privacy.length > 0){
         const currUser = await userModel.findOne({username});
         if(currUser){
             //user exists
-            const newRecipe = await userRecipeModel.create({title, source, username, ingredients, instructions, image});
+            const newRecipe = await userRecipeModel.create({title, source, username, ingredients, instructions, image, privacy});
             return res.status(201).json({message: "Recipe uploaded successfully!", recipe: newRecipe})
         }
         else{
@@ -277,7 +279,7 @@ router.post('/recipe/upload',  async (req, res) => {
         }
     }
     else{
-        return res.status(409).json({ error: "One or more required parameter is empty: Title, Ingredients, or Instructions." });
+        return res.status(409).json({ error: "One or more required parameter is empty: Title, Ingredients, Instructions, Privacy." });
     }
 }
 catch(error){
@@ -290,6 +292,8 @@ catch(error){
 
 //GET all uploaded recipes from this user
 router.get('/all-uploads/:username', async(req, res)=>{
+    console.log("GET all uploads");
+    console.log(req);
     let current_user = req.params.username;
 
     try{
@@ -312,6 +316,8 @@ router.get('/all-uploads/:username', async(req, res)=>{
 
 //delete a specific recipe from user uploads
 router.delete('/uploads/:recipeID', async(req, res)=>{
+    console.log("DELETE uploaded recipe");
+    console.log(req);
     let current_recipeID = req.params.recipeID;
     let current_user = req.query.username;
     
@@ -331,6 +337,8 @@ router.delete('/uploads/:recipeID', async(req, res)=>{
 
 //GET if this recipe is uploaded by user.
 router.get('/is-upload/:recipeID', async(req, res)=>{
+    console.log("GET is upload");
+    console.log(req);
     let current_recipeID = req.params.recipeID;
     let current_username = req.query.username;
 
@@ -349,6 +357,8 @@ router.get('/is-upload/:recipeID', async(req, res)=>{
 
 //GET message to 'localhost/api/recipe/upload/:recipeID
 router.get("/recipe/upload/:recipeID", async(req, res) => {
+    console.log("GET upload recipe");
+    console.log(req);
     let current_recipeID = req.params.recipeID;
     let current_username = req.query.username;
 
