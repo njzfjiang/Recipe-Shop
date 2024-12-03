@@ -9,6 +9,8 @@ function Navbar() {
     const [loggedIn, setLoggedIn] = useState(false)
     let LoginButton = null;
     let userMessage = null;
+    let uploadButton = null;
+    let myRecipes = null;
 
     const handleLogout = (e) =>{
       e.preventDefault();
@@ -35,7 +37,10 @@ function Navbar() {
     {
       LoginButton =
       <button type="button" className="btn btn-dark" onClick={handleLogout}>Log out</button>
-
+      uploadButton =
+      <Link to="/upload"><button type="button" className="btn btn-outline-success">Upload My Recipe</button></Link>
+      myRecipes = 
+      <Link to="/my-recipes"><button type="button" className="btn btn-light">My Recipes</button></Link>
       userMessage = "Hello, " + currUser;
     }
 
@@ -44,8 +49,7 @@ function Navbar() {
     {
       LoginButton = 
         <Link to="/login"><button type="button" className="btn btn-light">Sign In</button></Link>
-      
-      userMessage = "Hello, guest";
+       userMessage = "Hello, guest";
     }
 
     return (
@@ -78,7 +82,10 @@ function Navbar() {
             </ul>
           </li>
           <li className="nav-item">
-            <button className="nav-link disabled" aria-disabled="true">Mobile version</button>
+             {myRecipes}
+          </li>
+          <li className="nav-item">
+            {uploadButton}
           </li>
         </ul>
         <span className="navbar-text">
