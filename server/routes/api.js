@@ -260,17 +260,20 @@ router.get("/generate-list/:username", async(req, res)=> {
     }
 })
 
+//=========================================================================================================================
+//New V
+
 //post message to /api/recipe/upload
 router.post('/recipe/upload',  async (req, res) => {
-    console.log("POST upload recipe");
-    console.log(req);
+    console.log("\nPOST upload recipe");
+    //console.log(req);
     try{
     const { title, source, username, ingredients, instructions, image, privacy } = req.body;
     if(title.length > 0 && ingredients.length > 0, instructions.length > 0 && privacy.length > 0){
         const currUser = await userModel.findOne({username});
         if(currUser){
             //user exists
-            const newRecipe = await userRecipeModel.create({title, source, username, ingredients, instructions, image, privacy});
+            const newRecipe = await userRecipeModel.create({title, source, username, ingredients, instructions, image, privacy, recipeShop:true});
             return res.status(201).json({message: "Recipe uploaded successfully!", recipe: newRecipe})
         }
         else{
@@ -292,9 +295,9 @@ catch(error){
 
 //GET all uploaded recipes from this user
 router.get('/all-uploads/:username', async(req, res)=>{
-    console.log("GET all uploads");
-    console.log(req);
+    console.log("\nGET all uploads");
     let current_user = req.params.username;
+    console.log("username: ", current_user);
 
     try{
         const findRecipes = await userRecipeModel.find({ username:current_user });
@@ -316,13 +319,13 @@ router.get('/all-uploads/:username', async(req, res)=>{
 
 //delete a specific recipe from user uploads
 router.delete('/uploads/:recipeID', async(req, res)=>{
-    console.log("DELETE uploaded recipe");
-    console.log(req);
+    console.log("\nDELETE uploaded recipe");
     let current_recipeID = req.params.recipeID;
     let current_user = req.query.username;
+    console.log("id: ", current_recipeID, "username: ", current_user);
     
     try{
-        const findRecipes = await userRecipeModel.findOneAndDelete({ username: current_user, recipeID: current_recipeID });
+        const findRecipes = await userRecipeModel.findOneAndDelete({ username: current_user, _id: current_recipeID });
         //console.log("recipe deleted" + findRecipes);
         if(findRecipes){
             return res.status(204).json({message: "Recipe deleted from uploads.", recipeID: current_recipeID});
@@ -337,13 +340,13 @@ router.delete('/uploads/:recipeID', async(req, res)=>{
 
 //GET if this recipe is uploaded by user.
 router.get('/is-upload/:recipeID', async(req, res)=>{
-    console.log("GET is upload");
-    console.log(req);
+    console.log("\nGET is upload");
     let current_recipeID = req.params.recipeID;
     let current_username = req.query.username;
+    console.log("id: ", current_recipeID, "username: ", current_username);
 
     try {
-        const find_recipe = await userRecipeModel.findOne({ username: current_username, recipeID: current_recipeID });
+        const find_recipe = await userRecipeModel.findOne({ username: current_username, _id: current_recipeID });
         if(find_recipe){
             return res.status(200).json({ uploaded: true });
         } else {
@@ -357,13 +360,12 @@ router.get('/is-upload/:recipeID', async(req, res)=>{
 
 //GET message to 'localhost/api/recipe/upload/:recipeID
 router.get("/recipe/upload/:recipeID", async(req, res) => {
-    console.log("GET upload recipe");
-    console.log(req);
+    console.log("\nGET upload recipe");
     let current_recipeID = req.params.recipeID;
-    let current_username = req.query.username;
+    console.log("id: ", current_recipeID);
 
     try {
-        const find_recipe = await userRecipeModel.findOne({ username: current_username, recipeID: current_recipeID });
+        const find_recipe = await userRecipeModel.findOne({_id: current_recipeID });
         if(find_recipe){
             console.log(find_recipe);
             return res.status(200).json({ find_recipe });

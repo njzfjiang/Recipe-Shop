@@ -24,12 +24,7 @@ const userRecipeSchema = new Schema({
         required: true
     },
     image:{
-        type: ImageBitmap
-    },
-    recipeID: {
-        type:String,
-        required: true,
-        auto: true
+        type:String
     },
     privacy:{
         type:String,
@@ -45,10 +40,12 @@ const userRecipeSchema = new Schema({
             required: true,
         }
     }],
-    recipeShop: true //is recipe uploaded to recipeshop or from edamame
+    recipeShop: {
+        type:Boolean
+    }
 })
 
-userRecipeSchema.index({ username: 1, recipeID: 1 }, { unique:true });
+userRecipeSchema.index({ username: 1 }, { unique:true });
 
 const userRecipe = mongoose.model('userRecipe', userRecipeSchema);
 
