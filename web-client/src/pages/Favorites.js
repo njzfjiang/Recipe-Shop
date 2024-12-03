@@ -79,12 +79,13 @@ function Favorites () {
                 //If favorties are found
                 if(res.status === 200) {
                     //Query edamam for each of them
-                    let ingredients = await getEdamamFromList(res.data.recipes)
-                    let ingredientsStr = ""
+                    let ingredients = "";
+                    ingredients = await getEdamamFromList(res.data);
+                    let ingredientsStr = "";
                     for(let i in ingredients) {
-                        ingredientsStr += i + "<br>"
+                        ingredientsStr += i + "<br>";
                         for(let j in ingredients[i]) {
-                            ingredientsStr += "&nbsp;&nbsp;&nbsp;&nbsp;" + ingredients[i][j] + "<br>"
+                            ingredientsStr += "&nbsp;&nbsp;&nbsp;&nbsp;" + ingredients[i][j] + "<br>";
                         }
                     }
                     const windowList = window.open();
@@ -93,7 +94,7 @@ function Favorites () {
                         windowList.document.write(ingredientsStr)
                     }
                     else {
-                        alert("Your brower has blocked the popup from opening.")
+                        alert("Your browser has blocked the popup from opening.")
                     }
                     
                 }
@@ -110,17 +111,23 @@ function Favorites () {
     async function getEdamamFromList(res) {
         let urlEdamam = "http://" + window.location.host + "/api/recipe/";
         let returnIngredients = [];
-        for(let i = 0; i < res.length; i++) {
-            await axios.get(urlEdamam + res[i]).then((response) => {
-                if(response.status === 200) {
-                    returnIngredients.push(response.data.recipe.ingredients)
-                }
-                
-            })
-            .catch((error) => {
-                alert.apply("An error occurred when fetching ingredients, please try again later.")
-            }) 
+
+        for(let i = 0; i < res.recipes.length; i++) {
+            if(res.ingredients[i].length > 0) {
+                returnIngredients.push(JSON.parse(res.ingredients[i]))
+            }
+            else {
+                await axios.get(urlEdamam + res.recipes[i]).then((response) => {
+                    if(response.status === 200) {
+                        returnIngredients.push(response.data.recipe.ingredients)
+                    }
+                })
+                .catch((error) => {
+                    alert.apply("An error occurred when fetching ingredients, please try again later.")
+                })                 
+            }
         }
+        console.log("returns", returnIngredients)
         return parseEdamam(returnIngredients)
     }
 

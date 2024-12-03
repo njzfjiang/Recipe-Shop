@@ -15,6 +15,10 @@ const favoriteRecipeSchema = new Schema({
     title: {
         type:String,
         required: true,
+    },
+    ingredients:{
+        type: [String],
+        required: false,
     }
 })
 

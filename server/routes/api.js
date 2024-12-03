@@ -163,13 +163,16 @@ router.post('/favorites/:recipeID', async(req, res)=>{
     let current_recipeID = req.params.recipeID;
     let current_username = req.query.username;
     let current_title = req.query.title;
+    let current_ingredients = req.query.ingredients;
+    //Add ingredient param here
+    console.log(req.params, req.query)
     
     try {
         const find_recipe = await recipeModel.findOne({ username: {$eq: current_username}, recipeID: {$eq: current_recipeID} });
         if(find_recipe){
             return res.status(409).json({ error: "Recipe already saved." });
         } else {
-            const new_recipe = await recipeModel.create({ username: current_username, recipeID: current_recipeID, title:current_title });
+            const new_recipe = await recipeModel.create({ username: current_username, recipeID: current_recipeID, title:current_title, ingredients:current_ingredients.split(',') });
             //console.log(new_recipe)
             return res.status(201).json({ message: 'Recipe stored successfully!', recipe:new_recipe });
         }
@@ -202,7 +205,6 @@ router.get('/all-favorites/:username', async(req, res)=>{
     try{
         const findRecipes = await recipeModel.find({ username:{$eq: current_user} });
         if(findRecipes){
-            //console.log(findRecipes)
             if(findRecipes.length){
                 return res.status(200).json({recipes: findRecipes});
             } else {
@@ -255,13 +257,14 @@ router.delete("/all-favorites/:username", async(req, res)=> {
 //GET the ingredients of favorited recipes
 router.get("/generate-list/:username", async(req, res)=> {
     let current_user = req.params.username;
-
+    //REWORK THIS, currently only returns recipeID, but we want for it to check if there already is ingredients in the db
     try{
-        const findRecipes = await recipeModel.find({ "username":current_user }, 'recipeID');
+        const findRecipes = await recipeModel.find({ "username":current_user });
         if(findRecipes) {
             if(findRecipes.length){
-                const recipeID = findRecipes.map(findRecipes => findRecipes.recipeID)
-                return res.status(200).json({recipes: recipeID});
+                let ingDB = findRecipes.map(findRecipes => findRecipes.ingredients);
+                const recipeID = findRecipes.map(findRecipes => findRecipes.recipeID);
+                return res.status(200).json({recipes: recipeID, ingredients: ingDB});
             } else {
                 return res.status(404).json({error: "No favorite Recipes found."})
             }
