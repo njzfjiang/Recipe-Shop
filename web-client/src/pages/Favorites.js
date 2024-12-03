@@ -31,7 +31,18 @@ function Favorites () {
 
         //if ther is data, do the filtering.
         if(recipeData.data !== null){
-            const filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchItem.toLowerCase()));
+            let searchField = searchItem.toLowerCase().trim();
+            //Regex expression to find substrings in a bracket ()
+            let searchIng = searchField.match(/\((.*?)\)/);
+
+            let filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField));
+            if(searchIng) {
+                filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField.replace(searchIng[0], "").trim()));
+                let searchIngArr = searchIng[1].split(",");
+                for (let i = 0; i < searchIngArr.length; i++) {
+                    filteredRecipes = filteredRecipes.filter((recipe) => JSON.stringify(recipe.ingredients).toLowerCase().includes(searchIngArr[i]))
+                }
+            }
             setFilterRecipes(filteredRecipes);
         }
     };
@@ -39,7 +50,18 @@ function Favorites () {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(searchData !== '' && recipeData.data !== null){
-            const filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchData.toLowerCase()));
+            let searchField = searchData.toLowerCase().trim();
+            //Regex expression to find substrings in a bracket ()
+            let searchIng = searchField.match(/\((.*?)\)/);
+
+            let filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField));
+            if(searchIng) {
+                filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField.replace(searchIng[0], "").trim()));
+                let searchIngArr = searchIng[1].split(",");
+                for (let i = 0; i < searchIngArr.length; i++) {
+                    filteredRecipes = filteredRecipes.filter((recipe) => JSON.stringify(recipe.ingredients).toLowerCase().includes(searchIngArr[i]))
+                }
+            }
             setFilterRecipes(filteredRecipes);
         } else {
             alert("Please add a keyword to search.");
@@ -198,7 +220,7 @@ function Favorites () {
         search_form = 
         <form onSubmit={handleSubmit}>
         <div className="input-group mb-3 p-3">
-        <input data-testid="search_bar" type="text" className="form-control" placeholder="Search in my favorites" aria-label="favorites keyword" aria-describedby="button-addon2"
+        <input data-testid="search_bar" type="text" className="form-control" placeholder="Search in my favorites | Tip: Search by ingredients with brackets, Ex: (flour, egg)" aria-label="favorites keyword" aria-describedby="button-addon2"
         name="keyword" value={searchData} onChange={handleChange} />
         <button className="btn btn-outline-success" type="submit" id="favorites keyword">Search</button>
         </div>
