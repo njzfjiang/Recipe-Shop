@@ -51,7 +51,8 @@ describe('Recipe page functionality', () => {
             image:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
             source:"John Doe",
             ingredientLines:["1 tomato","200 ml water"],
-            url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg"
+            url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
+            ingredients:[{food: "tomato",text: "1 tomato"},{food: "water", text: "200 ml water"}]
             }}
        
 
@@ -100,7 +101,8 @@ describe('Recipe page functionality', () => {
             image:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
             source:"John Doe",
             ingredientLines:["1 tomato","200 ml water"],
-            url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg"
+            url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
+            ingredients:[{food: "tomato",text: "1 tomato"},{food: "water", text: "200 ml water"}]
             }}
        
 
@@ -134,7 +136,8 @@ describe('Recipe page functionality', () => {
                 image:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
                 source:"John Doe",
                 ingredientLines:["1 tomato","200 ml water"],
-                url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg"
+                url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
+                ingredients:[{food: "tomato",text: "1 tomato"},{food: "water", text: "200 ml water"}]
                 }}
            
     
@@ -169,7 +172,8 @@ describe('Recipe page functionality', () => {
                 image:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
                 source:"John Doe",
                 ingredientLines:["1 tomato","200 ml water"],
-                url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg"
+                url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
+                ingredients:[{food: "tomato",text: "1 tomato"},{food: "water", text: "200 ml water"}]
                 }, saved:false}
             axios.get.mockResolvedValue({data});
     
@@ -201,7 +205,8 @@ describe('Recipe page functionality', () => {
                 image:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
                 source:"John Doe",
                 ingredientLines:["1 tomato","200 ml water"],
-                url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg"
+                url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
+                ingredients:[{food: "tomato",text: "1 tomato"},{food: "water", text: "200 ml water"}]
                 }, saved:false}
             axios.get.mockResolvedValue({data});
     
@@ -231,7 +236,8 @@ describe('Recipe page functionality', () => {
                 image:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
                 source:"John Doe",
                 ingredientLines:["1 tomato","200 ml water"],
-                url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg"
+                url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
+                ingredients:[{food: "tomato",text: "1 tomato"},{food: "water", text: "200 ml water"}]
                 }, saved:false}
             axios.get.mockResolvedValue({data});
     
@@ -265,7 +271,8 @@ describe('Recipe page functionality', () => {
                 image:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
                 source:"John Doe",
                 ingredientLines:["1 tomato","200 ml water"],
-                url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg"
+                url:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg",
+                ingredients:[{food: "tomato",text: "1 tomato"},{food: "water", text: "200 ml water"}]
                 }, saved:false}
             axios.get.mockResolvedValue({data});
     

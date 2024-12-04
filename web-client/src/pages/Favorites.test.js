@@ -55,8 +55,13 @@ const setup = () => {
         {  recipeID:"7721099",
             title:"tomato soup",
             _id:"1",
-            username:"john111"
-        }]
+            username:"john111",
+            ingredients:[
+                {food:"testFood", text:"testText"},
+                {food:"testFood", text:"testText2"}
+            ]
+        }],
+
        }
     axios.get.mockResolvedValue({data});
 
@@ -214,12 +219,11 @@ describe('Favorites page functionality', () => {
     test('Generate List functions normally', async() => {
         let {input} = setup();
 
-        let data = {"recipes":[{"recipeID":"2ec02b9340ad6effa50d40fc393f4edc"}]}
+        let data = {recipes:[{recipeID:"2ec02b9340ad6effa50d40fc393f4edc"}], ingredients:[{}]}
         axios.get.mockResolvedValueOnce({data, status:200})
 
-        data = {"recipe":{"ingredients":[{"food":"testFood", "text":"testText"},{"food":"testFood", "text":"testText2"}]}}
+        data = {recipe:{ingredients:[{food:"testFood", text:"testText"},{food:"testFood", text:"testText2"}]}}
         axios.get.mockResolvedValueOnce({data, status:200})
-
         await waitFor(()=> {
             expect(screen.getByText("Generate List")).toBeInTheDocument();
             window.open = jest.fn(() => ({
@@ -239,10 +243,10 @@ describe('Favorites page functionality', () => {
     test('Generate List functions when new tab opening is blocked', async() => {
         let {input} = setup();
 
-        let data = {"recipes":[{"recipeID":"2ec02b9340ad6effa50d40fc393f4edc"}]}
+        let data = {recipes:[{recipeID:"2ec02b9340ad6effa50d40fc393f4edc"}], ingredients:[{}]}
         axios.get.mockResolvedValueOnce({data, status:200})
 
-        data = {"recipe":{"ingredients":[{"food":"testFood", "text":"testText"},{"food":"testFood", "text":"testText2"}]}}
+        data = {recipe:{ingredients:[{food:"testFood", text:"testText"},{food:"testFood", text:"testText2"}]}}
         axios.get.mockResolvedValueOnce({data, status:200})
 
         await waitFor(()=> {
@@ -262,7 +266,7 @@ describe('Favorites page functionality', () => {
         let data = {status:404, error:"Failure"}
         axios.get.mockRejectedValueOnce(data)
 
-        data = {"recipe":{"ingredients":[{"food":"testFood", "text":"testText"},{"food":"testFood", "text":"testText2"}]}}
+        data = {recipe:{ingredients:[{food:"testFood", text:"testText"},{food:"testFood", text:"testText2"}]}}
         axios.get.mockResolvedValueOnce({data, status:200})
 
         await waitFor(()=> {
@@ -285,7 +289,7 @@ describe('Favorites page functionality', () => {
     test('Generate List functions when there is an error from Edamam', async() => {
         let {input} = setup();
 
-        let data = {"recipes":[{"recipeID":"2ec02b9340ad6effa50d40fc393f4edc"}]}
+        let data = {recipes:[{"recipeID":"2ec02b9340ad6effa50d40fc393f4edc"}], ingredients:[{}]}
         axios.get.mockResolvedValueOnce({data, status:200})
 
         data = {status:404, error:"Failure"}

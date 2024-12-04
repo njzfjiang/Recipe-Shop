@@ -31,41 +31,33 @@ function Favorites () {
 
         //if ther is data, do the filtering.
         if(recipeData.data !== null){
-            let searchField = searchItem.toLowerCase().trim();
-            //Regex expression to find substrings in a bracket ()
-            let searchIng = searchField.match(/\((.*?)\)/);
-
-            let filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField));
-            if(searchIng) {
-                filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField.replace(searchIng[0], "").trim()));
-                let searchIngArr = searchIng[1].split(",");
-                for (let i = 0; i < searchIngArr.length; i++) {
-                    filteredRecipes = filteredRecipes.filter((recipe) => JSON.stringify(recipe.ingredients).toLowerCase().includes(searchIngArr[i]))
-                }
-            }
-            setFilterRecipes(filteredRecipes);
+            applySearch(searchItem);
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if(searchData !== '' && recipeData.data !== null){
-            let searchField = searchData.toLowerCase().trim();
-            //Regex expression to find substrings in a bracket ()
-            let searchIng = searchField.match(/\((.*?)\)/);
-
-            let filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField));
-            if(searchIng) {
-                filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField.replace(searchIng[0], "").trim()));
-                let searchIngArr = searchIng[1].split(",");
-                for (let i = 0; i < searchIngArr.length; i++) {
-                    filteredRecipes = filteredRecipes.filter((recipe) => JSON.stringify(recipe.ingredients).toLowerCase().includes(searchIngArr[i]))
-                }
-            }
-            setFilterRecipes(filteredRecipes);
+            applySearch(searchData);
         } else {
             alert("Please add a keyword to search.");
         }
+    }
+
+    function applySearch(searchPar, ) {
+        let searchField = searchPar.toLowerCase().trim();
+        //Regex expression to find substrings in a bracket ()
+        let searchIng = searchField.match(/\((.*?)\)/);
+
+        let filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField));
+        if(searchIng) {
+            filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField.replace(searchIng[0], "").trim()));
+            let searchIngArr = searchIng[1].split(",");
+            for (let i = 0; i < searchIngArr.length; i++) {
+                filteredRecipes = filteredRecipes.filter((recipe) => JSON.stringify(recipe.ingredients).toLowerCase().includes(searchIngArr[i]))
+            }
+        }
+        setFilterRecipes(filteredRecipes);
     }
 
     const handleDeleteAll = (e) => {
@@ -135,6 +127,7 @@ function Favorites () {
         let returnIngredients = [];
 
         for(let i = 0; i < res.recipes.length; i++) {
+            console.log("ERROR!!!!!!!!!!!!!!!!!!!!!!", res)
             if(res.ingredients[i].length > 0) {
                 returnIngredients.push(JSON.parse(res.ingredients[i]))
             }
