@@ -45,7 +45,7 @@ const userRecipeSchema = new Schema({
     }
 })
 
-userRecipeSchema.index({ username: 1 }, { unique:true });
+userRecipeSchema.index({ username: 1 });
 
 const userRecipe = mongoose.model('userRecipe', userRecipeSchema);
 

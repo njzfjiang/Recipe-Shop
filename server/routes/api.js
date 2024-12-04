@@ -16,7 +16,7 @@ const recipeModel = require('../models/FavoriteRecipe')
 const userRecipeModel = require('../models/UserRecipe.js')
 const { hashPassword, checkPasswordMatch } = require('../util/encryption.js');
 
-router.use(express.json())
+router.use(express.json({limit: '100mb'}))
 
 //connect to mongo db
 mongoose.connect(MONGO_URI)
@@ -150,13 +150,15 @@ router.post('/favorites/:recipeID', async(req, res)=>{
     let current_recipeID = req.params.recipeID;
     let current_username = req.query.username;
     let current_title = req.query.title;
+    let current_source = req.query.source;
+    console.log(current_source);
     
     try {
         const find_recipe = await recipeModel.findOne({ username: current_username, recipeID: current_recipeID });
         if(find_recipe){
             return res.status(409).json({ error: "Recipe already saved." });
         } else {
-            const new_recipe = await recipeModel.create({ username: current_username, recipeID: current_recipeID, title:current_title });
+            const new_recipe = await recipeModel.create({ username: current_username, recipeID: current_recipeID, title:current_title, source:current_source });
             //console.log(new_recipe)
             return res.status(201).json({ message: 'Recipe stored successfully!', recipe:new_recipe });
         }
@@ -169,9 +171,11 @@ router.post('/favorites/:recipeID', async(req, res)=>{
 router.get('/is-favorite/:recipeID', async(req, res)=>{
     let current_recipeID = req.params.recipeID;
     let current_username = req.query.username;
+    let current_source = req.query.source;
+    console.log(current_source);
 
     try {
-        const find_recipe = await recipeModel.findOne({ username: current_username, recipeID: current_recipeID });
+        const find_recipe = await recipeModel.findOne({ username: current_username, recipeID: current_recipeID, source:current_source });
         if(find_recipe){
             return res.status(200).json({ saved: true });
         } else {
@@ -208,9 +212,11 @@ router.get('/all-favorites/:username', async(req, res)=>{
 router.delete('/favorites/:recipeID', async(req, res)=>{
     let current_recipeID = req.params.recipeID;
     let current_user = req.query.username;
+    let current_source = req.query.source;
+    console.log(current_source);
     
     try{
-        const findRecipes = await recipeModel.findOneAndDelete({ username: current_user, recipeID: current_recipeID });
+        const findRecipes = await recipeModel.findOneAndDelete({ username: current_user, recipeID: current_recipeID, source:current_source });
         //console.log("recipe deleted" + findRecipes);
         if(findRecipes){
             return res.status(204).json({message: "Recipe deleted from favorites.", recipeID: current_recipeID});
@@ -266,7 +272,7 @@ router.get("/generate-list/:username", async(req, res)=> {
 //post message to /api/recipe/upload
 router.post('/recipe/upload',  async (req, res) => {
     console.log("\nPOST upload recipe");
-    //console.log(req);
+    console.log(req.socket.bytesRead);
     try{
     const { title, source, username, ingredients, instructions, image, privacy } = req.body;
     if(title.length > 0 && ingredients.length > 0, instructions.length > 0 && privacy.length > 0){
@@ -287,6 +293,8 @@ router.post('/recipe/upload',  async (req, res) => {
 }
 catch(error){
     console.log(error);
+    //!!!!Clears Uploaded Recipe DB!!!!!!!!!!
+    //console.log(await userRecipeModel.collection.drop());
     return res.status(500).json({ error: 'Recipe upload failed', details: error.message });
     }
    
@@ -367,7 +375,7 @@ router.get("/recipe/upload/:recipeID", async(req, res) => {
     try {
         const find_recipe = await userRecipeModel.findOne({_id: current_recipeID });
         if(find_recipe){
-            console.log(find_recipe);
+            //console.log(find_recipe);
             return res.status(200).json({ find_recipe });
         } else {
             return res.status(404).json({ error: "Recipe not found!" });

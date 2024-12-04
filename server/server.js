@@ -11,7 +11,7 @@ const path = require("path");
 app.use(express.static(path.resolve(__dirname, "../web-client/build")));
 
 app.use("/api", apiRouter);
-app.use(express.json());  
+app.use(express.json({limit: '100mb'}));  
 
 app.get("*", (req, res) => {
     
