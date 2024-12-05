@@ -54,9 +54,11 @@ describe("API route tests", () =>{
     test("POST /api/favorites/ - Can add new recipes", async() =>{
         const recipeID = "12345"
         const username = "hehe"
+        const ingredient = "test,test2"
         mockingoose(favoriteRecipe).toReturn(null, 'findOne');
-        mockingoose(favoriteRecipe).toReturn({username:"hehe", recipeID:"12345"}, 'create');
-        const res = await request(app).post("/api/favorites/"+recipeID+"?username="+username);
+        mockingoose(favoriteRecipe).toReturn(null, 'findOne');
+        mockingoose(favoriteRecipe).toReturn({username:"hehe", recipeID:"12345", ingredients:"test,test2"}, 'create');
+        const res = await request(app).post("/api/favorites/"+recipeID+"?username="+username+"&ingredients="+ingredient);
         expect(res.statusCode).toBe(201);
     })
 

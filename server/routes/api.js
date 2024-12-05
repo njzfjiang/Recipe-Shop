@@ -57,14 +57,12 @@ router.get("/recipe/search", (request, response) => {
         .get(edamam_URL, { params })
         .then((res) => {
             edamam_response = res.data;
-            //console.log(edamam_response);
             if(edamam_response !== null){
                 response.status(200).send(edamam_response);
             }
         })
         .catch((error) => {
             response.status(error.response.status).send(error)
-            //console.log(error);
         })
 });
 
@@ -88,14 +86,12 @@ router.get("/recipe/:recipeID", (request, response) => {
         .get(`https://api.edamam.com/api/recipes/v2/${recipeID}`, { params })
         .then((res) => {
             edamam_response = res.data;
-            //console.log(edamam_response);
             if(edamam_response !== null){
                 response.status(200).send(edamam_response);
             }
         })
         .catch((error) => {
             response.status(error.response.status).send(error)
-            //console.log(error);
         })
 });
 
@@ -164,8 +160,6 @@ router.post('/favorites/:recipeID', async(req, res)=>{
     let current_username = req.query.username;
     let current_title = req.query.title;
     let current_ingredients = req.query.ingredients;
-    //Add ingredient param here
-    console.log(req.params, req.query)
     
     try {
         const find_recipe = await recipeModel.findOne({ username: {$eq: current_username}, recipeID: {$eq: current_recipeID} });
@@ -173,7 +167,6 @@ router.post('/favorites/:recipeID', async(req, res)=>{
             return res.status(409).json({ error: "Recipe already saved." });
         } else {
             const new_recipe = await recipeModel.create({ username: current_username, recipeID: current_recipeID, title:current_title, ingredients:current_ingredients.split(',') });
-            //console.log(new_recipe)
             return res.status(201).json({ message: 'Recipe stored successfully!', recipe:new_recipe });
         }
     } catch (error) {
@@ -226,7 +219,6 @@ router.delete('/favorites/:recipeID', async(req, res)=>{
     
     try{
         const findRecipes = await recipeModel.findOneAndDelete({ username: {$eq:current_user}, recipeID: {$eq:current_recipeID} });
-        //console.log("recipe deleted" + findRecipes);
         if(findRecipes){
             return res.status(204).json({message: "Recipe deleted from favorites.", recipeID: current_recipeID});
         } else {
@@ -243,7 +235,6 @@ router.delete("/all-favorites/:username", async(req, res)=> {
     try{
         const findRecipes = await recipeModel.deleteMany({ username:current_user });
         if(findRecipes){
-            //console.log(findRecipes)
             return res.status(200).json({message: "deleted all recipes from favorites"});
            
         } else {
@@ -257,7 +248,6 @@ router.delete("/all-favorites/:username", async(req, res)=> {
 //GET the ingredients of favorited recipes
 router.get("/generate-list/:username", async(req, res)=> {
     let current_user = req.params.username;
-    //REWORK THIS, currently only returns recipeID, but we want for it to check if there already is ingredients in the db
     try{
         const findRecipes = await recipeModel.find({ "username":current_user });
         if(findRecipes) {

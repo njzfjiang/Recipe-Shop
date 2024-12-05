@@ -61,7 +61,6 @@ const setup = () => {
                 {food:"testFood", text:"testText2"}
             ]
         }],
-
        }
     axios.get.mockResolvedValue({data});
 

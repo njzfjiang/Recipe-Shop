@@ -29,7 +29,7 @@ function Favorites () {
         const searchItem = e.target.value;
         setSearchData(searchItem);
 
-        //if ther is data, do the filtering.
+        //if there is data, do the filtering.
         if(recipeData.data !== null){
             applySearch(searchItem);
         }
@@ -44,7 +44,7 @@ function Favorites () {
         }
     }
 
-    function applySearch(searchPar, ) {
+    function applySearch(searchPar) {
         let searchField = searchPar.toLowerCase().trim();
         //Regex expression to find substrings in a bracket ()
         let searchIng = searchField.match(/\((.*?)\)/);
@@ -127,7 +127,6 @@ function Favorites () {
         let returnIngredients = [];
 
         for(let i = 0; i < res.recipes.length; i++) {
-            console.log("ERROR!!!!!!!!!!!!!!!!!!!!!!", res)
             if(res.ingredients[i].length > 0) {
                 returnIngredients.push(JSON.parse(res.ingredients[i]))
             }
@@ -257,7 +256,7 @@ function Favorites () {
                     <p className="text-center p-3">No recipes Found!</p>:
                     favoriteList}
                 
-                    <div className="modal fade" id="danger-alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div className="modal fade" id="danger-alert" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">
                         <div className="modal-header">
