@@ -17,7 +17,7 @@ const limiter = ratelimit({
 })
 
 app.use("/api", apiRouter);
-app.use(express.json());  
+app.use(express.json({limit: '100mb'}));  
 app.use(limiter);
 
 app.get("*", (req, res) => {

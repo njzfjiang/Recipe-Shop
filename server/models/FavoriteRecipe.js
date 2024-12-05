@@ -15,10 +15,13 @@ const favoriteRecipeSchema = new Schema({
     title: {
         type:String,
         required: true,
+    },
+    source: {
+        type:String
     }
 })
 
-favoriteRecipeSchema.index({ username: 1, recipeID: 1 }, { unique:true });
+favoriteRecipeSchema.index({ username: 1, recipeID: 1, source: 1 }, { unique:true });
 
 const favoriteRecipe = mongoose.model('favoriteRecipe', favoriteRecipeSchema);
 
