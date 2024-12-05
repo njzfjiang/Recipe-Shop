@@ -40,6 +40,7 @@ Recipe Shop is a mobile and web based application that allows users to find reci
 * [Project proposal](https://github.com/njzfjiang/Recipe-Shop/blob/7f3a1a3495a17daec8fcd5658245c182e3fdc76b/Documentation/Project%20proposal.md)
 * [Test Plan](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/Recipe%20Shop%20Test%20Plan%20-%20version%202.pdf)
 * [Meeting Notes](https://github.com/njzfjiang/Recipe-Shop/blob/main/Documentation/Meeting%20Logs.md)
+* [Release Notes](https://github.com/njzfjiang/Recipe-Shop/blob/documentation-updates-%26-security/Documentation/Release%20Notes.md)
 
 ### Key features
 1.  Users can create account to view and manage recipes
