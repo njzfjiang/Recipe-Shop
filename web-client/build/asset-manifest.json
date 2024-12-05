@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/static/js/main.9d6d68c2.js",
+    "main.js": "/static/js/main.5c970159.js",
     "static/media/logo-png.png": "/static/media/logo-png.26014487050b48e87f8e.png",
     "static/media/logo-transparent-png.png": "/static/media/logo-transparent-png.be4cc02d41f0005897a4.png",
     "static/media/bannerImg.jpg": "/static/media/bannerImg.7dc58e03a8811aacf17a.jpg",
@@ -8,9 +8,9 @@
     "static/media/Grocery.jpg": "/static/media/Grocery.1771e20ee565c9232ff9.jpg",
     "static/media/mission.png": "/static/media/mission.cb0baac22c8bdbf58a11.png",
     "index.html": "/index.html",
-    "main.9d6d68c2.js.map": "/static/js/main.9d6d68c2.js.map"
+    "main.5c970159.js.map": "/static/js/main.5c970159.js.map"
   },
   "entrypoints": [
-    "static/js/main.9d6d68c2.js"
+    "static/js/main.5c970159.js"
   ]
 }
