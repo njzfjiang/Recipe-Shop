@@ -17,8 +17,11 @@ function Upload () {
         author:'',
         uploader:currUser,
         instructions:'',
-        keyword:''
-    })
+        keyword:'',
+        privacy:'public'
+    });
+
+    const[file, setFile] = useState();
 
     //update recipe info for title, author, instructions
     const handleChange = (e) => {
@@ -27,7 +30,10 @@ function Upload () {
           ...prev,
           [name]: value,
         }));
+        let imgURL = URL.createObjectURL(e.target.files[0]);
+        setFile(imgURL);
     };
+
     
 
     const handleAdd = (e) =>{
@@ -47,6 +53,20 @@ function Upload () {
     const handleSubmit =(e) =>{
         e.preventDefault();
         //to upload 
+        if(recipeInfo.title !== "" && recipeInfo.instructions !== ""){
+            if(ingredients.length>0){
+                const params = {
+                    title: recipeInfo.title,
+                    source: recipeInfo.author,
+                    username: recipeInfo.uploader,
+                    ingredients: ingredients,
+                    instructions: recipeInfo.instructions,
+                    image: file,
+                    privacy: recipeInfo.privacy
+                }
+                //console.log(params);
+            }
+        }
     }
 
     useEffect( () => {
@@ -76,6 +96,7 @@ function Upload () {
                     <div className="mb-3">
                         <label for="recipeImage" className="form-label">Add Image</label>
                         <input className="form-control" type="file" id="recipeImage" accept=".jpg,.png"/>
+                        <img src={file} style={{width:250, height:250}}/>
                     </div>
 
                     
@@ -95,6 +116,14 @@ function Upload () {
                     <label for="recipe-instruction" className="form-label">Instructions:</label>
                     <textarea className="form-control" rows="5" id="recipe-instruction" placeholder="Input recipe instructions here..." name="instructions" onChange={handleChange}></textarea>
 
+                </div>
+
+                <div className="input-group p-3 w-50">
+                    <span className="input-group-text">Privacy</span>
+                    <select className="form-select" name="privacy" value={recipeInfo.privacy} onChange={handleChange}>
+                        <option>public</option>
+                        <option>private</option>
+                    </select>
                 </div>
 
 
