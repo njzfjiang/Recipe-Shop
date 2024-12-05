@@ -17,7 +17,8 @@ function Upload () {
         author:'',
         uploader:currUser,
         instructions:'',
-        keyword:''
+        keyword:'',
+        recipeImg:''
     })
 
     //update recipe info for title, author, instructions
@@ -28,7 +29,55 @@ function Upload () {
           [name]: value,
         }));
     };
+
+    function toBase64(file) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = function () {
+          console.log(reader.result);
+          //sets image here.
+          setRecipeInfo({
+            title:recipeInfo.title,
+            author:recipeInfo.author,
+            uploader:currUser,
+            instructions:recipeInfo.instructions,
+            keyword:recipeInfo.keyword,
+            recipeImg:reader.result
+            });
+        };
+        reader.onerror = function (error) {
+          console.log('Error: ', error);
+        };
+       
+     }
     
+
+    const imageUpload = async (e) => {
+        setRecipeInfo({
+            title:recipeInfo.title,
+            author:recipeInfo.author,
+            uploader:currUser,
+            instructions:recipeInfo.instructions,
+            keyword:recipeInfo.keyword,
+            recipeImg:''
+            });
+        //clear the recipeImg...
+        let file = e.target.files[0];
+        const maxFileSize = 500 * 500;
+        if(file) {
+            if(file.size <= maxFileSize){
+                console.log(file.size);
+                await toBase64(file);
+                console.log(recipeInfo.recipeImg);
+                alert("Image saved.")
+            }
+            else if (file.size > maxFileSize){
+                alert("Failed to save image, the image must be smaller then 976 KB.")
+                e.target.value = '';//clear the file
+            }
+            
+        }        
+    }
 
     const handleAdd = (e) =>{
         const new_ingredient = recipeInfo.keyword;
@@ -75,13 +124,14 @@ function Upload () {
                 <div className="form-group p-3">
                     <div className="mb-3">
                         <label for="recipeImage" className="form-label">Add Image</label>
-                        <input className="form-control" type="file" id="recipeImage" accept=".jpg,.png"/>
+                        <input className="form-control" type="file" id="recipeImage" accept=".jpg,.png" onChange={imageUpload}/>
+                        <img src={recipeInfo.recipeImg} height="200" alt="preview" />
                     </div>
 
                     
                     <label for="add-ingredients" className="form-label">Ingredients:</label>
-                    <div className="input-group mb-3" id="add-ingredients">
-                        <input type="text" className="form-control" placeholder="Add ingredient here" name="keyword" onChange={handleChange}/>
+                    <div className="input-group mb-3" >
+                        <input type="text" id="add-ingredients" className="form-control" placeholder="Add ingredient here" name="keyword" onChange={handleChange}/>
                         <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={handleAdd}>Add</button>
                     </div>
                     <ul>
