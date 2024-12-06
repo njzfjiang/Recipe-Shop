@@ -135,6 +135,12 @@ function Upload () {
                     alert("Upload Failed, please try again later.");
                 });
             }
+            else{
+                alert("Upload Failed, no ingredients added.");
+            }
+        }
+        else{
+            alert("Upload Failed, need title and instructions.");
         }
     }
 

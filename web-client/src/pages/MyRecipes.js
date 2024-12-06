@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import axios from 'axios'
 import UploadListItem from "../components/UploadListItem";
+import { Link } from 'react-router-dom';
 
 function MyRecipes () {
     const currUser = localStorage.getItem("user");
@@ -69,7 +70,7 @@ function MyRecipes () {
     }
 
     if(listData.error){
-        content = <p className="text-center p-3">An error occured, please try again later.</p>
+        content = <p data-testid="no-recipe-message" className="text-center p-3">No uploaded recipes found. You can upload recipes here:  <Link to="/upload">Upload Recipe</Link></p>
     }
 
     if(listData.default){
