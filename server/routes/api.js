@@ -353,7 +353,7 @@ router.delete('/uploads/:recipeID', async(req, res)=>{
     let current_user = req.query.username;
     
     try{
-        const findRecipes = await userRecipeModel.findOneAndDelete({ username: current_user, _id: current_recipeID });
+        const findRecipes = await userRecipeModel.findOneAndDelete({ username: {$eq:current_user}, _id: {$eq:current_recipeID} });
         if(findRecipes){
             const favsDeleted = await recipeModel.deleteMany({recipeID: current_recipeID, source: "recipe-shop"});
             //console.log(favsDeleted);
@@ -373,7 +373,7 @@ router.get('/is-upload/:recipeID', async(req, res)=>{
     let current_username = req.query.username;
 
     try {
-        const find_recipe = await userRecipeModel.findOne({ username: current_username, _id: current_recipeID });
+        const find_recipe = await userRecipeModel.findOne({ username: {$eq:current_username}, _id: {$eq:current_recipeID} });
         if(find_recipe){
             return res.status(200).json({ uploaded: true });
         } else {
