@@ -31,8 +31,8 @@ function Recipe () {
         let parseIng = [recipeData.data.recipe.ingredients.length];
         //Include any fields that are need to be stored to the db here
         for(let i = 0; i < recipeData.data.recipe.ingredients.length; i++) {
-            parseIng[i] = {food:recipeData.data.recipe.ingredients[i].food.replace(',', "\,"),
-                            text:recipeData.data.recipe.ingredients[i].text.replace(',', "\,")}
+            parseIng[i] = {food:recipeData.data.recipe.ingredients[i].food.replace(',', "\,"),// eslint-disable-line
+                            text:recipeData.data.recipe.ingredients[i].text.replace(',', "\,")}// eslint-disable-line
         }
         params = new URLSearchParams({ username: currUser, title: recipeTitle, ingredients: JSON.stringify(parseIng) }).toString();
         const url_with_title = "http://" + window.location.host + "/api/favorites/"+ id +"?"+ params;

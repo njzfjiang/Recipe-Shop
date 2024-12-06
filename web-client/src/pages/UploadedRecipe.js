@@ -97,7 +97,7 @@ function UploadedRecipe() {
           setLoggedIn(false);
         } else {
           setLoggedIn(true);
-          params = new URLSearchParams({ username: currUser, title: recipeTitle, source: "recipe-shop" }).toString();
+          const params = new URLSearchParams({ username: currUser, title: recipeTitle, source: "recipe-shop" }).toString();
           const isFavorite_url = `http://${window.location.host}/api/is-favorite/${id}?${params}`;
           //get if this recipe has been saved in favorites.
             axios.get(isFavorite_url)
@@ -141,7 +141,7 @@ function UploadedRecipe() {
             })
           });
         }
-    }, [currUser, url])
+    }, [currUser, url, recipeTitle, id])
 
     //show the add to favorites button if logged in
     if(loggedIn){
