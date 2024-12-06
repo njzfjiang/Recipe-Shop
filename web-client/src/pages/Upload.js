@@ -105,14 +105,15 @@ function Upload () {
             if(ingredients.length>0){
                 let parsedIngredients = ingredients.map(item => item.name)
                 //parse only the value of the "name" object from the display array
-
+                let index = recipeInfo.image.indexOf(",");
+                let imageString = recipeInfo.image.substring(index+1);
                 const params = {
                     title: recipeInfo.title,
                     source: recipeInfo.author,
                     username: recipeInfo.uploader,
                     ingredients: parsedIngredients,
                     instructions: recipeInfo.instructions,
-                    image: recipeInfo.image,
+                    image: imageString,
                     privacy: recipeInfo.privacy
                 }
                 const url = "http://" + window.location.host + "/api/recipe/upload";
