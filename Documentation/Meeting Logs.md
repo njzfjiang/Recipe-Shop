@@ -83,6 +83,37 @@ Update on work progress:
 - Generate grocery list feature was finished and we added tests and documentation for the feature.
 - We decided to finish the worksheet and finalize all documentations.
 
+## Nov.10, 2024 Meeting 20 mins
+* **Attendees**: All members
+* **Notes**: 
+Update on work progress:
+- We discussed the work distribution for sprint 3:
+- Densson: Searching using ingredients, Troy: Uploading new Recipes, Mei: Security Scanning, Francis: Load testing
+- We also talked about what to share on the technique sharing presentation
+
+## Nov.18, 2024 Meeting 10 mins
+* **Attendees**: All members
+* **Notes**: 
+Update on work progress:
+- We worked on adding information for the technique sharing presentation
+- We also created the skeleton for the final project presentation
+
+## Nov.21, 2024 Meeting 10 mins
+* **Attendees**: All members
+* **Notes**: 
+Update on work progress:
+- We are finalizing slides for final presentation
+- Security Scanning in CI pipeline is set up and we can see the alerts, starting on new features and fixing the security issues
+
+## Dec.2, 2024 Meeting 25 mins
+* **Attendees**: All members
+* **Notes**: 
+Update on work progress:
+- Security problems are fixed.
+- Searching using ingredients is done, working creating tests for searching ingredients. Still working on uploading new recipes and load testing
+- We updated the flow diagrams and documentations.
+
+
 
 
 
