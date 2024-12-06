@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 function Upload () {
     //check if user is logged in
@@ -22,6 +24,7 @@ function Upload () {
         image:''
     });
 
+    const navigate = useNavigate()
 
     //update recipe info for title, author, instructions
     const handleChange = (e) => {
@@ -100,16 +103,34 @@ function Upload () {
         //to upload 
         if(recipeInfo.title !== "" && recipeInfo.instructions !== ""){
             if(ingredients.length>0){
+                let parsedIngredients = ingredients.map(item => item.name)
+                //parse only the value of the "name" object from the display array
+
                 const params = {
                     title: recipeInfo.title,
                     source: recipeInfo.author,
                     username: recipeInfo.uploader,
-                    ingredients: ingredients,
+                    ingredients: parsedIngredients,
                     instructions: recipeInfo.instructions,
                     image: recipeInfo.image,
                     privacy: recipeInfo.privacy
                 }
-                //console.log(params);
+                const url = "http://" + window.location.host + "/api/recipe/upload";
+
+                axios.post(url, params)
+                .then(result => {
+                    console.log(result);
+                    if(result.status === 201){
+                        alert("Upload Successful!")
+                        setTimeout(() => {
+                            navigate('/my-recipes');
+                            }, 2000);
+                    }
+                    else{
+                        alert("Upload Failed, please try again later.")
+                    }
+                })
+                .catch(error => {console.log(error)});
             }
         }
     }
