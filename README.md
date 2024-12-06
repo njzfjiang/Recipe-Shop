@@ -67,4 +67,4 @@ Recipe Shop is a mobile and web based application that allows users to find reci
 
 **Server**: Python, Node.js
 
-**Code Management**: Github
+**Code Management**: Github 
