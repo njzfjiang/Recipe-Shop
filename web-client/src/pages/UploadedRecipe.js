@@ -53,7 +53,7 @@ function UploadedRecipe() {
 
     const handleAddFav =(e)=>{
       e.preventDefault();
-      params = new URLSearchParams({ username: currUser, title: recipeTitle, source: "recipe-shop" }).toString();
+      params = new URLSearchParams({ username: currUser, title: recipeTitle, source: "recipe-shop", ingredients:recipeData.data.find_recipe.ingredients.toString() }).toString();
       const url_with_title = "http://" + window.location.host + "/api/favorites/"+ id +"?"+ params;
 
       axios.post(url_with_title)
