@@ -300,26 +300,26 @@ router.get("/generate-list/:username", async(req, res)=> {
 //post message to /api/recipe/upload
 router.post('/recipe/upload',  async (req, res) => {
     try{
-    const { title, source, username, ingredients, instructions, image, privacy } = req.body;
-    if(title.length > 0 && ingredients.length > 0, instructions.length > 0 && privacy.length > 0){
-        const currUser = await userModel.findOne({username});
-        if(currUser){
-            //user exists
-            const newRecipe = await userRecipeModel.create({title, source, username, ingredients, instructions, image, privacy, recipeShop:true});
-            return res.status(201).json({message: "Recipe uploaded successfully!", recipe: newRecipe})
+        const { title, source, username, ingredients, instructions, image, privacy } = req.body;
+        if(title.length > 0 && ingredients.length > 0, instructions.length > 0 && privacy.length > 0){
+            const currUser = await userModel.findOne({username});
+            if(currUser){
+                //user exists
+                const newRecipe = await userRecipeModel.create({title, source, username, ingredients, instructions, image, privacy, recipeShop:true});
+                return res.status(201).json({message: "Recipe uploaded successfully!", recipe: newRecipe})
+            }
+            else{
+                //user does not exist
+                return res.status(404).json({ error: "Uploader username does not exist."});
+            }
         }
         else{
-            //user does not exist
-            return res.status(404).json({ error: "Uploader username does not exist."});
+            return res.status(409).json({ error: "One or more required parameter is empty: Title, Ingredients, Instructions, Privacy." });
         }
     }
-    else{
-        return res.status(409).json({ error: "One or more required parameter is empty: Title, Ingredients, Instructions, Privacy." });
-    }
-}
-catch(error){
-    console.log(error);
-    return res.status(500).json({ error: 'Recipe upload failed', details: error.message });
+    catch(error){
+        console.log(error);
+        return res.status(500).json({ error: 'Recipe upload failed', details: error.message });
     }
 });
 
