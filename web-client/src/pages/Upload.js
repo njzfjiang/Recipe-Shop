@@ -121,16 +121,18 @@ function Upload () {
                 .then(result => {
                     console.log(result);
                     if(result.status === 201){
-                        alert("Upload Successful!")
+                        alert("Upload Successful!");
                         setTimeout(() => {
                             navigate('/my-recipes');
                             }, 2000);
                     }
                     else{
-                        alert("Upload Failed, please try again later.")
+                        alert("Upload Failed, please try again later.");
                     }
                 })
-                .catch(error => {console.log(error)});
+                .catch(error => {console.log(error);
+                    alert("Upload Failed, please try again later.");
+                });
             }
         }
     }
