@@ -17,7 +17,7 @@ This is the repo for the web version, for the app version, the link can be found
 | Troy Thomas | TroyT21 | thomast9@myumanitoba.ca |
 | Ifeanyi Ochiagha | Francis518 |ochiaghi@myumanitoba.ca|
 
-### Overview
+### Overview 
 
 Recipe Shop is an online platform built for anyone who loves to cook or needs a hand in preparing meals. Recipe shop aims to provide convenience in the process of preparing meals and grocery shopping; and allows people of similar interests to find and share their favorite recipes.
 
