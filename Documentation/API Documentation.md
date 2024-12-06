@@ -83,6 +83,185 @@ Get a user based on username and password. The result is a successful message an
 ```
 
 ## Section 2: End points for Recipe Management
+## Upload Original Recipe
+
+Upload an user original recipe to the database. First check if the user exists, if it exists, create a new original recipe under that user's name. If the user does not exist or the content of the recipe is not filled out appropriately, send an error message.
+
+  
+
+**End point**
+
+`POST /api/recipe/upload`
+
+  
+
+**Parameters**
+*  `title` : The title of the original recipe
+*  `username` : The username of the user who uploaded the recipe
+*   `ingredients` : The ingredients of the original recipe
+*   `instructions` : The instructions of the original recipe
+*   `source` : The author or source of the recipe
+*  `privacy` : The type of recipe uploaded (private or public)
+*  `image` : The image of the recipe, in base64
+
+
+**Response Example**
+
+```json
+{
+ "message":"Recipe uploaded successfully!"
+}
+
+```
+
+**Error Example**
+
+```json
+
+{
+
+"error": "Uploader username does not exist."
+
+}
+
+```
+## Get a list of uploaded recipes
+
+Get a list of uploaded recipes by the specific user. Return a list of recipes uploaded, return error if there is no recipes found.
+  
+
+**End point**
+
+`GET /all-uploads/{username}`
+
+  
+
+**Parameters**
+*  `username` : The username of the user who uploaded the recipe
+
+
+**Response Example**
+
+```json
+{
+ "recipes":[
+ {
+ "title":"tomato soup"
+ "ingredients":"1 tomato, 3 cup of water"
+ }]
+}
+
+```
+
+**Error Example**
+
+```json
+
+{
+
+"error": "No uploaded Recipes found."
+
+}
+
+```
+
+## Delete an uploaded recipe
+
+Delete an uploaded recipe by a specific user by its recipeID. If no recipe given the recipeID is found, return an error.
+  
+
+**End point**
+
+`DELETE /uploads/{recipeID}`
+
+  
+
+**Parameters**
+*  `username` : The username of the user who uploaded the recipe
+*  `recipeID` : The recipeID for the recipe to be deleted.
+
+
+**Response Example**
+
+```json
+{
+ "message":"Recipe deleted from uploads."
+}
+
+```
+
+**Error Example**
+
+```json
+{
+
+"error": "No matching recipe found in uploads."
+
+}
+
+```
+## Check if recipe is uploaded by User
+
+Check if the specific recipe is uploaded by the user requested. Return true if it is uploaded by this user, return false if it is not. 
+  
+
+**End point**
+
+`GET /is-upload/{recipeID}`
+
+  
+
+**Parameters**
+*  `username` : The username of the user who uploaded the recipe
+*  `recipeID` : The recipeID for the recipe.
+
+
+**Response Example**
+
+```json
+{
+ "uploaded":"true"
+}
+
+```
+
+## Get a specific uploaded recipe
+
+Get an uploaded recipe by recipeID, if it exists, return the recipe, if it does not exist, return an error.
+  
+
+**End point**
+
+`GET /recipe/upload/{recipeID}`
+
+  
+
+**Parameters**
+*  `recipeID` : The recipeID for the recipe.
+
+
+**Response Example**
+
+```json
+{
+ "title":"beef noodle"
+ "ingredients":"steak, noodles, water"
+}
+
+```
+
+**Error Example**
+
+```json
+{
+
+"error": "Recipe not found!"
+
+}
+
+```
+
+
 ## Create new favorite recipe object
 Create a new favorite recipe in the database. First check if an favorite recipe exists in the database for the given user. If it exists, return an error. If it does not exist, create a new favorite recipe in the database. The result is a message and the recipe object if the recipe is stored.
 
