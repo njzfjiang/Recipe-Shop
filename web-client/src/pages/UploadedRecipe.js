@@ -21,7 +21,8 @@ function UploadedRecipe() {
 
 
     const handleDelete =(e)=>{
-      let delete_url = "http://" + window.location.host + "/api/uploads/"+ id;
+      let params = new URLSearchParams({ username: currUser }).toString();
+      let delete_url = "http://" + window.location.host + "/api/uploads/"+ id + "?"+ params;
       e.preventDefault();
       axios.delete(delete_url)
           .then(res => {
@@ -80,12 +81,14 @@ function UploadedRecipe() {
         <div key={i} className="mb-3">{ingredient}</div>
     );
 
+    let appendImage = "data:image/jpeg;base64,"+recipeData.data.find_recipe.image
+    
       content =  <div className="container text-center p-3">
       <div className="row">
           <div className="col">
               <h2>{recipeData.data.find_recipe.title}</h2>
               <p data-testid="source">Recipe from {recipeData.data.find_recipe.source}</p>
-              <img src={recipeData.data.find_recipe.image} style={{width:250, height:250}} alt="recipe"/>
+              <img src={appendImage} style={{width:250, height:250}} alt="recipe"/>
               
           </div>
 
