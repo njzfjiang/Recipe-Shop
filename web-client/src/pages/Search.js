@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import RecipeCard from "../components/RecipeCard";
+import RecipeCardLocal from "../components/RecipeCardLocal";
 import { arrayChunk } from "../utils/arrayChunk";
 
 
@@ -96,11 +97,19 @@ function Search() {
     //render content if there is data.
     if(recipeData.data){
         //const recipe_list = JSON.parse(recipeData.data);
-        if(recipeData.data.to === 0){
+        if(recipeData.data.to === 0 && recipeData.data.local.length === 0){
             content = <p className="p-3">No matching recipes found.</p>
         } else {
+            
             content = 
             <div>
+                {arrayChunk(recipeData.data.local, 4).map((row, i) => (
+                    <div key={i} className="row mx-auto p-3">
+                        {row.map((col, i) => (
+                                <RecipeCardLocal key={i} recipe={col}/>
+                            ))}
+                    </div>
+                 ))}
                  {arrayChunk(recipeData.data.hits, 4).map((row, i) => (
                     <div key={i} className="row mx-auto p-3">
                         {row.map((col, i) => (
