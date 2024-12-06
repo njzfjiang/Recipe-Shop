@@ -218,7 +218,7 @@ describe('Favorites page functionality', () => {
     test('Generate List functions normally', async() => {
         let {input} = setup();
 
-        let data = {recipes:[{recipeID:"2ec02b9340ad6effa50d40fc393f4edc"}], ingredients:[{}]}
+        let data = {recipes:[{recipeID:"2ec02b9340ad6effa50d40fc393f4edc"}], ingredients:[{}],localRecipes:[{recipeID:"2ec02b9340ad6effa50d40fc393f4edc"}]}
         axios.get.mockResolvedValueOnce({data, status:200})
 
         data = {recipe:{ingredients:[{food:"testFood", text:"testText"},{food:"testFood", text:"testText2"}]}}
@@ -242,7 +242,7 @@ describe('Favorites page functionality', () => {
     test('Generate List functions when new tab opening is blocked', async() => {
         let {input} = setup();
 
-        let data = {recipes:[{recipeID:"2ec02b9340ad6effa50d40fc393f4edc"}], ingredients:[{}]}
+        let data = {recipes:[{recipeID:"2ec02b9340ad6effa50d40fc393f4edc"}], ingredients:[{}],localRecipes:[{recipeID:"2ec02b9340ad6effa50d40fc393f4edc"}]}
         axios.get.mockResolvedValueOnce({data, status:200})
 
         data = {recipe:{ingredients:[{food:"testFood", text:"testText"},{food:"testFood", text:"testText2"}]}}
@@ -288,7 +288,7 @@ describe('Favorites page functionality', () => {
     test('Generate List functions when there is an error from Edamam', async() => {
         let {input} = setup();
 
-        let data = {recipes:[{"recipeID":"2ec02b9340ad6effa50d40fc393f4edc"}], ingredients:[{}]}
+        let data = {recipes:[{"recipeID":"2ec02b9340ad6effa50d40fc393f4edc"}], ingredients:[{}], localRecipes:[{recipeID:"2ec02b9340ad6effa50d40fc393f4edc"}]}
         axios.get.mockResolvedValueOnce({data, status:200})
 
         data = {status:404, error:"Failure"}
