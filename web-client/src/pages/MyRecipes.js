@@ -44,7 +44,13 @@ function MyRecipes () {
                     setFilterRecipes(result.data.recipes)
                 }
             })
-            .catch(error => {console.log(error);});
+            .catch(error => {console.log(error);
+                setListData({
+                    data: null,
+                    error: true,
+                    default: false
+                })
+            });
             }
     }, [currUser])
 
