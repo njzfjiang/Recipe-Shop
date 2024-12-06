@@ -29,21 +29,35 @@ function Favorites () {
         const searchItem = e.target.value;
         setSearchData(searchItem);
 
-        //if ther is data, do the filtering.
+        //if there is data, do the filtering.
         if(recipeData.data !== null){
-            const filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchItem.toLowerCase()));
-            setFilterRecipes(filteredRecipes);
+            applySearch(searchItem);
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if(searchData !== '' && recipeData.data !== null){
-            const filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchData.toLowerCase()));
-            setFilterRecipes(filteredRecipes);
+            applySearch(searchData);
         } else {
             alert("Please add a keyword to search.");
         }
+    }
+
+    function applySearch(searchPar) {
+        let searchField = searchPar.toLowerCase().trim();
+        //Regex expression to find substrings in a bracket ()
+        let searchIng = searchField.match(/\((.*?)\)/);
+
+        let filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField));
+        if(searchIng) {
+            filteredRecipes = recipeData.data.recipes.filter((recipe) => recipe.title.toLowerCase().includes(searchField.replace(searchIng[0], "").trim()));
+            let searchIngArr = searchIng[1].split(",");
+            for (let i = 0; i < searchIngArr.length; i++) {
+                filteredRecipes = filteredRecipes.filter((recipe) => JSON.stringify(recipe.ingredients).toLowerCase().includes(searchIngArr[i]))
+            }
+        }
+        setFilterRecipes(filteredRecipes);
     }
 
     const handleDeleteAll = (e) => {
@@ -79,12 +93,12 @@ function Favorites () {
                 //If favorties are found
                 if(res.status === 200) {
                     //Query edamam for each of them
-                    let ingredients = await getEdamamFromList(res.data.recipes)
+                    let ingredients = await getEdamamFromList(res.data)
                     let ingredientsStr = ""
                     for(let i in ingredients) {
-                        ingredientsStr += i + "<br>"
+                        ingredientsStr += i + "<br>";
                         for(let j in ingredients[i]) {
-                            ingredientsStr += "&nbsp;&nbsp;&nbsp;&nbsp;" + ingredients[i][j] + "<br>"
+                            ingredientsStr += "&nbsp;&nbsp;&nbsp;&nbsp;" + ingredients[i][j] + "<br>";
                         }
                     }
                     const windowList = window.open();
@@ -93,7 +107,7 @@ function Favorites () {
                         windowList.document.write(ingredientsStr)
                     }
                     else {
-                        alert("Your brower has blocked the popup from opening.")
+                        alert("Your browser has blocked the popup from opening.")
                     }
                     
                 }
@@ -108,10 +122,10 @@ function Favorites () {
 
     //Takes in edamam recipe ids and returns the edamam recipe information
     async function getEdamamFromList(res) {
-        let urlEdamam = "http://" + window.location.host + "/api/recipe/";
         let returnIngredients = [];
-        for(let i = 0; i < res.length; i++) {
-            await axios.get(urlEdamam + res[i]).then((response) => {
+        let urlEdamam = "http://" + window.location.host + "/api/recipe/";
+        for(let i = 0; i < res.recipes.length; i++) {
+            await axios.get(urlEdamam + res.recipes[i]).then((response) => {
                 if(response.status === 200) {
                     returnIngredients.push(response.data.recipe.ingredients)
                 }
@@ -121,7 +135,29 @@ function Favorites () {
                 alert.apply("An error occurred when fetching ingredients, please try again later.")
             }) 
         }
-        return parseEdamam(returnIngredients)
+        let groceryList = parseEdamam(returnIngredients)
+
+        urlEdamam = "http://" + window.location.host + "/api/recipe/upload/";
+        for(let i = 0; i < res.localRecipes.length; i++) {
+            await axios.get(urlEdamam + res.localRecipes[i]).then((response) => {
+                if(response.status === 200) {
+                    for(let j=0; j<response.data.find_recipe.ingredients.length; j++){
+                        if(!(response.data.find_recipe.title in groceryList)) {
+                            groceryList[response.data.find_recipe.title] = [response.data.find_recipe.ingredients[j]];
+                        }
+                        else{
+                            groceryList[response.data.find_recipe.title].push(response.data.find_recipe.ingredients[j]);
+                        }
+                    }
+                }
+                
+            })
+            .catch((error) => {
+                alert.apply("An error occurred when fetching ingredients, please try again later.")
+            }) 
+        }
+        
+        return groceryList;
     }
 
     //Takes in an edamam recipe ingredients output, and formats it
@@ -191,7 +227,7 @@ function Favorites () {
         search_form = 
         <form onSubmit={handleSubmit}>
         <div className="input-group mb-3 p-3">
-        <input data-testid="search_bar" type="text" className="form-control" placeholder="Search in my favorites" aria-label="favorites keyword" aria-describedby="button-addon2"
+        <input data-testid="search_bar" type="text" className="form-control" placeholder="Search in my favorites | Tip: Search by ingredients with brackets, Ex: (flour, egg)" aria-label="favorites keyword" aria-describedby="button-addon2"
         name="keyword" value={searchData} onChange={handleChange} />
         <button className="btn btn-outline-success" type="submit" id="favorites keyword">Search</button>
         </div>
@@ -221,7 +257,7 @@ function Favorites () {
 
     if(recipeData.data){
         const favoriteList = filterRecipes.map((item) => 
-        <div key={item._id}><FavoriteListItem recipeID={item.recipeID} title={item.title}/></div> )
+        <div key={item._id}><FavoriteListItem recipeID={item.recipeID} title={item.title} source={item.source}/></div> )
        
         content= <div>
                     <div className="row p-3">
@@ -235,7 +271,7 @@ function Favorites () {
                     <p className="text-center p-3">No recipes Found!</p>:
                     favoriteList}
                 
-                    <div className="modal fade" id="danger-alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div className="modal fade" id="danger-alert" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">
                         <div className="modal-header">

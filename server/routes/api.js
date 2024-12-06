@@ -184,16 +184,18 @@ router.post('/favorites/:recipeID', async(req, res)=>{
     let current_username = req.query.username;
     let current_title = req.query.title;
     let current_source = req.query.source;
+    let current_ingredients = req.query.ingredients;
     
     try {
         const find_recipe = await recipeModel.findOne({ username: {$eq: current_username}, recipeID: {$eq: current_recipeID}, source: {$eq: current_source}});
         if(find_recipe){
             return res.status(409).json({ error: "Recipe already saved." });
         } else {
-            const new_recipe = await recipeModel.create({ username: current_username, recipeID: current_recipeID, title:current_title, source:current_source });
+            const new_recipe = await recipeModel.create({ username: current_username, recipeID: current_recipeID, title:current_title, source:current_source, ingredients:current_ingredients.split(',') });
             return res.status(201).json({ message: 'Recipe stored successfully!', recipe:new_recipe });
         }
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ error: error.message });
     }
 })
@@ -252,6 +254,7 @@ router.delete('/favorites/:recipeID', async(req, res)=>{
             return res.status(404).json({error: "No matching recipe found in favorites."})
         }
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ error: error.message });
     }
 })
@@ -275,15 +278,15 @@ router.delete("/all-favorites/:username", async(req, res)=> {
 //GET the ingredients of favorited recipes
 router.get("/generate-list/:username", async(req, res)=> {
     let current_user = req.params.username;
-
     try{
         const findRecipes = await recipeModel.find({ "username":current_user }, 'recipeID').exists("source", false);
         const localRecipes = await recipeModel.find({ "username":current_user }, 'recipeID', {"source": "recipe-shop"}).exists("source", true);
-        if(findRecipes) {
-            if(findRecipes.length){
+        if(findRecipes || localRecipes) {
+            if(findRecipes.length || localRecipes.length){
+                let ingDB = findRecipes.map(findRecipes => findRecipes.ingredients);
                 const recipeID = findRecipes.map(findRecipes => findRecipes.recipeID);
-                const localID = localRecipes.map(localRecipes => localRecipes.recipeID);
-                return res.status(200).json({recipes: recipeID, localRecipes: localID});
+                const localID = localRecipes.map(localRecipes => localRecipes.recipeID);;
+                return res.status(200).json({recipes: recipeID, localRecipes: localID, ingredients: ingDB});
             } else {
                 return res.status(404).json({error: "No favorite Recipes found."})
             }
@@ -295,32 +298,30 @@ router.get("/generate-list/:username", async(req, res)=> {
     }
 })
 
-//=========================================================================================================================
-//New V
 
 //post message to /api/recipe/upload
 router.post('/recipe/upload',  async (req, res) => {
     try{
-    const { title, source, username, ingredients, instructions, image, privacy } = req.body;
-    if(title.length > 0 && ingredients.length > 0, instructions.length > 0 && privacy.length > 0){
-        const currUser = await userModel.findOne({username});
-        if(currUser){
-            //user exists
-            const newRecipe = await userRecipeModel.create({title, source, username, ingredients, instructions, image, privacy, recipeShop:true});
-            return res.status(201).json({message: "Recipe uploaded successfully!", recipe: newRecipe})
+        const { title, source, username, ingredients, instructions, image, privacy } = req.body;
+        if(title.length > 0 && ingredients.length > 0, instructions.length > 0 && privacy.length > 0){
+            const currUser = await userModel.findOne({username:{$eq:username}});
+            if(currUser){
+                //user exists
+                const newRecipe = await userRecipeModel.create({title, source, username, ingredients, instructions, image, privacy, recipeShop:true});
+                return res.status(201).json({message: "Recipe uploaded successfully!", recipe: newRecipe})
+            }
+            else{
+                //user does not exist
+                return res.status(404).json({ error: "Uploader username does not exist."});
+            }
         }
         else{
-            //user does not exist
-            return res.status(404).json({ error: "Uploader username does not exist."});
+            return res.status(409).json({ error: "One or more required parameter is empty: Title, Ingredients, Instructions, Privacy." });
         }
     }
-    else{
-        return res.status(409).json({ error: "One or more required parameter is empty: Title, Ingredients, Instructions, Privacy." });
-    }
-}
-catch(error){
-    console.log(error);
-    return res.status(500).json({ error: 'Recipe upload failed', details: error.message });
+    catch(error){
+        console.log(error);
+        return res.status(500).json({ error: 'Recipe upload failed', details: error.message });
     }
 });
 
@@ -354,6 +355,8 @@ router.delete('/uploads/:recipeID', async(req, res)=>{
     try{
         const findRecipes = await userRecipeModel.findOneAndDelete({ username: current_user, _id: current_recipeID });
         if(findRecipes){
+            const favsDeleted = await recipeModel.deleteMany({recipeID: current_recipeID, source: "recipe-shop"});
+            //console.log(favsDeleted);
             return res.status(204).json({message: "Recipe deleted from uploads.", recipeID: current_recipeID});
         } else {
             return res.status(404).json({error: "No matching recipe found in uploads."})

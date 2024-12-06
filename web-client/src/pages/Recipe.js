@@ -22,15 +22,20 @@ function Recipe () {
     //for favorites button
     let recipeTitle = "";
     const [isFavorite, setIsFavorite] = useState(false);
-    let params = new URLSearchParams({ username: currUser, title: recipeTitle }).toString();
+    let params = new URLSearchParams({ username: currUser, title: recipeTitle}).toString();
     const favorite_url = "http://" + window.location.host + "/api/favorites/"+ id +"?"+ params;
     
     
     const handleAdd =(e)=>{
         e.preventDefault();
-        params = new URLSearchParams({ username: currUser, title: recipeTitle }).toString();
+        let parseIng = [recipeData.data.recipe.ingredients.length];
+        //Include any fields that are need to be stored to the db here
+        for(let i = 0; i < recipeData.data.recipe.ingredients.length; i++) {
+            parseIng[i] = {food:recipeData.data.recipe.ingredients[i].food.replace(',', "\,"),// eslint-disable-line
+                            text:recipeData.data.recipe.ingredients[i].text.replace(',', "\,")}// eslint-disable-line
+        }
+        params = new URLSearchParams({ username: currUser, title: recipeTitle, ingredients: JSON.stringify(parseIng) }).toString();
         const url_with_title = "http://" + window.location.host + "/api/favorites/"+ id +"?"+ params;
-
         axios.post(url_with_title)
             .then( res => {
                 if(res.status === 201){

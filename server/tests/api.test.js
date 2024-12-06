@@ -3,6 +3,7 @@ const express = require("express");
 const apiRouter = require('../routes/api');
 const mockingoose = require('mockingoose');
 const favoriteRecipe = require('../models/FavoriteRecipe')
+const userRecipeModel = require('../models/UserRecipe.js')
 const User = require('../models/User')
 
 const app = new express();
@@ -54,9 +55,11 @@ describe("API route tests", () =>{
     test("POST /api/favorites/ - Can add new recipes", async() =>{
         const recipeID = "12345"
         const username = "hehe"
+        const ingredient = "test,test2"
         mockingoose(favoriteRecipe).toReturn(null, 'findOne');
-        mockingoose(favoriteRecipe).toReturn({username:"hehe", recipeID:"12345"}, 'create');
-        const res = await request(app).post("/api/favorites/"+recipeID+"?username="+username);
+        mockingoose(favoriteRecipe).toReturn(null, 'findOne');
+        mockingoose(favoriteRecipe).toReturn({username:"hehe", recipeID:"12345", ingredients:"test,test2"}, 'create');
+        const res = await request(app).post("/api/favorites/"+recipeID+"?username="+username+"&ingredients="+ingredient);
         expect(res.statusCode).toBe(201);
     })
 
@@ -217,6 +220,183 @@ describe("API route tests", () =>{
         const username = "NO_USER"
         mockingoose(favoriteRecipe).toReturn(new Error("my error"), "find");
         const res = await request(app).get("/api/generate-list/" + username);
+        expect(res.statusCode).toBe(500);
+    })
+
+    test("GET api/recipe/upload - returns 201 on success", async() => {
+        const username = "hehe"
+        mockingoose(User).toReturn({username:"hehe", password:"12345"}, 'findOne');
+        mockingoose(favoriteRecipe).toReturn({username:"hehe", recipeID:"12345", ingredients:"test,test2"}, 'create');
+        const testData = {
+            title: "testTitle",
+            ingredients: ["testIng1", "testIng2"],
+            instructions: ["testInst1", "testInst2"],
+            privacy: "testPriv"
+        }
+        const res = await request(app).post("/api/recipe/upload").send(testData);
+        expect(res.statusCode).toBe(201);
+    })
+
+    test("GET api/recipe/upload - returns 409 on missing data", async() => {
+        const username = "hehe"
+        mockingoose(User).toReturn({username:"hehe", password:"12345"}, 'findOne');
+        mockingoose(favoriteRecipe).toReturn({username:"hehe", recipeID:"12345", ingredients:"test,test2"}, 'create');
+        const testData = {
+            title: "testTitle",
+            ingredients: ["testIng1", "testIng2"],
+            instructions: [],
+            privacy: "testPriv"
+        }
+        const res = await request(app).post("/api/recipe/upload").send(testData);
+        expect(res.statusCode).toBe(409);
+    })
+
+    test("GET api/recipe/upload - returns 500 on malformed data", async() => {
+        const username = "hehe"
+        mockingoose(User).toReturn(null, 'findOne');
+        mockingoose(favoriteRecipe).toReturn({username:"hehe", recipeID:"12345", ingredients:"test,test2"}, 'create');
+        const testData = null
+        const res = await request(app).post("/api/recipe/upload").send(testData);
+        expect(res.statusCode).toBe(500);
+    })
+
+    test("GET api/recipe/upload - returns 404 on null user", async() => {
+        const username = "hehe"
+        mockingoose(User).toReturn(null, 'findOne');
+        mockingoose(favoriteRecipe).toReturn({username:"hehe", recipeID:"12345", ingredients:"test,test2"}, 'create');
+        const testData = {
+            title: "testTitle",
+            ingredients: ["testIng1", "testIng2"],
+            instructions: ["testInst1", "testInst2"],
+            privacy: "testPriv"
+        }
+        const res = await request(app).post("/api/recipe/upload").send(testData);
+        expect(res.statusCode).toBe(404);
+    })
+
+
+    test("GET api/all-uploads/:username - returns 200 on success", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn([{title:"testTitle",
+                                            source:"testSource",
+                                            username:"testUser",
+                                            ingredients:"testIng1,testIng2",
+                                            image:"testImage",
+                                            privacy:"testPriv",
+                                            comments:[{commenter:"testCommenter",comment:"testComment"}],
+                                            recipeShop:true}],
+                                            'find');
+        const testData = {username:username}
+        const res = await request(app).get("/api/all-uploads/" + username).send(testData);
+        expect(res.statusCode).toBe(200);
+    })
+
+    test("GET api/all-uploads/:username - returns 404 on no uploaded recipes", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn([],'find');
+        const testData = {username:username}
+        const res = await request(app).get("/api/all-uploads/" + username).send(testData);
+        expect(res.statusCode).toBe(404);
+    })
+
+    test("GET api/all-uploads/:username - returns 404 on no user found", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn(null,'find');
+        const testData = {username:username}
+        const res = await request(app).get("/api/all-uploads/" + username).send(testData);
+        expect(res.statusCode).toBe(404);
+    })
+
+    test("GET api/all-uploads/:username - returns 500 on error", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn(new Error("test Error"),'find');
+        const testData = {username:username}
+        const res = await request(app).get("/api/all-uploads/" + username).send(testData);
+        expect(res.statusCode).toBe(500);
+    })
+
+
+    test("GET api/uploads/:recipeID - returns 204 on success", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn({username:username, _id:"testID"}, 'findOneAndDelete');
+        const testData = {username:username}
+        const res = await request(app).delete("/api/uploads/testID").send(testData);
+        expect(res.statusCode).toBe(204);
+    })
+
+    test("GET api/uploads/:recipeID - returns 404 on recipe not found", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn(null, 'findOneAndDelete');
+        const testData = {username:username}
+        const res = await request(app).delete("/api/uploads/testID").send(testData);
+        expect(res.statusCode).toBe(404);
+    })
+
+    test("GET api/uploads/:recipeID - returns 500 on error", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn(new Error("testError"), 'findOneAndDelete');
+        const testData = {username:username}
+        const res = await request(app).delete("/api/uploads/testID").send(testData);
+        expect(res.statusCode).toBe(500);
+    })
+
+
+    test("GET api/uploads/:recipeID - returns 200 on true and success", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn({username:username, _id:"testID"}, 'findOne');
+        const testData = {username:username}
+        const res = await request(app).get("/api/is-upload/" + username).send(testData);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.uploaded).toBe(true);
+    })
+
+    test("GET api/uploads/:recipeID - returns 200 on false and success", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn(null, 'findOne');
+        const testData = {username:username}
+        const res = await request(app).get("/api/is-upload/" + username).send(testData);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.uploaded).toBe(false);
+    })
+
+    test("GET api/uploads/:recipeID - returns 200 on true and success", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn(new Error("testError"), 'findOne');
+        const testData = {username:username}
+        const res = await request(app).get("/api/is-upload/" + username).send(testData);
+        expect(res.statusCode).toBe(500);
+    })
+
+
+    test("GET api/recipe/upload/:recipeID - returns 200 on success", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn([{title:"testTitle",
+                                                source:"testSource",
+                                                username:"testUser",
+                                                ingredients:"testIng1,testIng2",
+                                                image:"testImage",
+                                                privacy:"testPriv",
+                                                comments:[{commenter:"testCommenter",comment:"testComment"}],
+                                                recipeShop:true}],
+                                                'findOne');
+        const testData = {recipeID:"testID"}    
+        const res = await request(app).get("/api/recipe/upload/" + "testID").send(testData);
+        expect(res.statusCode).toBe(200);
+    })
+
+    test("GET api/recipe/upload/:recipeID - returns 404 on missing recipe", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn(null,'findOne');
+        const testData = {recipeID:"testID"}    
+        const res = await request(app).get("/api/recipe/upload/" + "testID").send(testData);
+        expect(res.statusCode).toBe(404);
+    })
+
+    test("GET api/recipe/upload/:recipeID - returns 500 on error", async() => {
+        const username = "hehe"
+        mockingoose(userRecipeModel).toReturn(new Error("testError"),'findOne');
+        const testData = {recipeID:"testID"}    
+        const res = await request(app).get("/api/recipe/upload/" + "testID").send(testData);
         expect(res.statusCode).toBe(500);
     })
 });
