@@ -198,6 +198,7 @@ function UploadedRecipe() {
           <div className="col">
               <h2>{recipeData.data.find_recipe.title}</h2>
               <p data-testid="source">Recipe from {recipeData.data.find_recipe.source}</p>
+              <p data-testid="uploader">Uploaded by {recipeData.data.find_recipe.username}</p>
               <img src={appendImage} style={{width:250, height:250}} alt="recipe"/>
               
           </div>

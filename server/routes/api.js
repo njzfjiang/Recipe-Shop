@@ -195,6 +195,7 @@ router.post('/favorites/:recipeID', async(req, res)=>{
             return res.status(201).json({ message: 'Recipe stored successfully!', recipe:new_recipe });
         }
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ error: error.message });
     }
 })
@@ -253,6 +254,7 @@ router.delete('/favorites/:recipeID', async(req, res)=>{
             return res.status(404).json({error: "No matching recipe found in favorites."})
         }
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ error: error.message });
     }
 })
