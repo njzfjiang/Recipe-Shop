@@ -117,7 +117,7 @@ describe('Search Page Functionality', () => {
             {uri:"recipe_12345",
             label:"tomato soup",
             image:"https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-723x1024.jpg"
-            }}]
+            }}], local:[]
         }
         
         mock.onGet("http://localhost/api/recipe/search").reply(200, data);
@@ -133,7 +133,7 @@ describe('Search Page Functionality', () => {
 
     test('Shows correct message if no recipes are found.', async() => {
         var mock = new MockAdapter(axios);
-        const data = { to:0 }
+        const data = { to:0,local:[] }
         
         mock.onGet("http://localhost/api/recipe/search").reply(200, data);
 
