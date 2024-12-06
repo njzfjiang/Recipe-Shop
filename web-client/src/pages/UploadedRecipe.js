@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 
 function UploadedRecipe() {
     //check if user is logged in...
+    let content = null;
     const currUser = localStorage.getItem("user");
     const [loggedIn, setLoggedIn] = useState(false);
 
@@ -24,6 +25,11 @@ function UploadedRecipe() {
 
         }
     }, [currUser, id, url])
+
+    return(<>
+    <Navbar />
+    {content}
+    </>)
 }
 
 export default UploadedRecipe;
