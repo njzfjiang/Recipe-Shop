@@ -81,7 +81,8 @@ function UploadedRecipe() {
         <div key={i} className="mb-3">{ingredient}</div>
     );
 
-    let appendImage = "data:image/jpeg;base64,"+recipeData.data.find_recipe.image
+    let appendImage = "data:image/png;base64,"+recipeData.data.find_recipe.image
+    let instructions = recipeData.data.find_recipe.instructions;
     
       content =  <div className="container text-center p-3">
       <div className="row">
@@ -96,7 +97,7 @@ function UploadedRecipe() {
               <h3 className="mb-3">Ingredients</h3>
               {ingredientList}
               <h3 className="mb-3">Preparation</h3>
-              <p>{recipeData.data.find_recipe.instructions}</p>
+              <p style={{whiteSpace: "pre-wrap"}}>{instructions}</p>
           </div>
       </div>
       <div className="row">

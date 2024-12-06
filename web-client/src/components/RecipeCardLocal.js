@@ -14,7 +14,7 @@ const RecipeCardLocal = (props) => {
     }
     return (    //link doesn't work yet
         <div className="card p-3 mb-3 w-25">
-            <Link to={`/recipes/upload/${recipeID}`}><img src={image} className="card-img-top" alt="cardImg"/></Link>
+            <Link to={`/uploaded-recipes/${recipeID}`}><img src={image} className="card-img-top" alt="cardImg"/></Link>
             <h5 className="card-title">{props.recipe.find_recipe.title}</h5>
         </div>
         
