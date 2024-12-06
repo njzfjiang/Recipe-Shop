@@ -61,7 +61,7 @@ Recipe Shop is a mobile and web based application that allows users to find reci
 ### Technology
 **Front End**: React, Android Studio 
 
-**API**: Express.js, Edamam
+**API**: Express.js, Edamam 
 
 **Database**: MongoDB
 
