@@ -12,6 +12,8 @@ import Search from "./pages/Search";
 import AboutUs from "./pages/AboutUs";
 import Recipe from "./pages/Recipe";
 import Favorites from "./pages/Favorites";
+import Upload from "./pages/Upload";
+import MyRecipes from "./pages/MyRecipes";
 import React from "react";
 
 
@@ -27,6 +29,8 @@ function App() {
                 <Route path="/about-us" element={<AboutUs />}/>
                 <Route path="/recipes/:id" element={<Recipe />}/>
                 <Route path="/favorites/:username" element={<Favorites />}/>
+                <Route path="/upload" element={<Upload />}/>
+                <Route path="/my-recipes" element={<MyRecipes />}/>
                 <Route path="*" element={<Navigate to="/" />}/>
             </Routes>
         </Router>

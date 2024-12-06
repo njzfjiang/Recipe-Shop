@@ -2,6 +2,12 @@
 COMP 4350-A01 Group 9
 
 This is the repo for the web version, for the app version, the link can be found [here](https://github.com/njzfjiang/Recipe-Shop-App-Version)
+
+[Slides for project proposal](https://docs.google.com/presentation/d/1ZIRzEjUDUouv7DUa-ByEjAxJUdLvU-xD/edit#slide=id.p1)
+
+[Slides for technique sharing presentation](https://docs.google.com/presentation/d/16o6FH5FBJgywUiFdfBzdyrG4E9kC_P70xQXyzVKYrTM/edit#slide=id.p)
+
+[Slides for Final presentation](https://docs.google.com/presentation/d/16iV-BSns62B1Svn5IGh1LUNPKZGTUfxOTBtXB3ANofc/edit#slide=id.g317fda36494_0_0)
 ### Team Members
 
 | Name | Username in Github  |   email |
