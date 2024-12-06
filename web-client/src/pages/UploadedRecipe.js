@@ -26,7 +26,6 @@ function UploadedRecipe() {
       axios.delete(delete_url)
           .then(res => {
               if(res.status === 204){
-                  setIsFavorite(false)
                   alert("Recipe deleted.")
                   //navigate to my recipes.
                   setTimeout(() => {
