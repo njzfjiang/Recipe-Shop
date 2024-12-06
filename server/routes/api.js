@@ -304,7 +304,7 @@ router.post('/recipe/upload',  async (req, res) => {
     try{
         const { title, source, username, ingredients, instructions, image, privacy } = req.body;
         if(title.length > 0 && ingredients.length > 0, instructions.length > 0 && privacy.length > 0){
-            const currUser = await userModel.findOne({username});
+            const currUser = await userModel.findOne({username:{$eq:username}});
             if(currUser){
                 //user exists
                 const newRecipe = await userRecipeModel.create({title, source, username, ingredients, instructions, image, privacy, recipeShop:true});
