@@ -93,8 +93,9 @@ function Favorites () {
                 //If favorties are found
                 if(res.status === 200) {
                     //Query edamam for each of them
-                    let ingredients = await getEdamamFromList(res.data)
-                    let ingredientsStr = ""
+                    let ingredients = "";
+                    ingredients = await getEdamamFromList(res.data);
+                    let ingredientsStr = "";
                     for(let i in ingredients) {
                         ingredientsStr += i + "<br>";
                         for(let j in ingredients[i]) {
@@ -122,42 +123,26 @@ function Favorites () {
 
     //Takes in edamam recipe ids and returns the edamam recipe information
     async function getEdamamFromList(res) {
-        let returnIngredients = [];
         let urlEdamam = "http://" + window.location.host + "/api/recipe/";
-        for(let i = 0; i < res.recipes.length; i++) {
-            await axios.get(urlEdamam + res.recipes[i]).then((response) => {
-                if(response.status === 200) {
-                    returnIngredients.push(response.data.recipe.ingredients)
-                }
-                
-            })
-            .catch((error) => {
-                alert.apply("An error occurred when fetching ingredients, please try again later.")
-            }) 
-        }
-        let groceryList = parseEdamam(returnIngredients)
+        let returnIngredients = [];
 
-        urlEdamam = "http://" + window.location.host + "/api/recipe/upload/";
-        for(let i = 0; i < res.localRecipes.length; i++) {
-            await axios.get(urlEdamam + res.localRecipes[i]).then((response) => {
-                if(response.status === 200) {
-                    for(let j=0; j<response.data.find_recipe.ingredients.length; j++){
-                        if(!(response.data.find_recipe.title in groceryList)) {
-                            groceryList[response.data.find_recipe.title] = [response.data.find_recipe.ingredients[j]];
-                        }
-                        else{
-                            groceryList[response.data.find_recipe.title].push(response.data.find_recipe.ingredients[j]);
-                        }
+        for(let i = 0; i < res.recipes.length; i++) {
+            if(res.ingredients[i].length > 0) {
+                returnIngredients.push(JSON.parse(res.ingredients[i]))
+            }
+            else {
+                await axios.get(urlEdamam + res.recipes[i]).then((response) => {
+                    if(response.status === 200) {
+                        returnIngredients.push(response.data.recipe.ingredients)
                     }
-                }
-                
-            })
-            .catch((error) => {
-                alert.apply("An error occurred when fetching ingredients, please try again later.")
-            }) 
+                })
+                .catch((error) => {
+                    alert.apply("An error occurred when fetching ingredients, please try again later.")
+                })                 
+            }
         }
-        
-        return groceryList;
+        console.log("returns", returnIngredients)
+        return parseEdamam(returnIngredients)
     }
 
     //Takes in an edamam recipe ingredients output, and formats it
@@ -257,7 +242,7 @@ function Favorites () {
 
     if(recipeData.data){
         const favoriteList = filterRecipes.map((item) => 
-        <div key={item._id}><FavoriteListItem recipeID={item.recipeID} title={item.title} source={item.source}/></div> )
+        <div key={item._id}><FavoriteListItem recipeID={item.recipeID} title={item.title}/></div> )
        
         content= <div>
                     <div className="row p-3">

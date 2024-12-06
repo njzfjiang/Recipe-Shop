@@ -14,7 +14,6 @@ import Recipe from "./pages/Recipe";
 import Favorites from "./pages/Favorites";
 import Upload from "./pages/Upload";
 import MyRecipes from "./pages/MyRecipes";
-import UploadedRecipe from "./pages/UploadedRecipe";
 import React from "react";
 
 
@@ -32,7 +31,6 @@ function App() {
                 <Route path="/favorites/:username" element={<Favorites />}/>
                 <Route path="/upload" element={<Upload />}/>
                 <Route path="/my-recipes" element={<MyRecipes />}/>
-                <Route path="/uploaded-recipes/:id" element={<UploadedRecipe />}/>
                 <Route path="*" element={<Navigate to="/" />}/>
             </Routes>
         </Router>

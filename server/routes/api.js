@@ -279,8 +279,8 @@ router.get("/generate-list/:username", async(req, res)=> {
     try{
         const findRecipes = await recipeModel.find({ "username":current_user }, 'recipeID').exists("source", false);
         const localRecipes = await recipeModel.find({ "username":current_user }, 'recipeID', {"source": "recipe-shop"}).exists("source", true);
-        if(findRecipes || localRecipes) {
-            if(findRecipes.length || localRecipes.length){
+        if(findRecipes) {
+            if(findRecipes.length){
                 let ingDB = findRecipes.map(findRecipes => findRecipes.ingredients);
                 const recipeID = findRecipes.map(findRecipes => findRecipes.recipeID);
                 const localID = localRecipes.map(localRecipes => localRecipes.recipeID);;
@@ -353,8 +353,6 @@ router.delete('/uploads/:recipeID', async(req, res)=>{
     try{
         const findRecipes = await userRecipeModel.findOneAndDelete({ username: current_user, _id: current_recipeID });
         if(findRecipes){
-            const favsDeleted = await recipeModel.deleteMany({recipeID: current_recipeID, source: "recipe-shop"});
-            //console.log(favsDeleted);
             return res.status(204).json({message: "Recipe deleted from uploads.", recipeID: current_recipeID});
         } else {
             return res.status(404).json({error: "No matching recipe found in uploads."})
